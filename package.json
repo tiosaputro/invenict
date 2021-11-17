@@ -1,0 +1,46 @@
+{
+    "private": true,
+    "scripts": {
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "axios": "^0.21.1",
+        "cross-env": "^7.0",
+        "laravel-mix": "^6.0.31",
+        "lodash": "^4.17.19",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^1.39.0",
+        "sass-loader": "^8.0.0"
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.10.1",
+        "@vue/compiler-sfc": "^3.2.12",
+        "@zxing/library": "^0.18.6",
+        "bootstrap": "^5.1.1",
+        "chart.js": "^3.6.0",
+        "jquery": "^3.6.0",
+        "jsbarcode": "^3.11.5",
+        "jspdf": "^2.3.1",
+        "moment": "^2.29.1",
+        "popper.js": "^1.16.1",
+        "postcss": "^8.3.6",
+        "primeflex": "^2.0.0",
+        "primeicons": "^4.1.0",
+        "primevue": "^3.7.2",
+        "qrcode": "^1.4.4",
+        "qrcode.vue": "^3.3.0",
+        "uninstall": "^0.0.0",
+        "v-calendar": "^3.0.0-alpha.5",
+        "vue": "^3.2.12",
+        "vue-axios": "^3.3.7",
+        "vue-barcode-reader": "git+https://github.com/Zubaj/vue-barcode-reader.git",
+        "vue-chartjs-exporter": "^1.0.2",
+        "vue-loader": "^16.5.0",
+        "vue-router": "^4.0.11",
+        "vue-template-compiler": "^2.6.14"
+    }
+}
