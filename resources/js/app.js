@@ -15,6 +15,7 @@ import axios from 'axios';
 import Button from 'primevue/button';
 import Calendar from 'primevue/calendar';
 import Chart from 'primevue/chart';
+import ColorPicker from 'primevue/colorpicker';
 import Column from 'primevue/column';
 import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
@@ -63,6 +64,7 @@ router.beforeEach(function(to,from,next) {
 app.component('Button',Button);
 app.component('Calendar',Calendar);
 app.component('Chart',Chart);
+app.component('ColorPicker',ColorPicker);
 app.component('ConfirmDialog', ConfirmDialog);
 app.component('Column',Column);
 app.component('DataTable',DataTable);

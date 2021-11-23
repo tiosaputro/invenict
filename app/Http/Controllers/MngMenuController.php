@@ -22,7 +22,8 @@ class MngMenuController extends Controller
     public function getMenuUser(Request $request)
     {
         $menuu = $request->all();
-            $menu = Mng_menu::select('menu_display as label','controller as to')->whereIn('menu_id',$menuu)->orderBy('label','ASC')->get();
+            $menu = Mng_menu::select('parent_id','menu_display as label','controller as to')
+            ->whereIn('menu_id',$menuu)->orderBy('label','ASC')->get();
             return response()->json($menu);
     }
     Public function getParent()

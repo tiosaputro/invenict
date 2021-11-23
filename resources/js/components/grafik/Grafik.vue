@@ -1,6 +1,10 @@
 <template>
 <Toast />
 <div class="card">
+<ColorPicker v-model="color" :inline="true" @click="ifChangeColor()" />
+</div>
+
+<div class="card">
     <div class="p-text-left">
         <Button class="p-button-lg p-button-rounded p-button-danger" @click="printperStatus()" icon="pi pi-print" label="PDF"/>
     </div>
@@ -96,6 +100,7 @@ import Exporter from "vue-chartjs-exporter";
 export default {
     data() {
         return {
+            color: '1976D2',
             token: localStorage.getItem('token'),
             perStatus:{},
             perDivisiUserTahun: {},
@@ -137,6 +142,14 @@ export default {
         this.getPersonnel();
     },
     methods: {
+        ifChangeColor(){
+            this.getStatusPerIctPersonnel();
+            this.getPerStatus();
+            this.getPerDivisiUserTahun();
+            this.getPerDivisiRequestorTahun();
+            this.getPerDivisiUserBulan();
+            this.getPerDivisiRequestorBulan();
+        },
         printPerDivisiUserTahun(){
             let bar = document.getElementById("perDivisiUserTahun");
             const exp = new Exporter([bar]);
@@ -238,7 +251,7 @@ export default {
                     datasets : [
                         {
                             label: 'Data Request Per Status',
-                            backgroundColor: '#42A5F5',
+                            backgroundColor: '#'+this.color,
                             data: response.data.map((x)=>x.jumlah)
                         },
                     ]
@@ -253,7 +266,7 @@ export default {
                         datasets : [
                             {
                                 label:this.tahunUser ,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -270,7 +283,7 @@ export default {
                         datasets : [
                             {
                                 label:this.tahunRequestor ,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -290,7 +303,7 @@ export default {
                         datasets : [
                             {
                                 label: this.nameBulanUser,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -310,7 +323,7 @@ export default {
                         datasets : [
                             {
                                 label: response.data[0].bulan + this.tahunnRequestor,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -327,7 +340,7 @@ export default {
                         datasets : [
                             {
                                 label: response.data[0].name,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -344,7 +357,7 @@ export default {
                         datasets : [
                             {
                                 label: response.data[0].name,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -359,7 +372,7 @@ export default {
                         datasets : [
                             {
                                 label:'ICT Personnel',
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]
@@ -379,7 +392,7 @@ export default {
                         datasets : [
                             {
                                 label: this.ictPersonnel,
-                                backgroundColor: '#42A5F5',
+                                backgroundColor: '#'+this.color,
                                 data: response.data.map((x)=>x.jumlah)
                             },
                         ]

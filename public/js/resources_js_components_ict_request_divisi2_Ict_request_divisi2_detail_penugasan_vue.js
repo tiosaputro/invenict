@@ -80,35 +80,6 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this2.kode = response.data;
       });
-    },
-    DeleteIct: function DeleteIct(ireqd_id) {
-      var _this3 = this;
-
-      this.$confirm.require({
-        message: "Data ini benar-benar akan dihapus?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: function accept() {
-          _this3.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Record deleted",
-            life: 3000
-          });
-
-          _this3.axios["delete"]('/api/delete-ict-detail/' + ireqd_id, {
-            headers: {
-              'Authorization': 'Bearer ' + _this3.token
-            }
-          });
-
-          _this3.getIctDetail();
-        },
-        reject: function reject() {}
-      });
     }
   }
 });

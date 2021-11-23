@@ -108,27 +108,6 @@ export default {
         this.kode = response.data;
       });
     },
-    DeleteIct(ireqd_id){
-       this.$confirm.require({
-        message: "Data ini benar-benar akan dihapus?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: () => {
-          this.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Record deleted",
-            life: 3000,
-          });
-          this.axios.delete('/api/delete-ict-detail/' +ireqd_id, {headers: {'Authorization': 'Bearer '+this.token}});
-        this.getIctDetail();
-        },
-        reject: () => {},
-      });
-    },
   },
 };
 </script>

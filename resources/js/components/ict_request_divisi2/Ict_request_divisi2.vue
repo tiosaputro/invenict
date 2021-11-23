@@ -174,22 +174,6 @@
                   <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_assigned_to" header="Petugas(ICT)" :sortable="true" style="min-width:8rem"/>
-                  <Column style="min-width:12rem">
-                    <template #body="slotProps">
-                       <Button
-                        class="p-button-raised p-button-text p-mr-2 p-mb-2"
-                        label="Closing Per-Request"
-                        @click="ClosingPerRequest(slotProps.data.ireq_id)"
-                      />
-                      <Button
-                        class="p-button-raised p-button-text p-mr-2 p-mb-2"
-                        label="Closing Per-Detail"
-                        @click="$router.push({
-                            name: 'Ict Request Divisi 2 Closing Per-Detail',
-                            params: { code: slotProps.data.ireq_id }, })"
-                      />
-                    </template>
-                  </Column>
                 </DataTable>  
                 </TabPanel>
                 <TabPanel header="Selesai">

@@ -16,6 +16,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      color: '1976D2',
       token: localStorage.getItem('token'),
       perStatus: {},
       perDivisiUserTahun: {},
@@ -57,6 +58,14 @@ __webpack_require__.r(__webpack_exports__);
     this.getPersonnel();
   },
   methods: {
+    ifChangeColor: function ifChangeColor() {
+      this.getStatusPerIctPersonnel();
+      this.getPerStatus();
+      this.getPerDivisiUserTahun();
+      this.getPerDivisiRequestorTahun();
+      this.getPerDivisiUserBulan();
+      this.getPerDivisiRequestorBulan();
+    },
     printPerDivisiUserTahun: function printPerDivisiUserTahun() {
       var _this = this;
 
@@ -211,7 +220,7 @@ __webpack_require__.r(__webpack_exports__);
           }),
           datasets: [{
             label: 'Data Request Per Status',
-            backgroundColor: '#42A5F5',
+            backgroundColor: '#' + _this13.color,
             data: response.data.map(function (x) {
               return x.jumlah;
             })
@@ -234,7 +243,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: _this14.tahunUser,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this14.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -258,7 +267,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: _this15.tahunRequestor,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this15.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -284,7 +293,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: _this16.nameBulanUser,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this16.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -312,7 +321,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: response.data[0].bulan + _this17.tahunnRequestor,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this17.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -339,7 +348,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: response.data[0].name,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this18.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -364,7 +373,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: response.data[0].name,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this19.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -387,7 +396,7 @@ __webpack_require__.r(__webpack_exports__);
           }),
           datasets: [{
             label: 'ICT Personnel',
-            backgroundColor: '#42A5F5',
+            backgroundColor: '#' + _this20.color,
             data: response.data.map(function (x) {
               return x.jumlah;
             })
@@ -421,7 +430,7 @@ __webpack_require__.r(__webpack_exports__);
             }),
             datasets: [{
               label: _this22.ictPersonnel,
-              backgroundColor: '#42A5F5',
+              backgroundColor: '#' + _this22.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -452,14 +461,17 @@ var _hoisted_1 = {
   "class": "card"
 };
 var _hoisted_2 = {
-  "class": "p-text-left"
+  "class": "card"
 };
 var _hoisted_3 = {
+  "class": "p-text-left"
+};
+var _hoisted_4 = {
   "class": "p-text-center",
   id: "perStatus"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -468,18 +480,18 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_5 = {
+var _hoisted_6 = {
   "class": "card"
 };
-var _hoisted_6 = {
+var _hoisted_7 = {
   "class": "p-text-left"
 };
-var _hoisted_7 = {
+var _hoisted_8 = {
   "class": "p-text-center",
   id: "perDivisiUserTahun"
 };
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -488,18 +500,18 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_9 = {
+var _hoisted_10 = {
   "class": "card"
 };
-var _hoisted_10 = {
+var _hoisted_11 = {
   "class": "p-text-left"
 };
-var _hoisted_11 = {
+var _hoisted_12 = {
   "class": "p-text-center",
   id: "perDivisiRequestorTahun"
 };
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -508,18 +520,18 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_13 = {
+var _hoisted_14 = {
   "class": "card"
 };
-var _hoisted_14 = {
+var _hoisted_15 = {
   "class": "p-text-left"
 };
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "p-text-center",
   id: "perDivisiUserBulan"
 };
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -528,18 +540,18 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_17 = {
+var _hoisted_18 = {
   "class": "card"
 };
-var _hoisted_18 = {
+var _hoisted_19 = {
   "class": "p-text-left"
 };
-var _hoisted_19 = {
+var _hoisted_20 = {
   "class": "p-text-center",
   id: "perDivisiRequestorBulan"
 };
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -548,18 +560,18 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_21 = {
+var _hoisted_22 = {
   "class": "card"
 };
-var _hoisted_22 = {
+var _hoisted_23 = {
   "class": "p-text-left"
 };
-var _hoisted_23 = {
+var _hoisted_24 = {
   "class": "p-text-center",
   id: "statusPerDivisiUser"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -568,18 +580,18 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_25 = {
+var _hoisted_26 = {
   "class": "card"
 };
-var _hoisted_26 = {
+var _hoisted_27 = {
   "class": "p-text-left"
 };
-var _hoisted_27 = {
+var _hoisted_28 = {
   "class": "p-text-center",
   id: "statusPerDivisiRequestor"
 };
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -588,18 +600,18 @@ var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_29 = {
+var _hoisted_30 = {
   "class": "card"
 };
-var _hoisted_30 = {
+var _hoisted_31 = {
   "class": "p-text-left"
 };
-var _hoisted_31 = {
+var _hoisted_32 = {
   "class": "p-text-center",
   id: "statusPerIctPersonnel"
 };
 
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -608,18 +620,18 @@ var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_33 = {
+var _hoisted_34 = {
   "class": "card"
 };
-var _hoisted_34 = {
+var _hoisted_35 = {
   "class": "p-text-left"
 };
-var _hoisted_35 = {
+var _hoisted_36 = {
   "class": "p-text-center",
   id: "PerStatusIct"
 };
 
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   style: {
     "font-size": "20pt",
     "font-weight": "bold"
@@ -631,39 +643,52 @@ var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Toast = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toast");
 
+  var _component_ColorPicker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ColorPicker");
+
   var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
 
   var _component_Chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Chart");
 
   var _component_Dropdown = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Dropdown");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ColorPicker, {
+    modelValue: $data.color,
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.color = $event;
+    }),
+    inline: true,
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.ifChangeColor();
+    })
+  }, null, 8
+  /* PROPS */
+  , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[0] || (_cache[0] = function ($event) {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.printperStatus();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Chart, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Chart, {
     type: "bar",
     data: $data.perStatus
   }, null, 8
   /* PROPS */
-  , ["data"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [this.tahunUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [this.tahunUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
+    onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.printPerDivisiUserTahun();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[2] || (_cache[2] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[4] || (_cache[4] = function ($event) {
       return $options.getPerDivisiUserTahun();
     }),
     showClear: true,
     modelValue: $data.tahunUser,
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.tahunUser = $event;
     }),
     options: $data.tahunn,
@@ -678,21 +703,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.perDivisiUserTahun
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [this.tahunRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [this.tahunRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
+    onClick: _cache[6] || (_cache[6] = function ($event) {
       return $options.printperDivisiRequestorTahun();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[5] || (_cache[5] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[7] || (_cache[7] = function ($event) {
       return $options.getPerDivisiRequestorTahun();
     }),
     showClear: true,
     modelValue: $data.tahunRequestor,
-    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.tahunRequestor = $event;
     }),
     options: $data.tahunn,
@@ -707,21 +732,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.perDivisiRequestorTahun
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [this.tahunnUser && this.bulanUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [this.tahunnUser && this.bulanUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[7] || (_cache[7] = function ($event) {
+    onClick: _cache[9] || (_cache[9] = function ($event) {
       return $options.printperDivisiUserBulan();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[8] || (_cache[8] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[10] || (_cache[10] = function ($event) {
       return $options.getTahunUser();
     }),
     showClear: true,
     modelValue: $data.bulanUser,
-    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
       return $data.bulanUser = $event;
     }),
     options: $data.bulan,
@@ -733,12 +758,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["modelValue", "options"]), this.bulanUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Dropdown, {
     key: 0,
-    onChange: _cache[10] || (_cache[10] = function ($event) {
+    onChange: _cache[12] || (_cache[12] = function ($event) {
       return $options.getPerDivisiUserBulan();
     }),
     showClear: true,
     modelValue: $data.tahunnUser,
-    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
       return $data.tahunnUser = $event;
     }),
     options: $data.tahunnn,
@@ -754,21 +779,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.perDivisiUserBulan
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [this.tahunnRequestor && this.bulanRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [this.tahunnRequestor && this.bulanRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[12] || (_cache[12] = function ($event) {
+    onClick: _cache[14] || (_cache[14] = function ($event) {
       return $options.printperDivisiRequestorBulan();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[13] || (_cache[13] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[15] || (_cache[15] = function ($event) {
       return $options.getTahunRequestor();
     }),
     showClear: true,
     modelValue: $data.bulanRequestor,
-    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
       return $data.bulanRequestor = $event;
     }),
     options: $data.bulan,
@@ -780,12 +805,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["modelValue", "options"]), this.bulanRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Dropdown, {
     key: 0,
-    onChange: _cache[15] || (_cache[15] = function ($event) {
+    onChange: _cache[17] || (_cache[17] = function ($event) {
       return $options.getPerDivisiRequestorBulan();
     }),
     showClear: true,
     modelValue: $data.tahunnRequestor,
-    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+    "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
       return $data.tahunnRequestor = $event;
     }),
     options: $data.tahunnnn,
@@ -801,21 +826,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.perDivisiRequestorBulan
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [this.statusUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [this.statusUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[17] || (_cache[17] = function ($event) {
+    onClick: _cache[19] || (_cache[19] = function ($event) {
       return $options.printstatusPerDivisiUser();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[18] || (_cache[18] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[20] || (_cache[20] = function ($event) {
       return $options.getStatusDivisiUser();
     }),
     showClear: true,
     modelValue: $data.statusUser,
-    "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
+    "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
       return $data.statusUser = $event;
     }),
     options: $data.status,
@@ -830,21 +855,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.statusPerDivisiUser
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [this.statusRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [this.statusRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[20] || (_cache[20] = function ($event) {
+    onClick: _cache[22] || (_cache[22] = function ($event) {
       return $options.printstatusPerDivisiRequestor();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[21] || (_cache[21] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [_hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[23] || (_cache[23] = function ($event) {
       return $options.getStatusDivisiRequestor();
     }),
     showClear: true,
     modelValue: $data.statusRequestor,
-    "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
+    "onUpdate:modelValue": _cache[24] || (_cache[24] = function ($event) {
       return $data.statusRequestor = $event;
     }),
     options: $data.status,
@@ -859,33 +884,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.statusPerDivisiRequestor
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[23] || (_cache[23] = function ($event) {
+    onClick: _cache[25] || (_cache[25] = function ($event) {
       return $options.printstatusPerIctPersonnel();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Chart, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Chart, {
     type: "bar",
     data: $data.statusPerIctPersonnel
   }, null, 8
   /* PROPS */
-  , ["data"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [this.ictPersonnel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  , ["data"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [this.ictPersonnel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
-    onClick: _cache[24] || (_cache[24] = function ($event) {
+    onClick: _cache[26] || (_cache[26] = function ($event) {
       return $options.printPerStatusIct();
     }),
     icon: "pi pi-print",
     label: "PDF"
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
-    onChange: _cache[25] || (_cache[25] = function ($event) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+    onChange: _cache[27] || (_cache[27] = function ($event) {
       return $options.getPerStatusIct();
     }),
     showClear: true,
     modelValue: $data.ictPersonnel,
-    "onUpdate:modelValue": _cache[26] || (_cache[26] = function ($event) {
+    "onUpdate:modelValue": _cache[28] || (_cache[28] = function ($event) {
       return $data.ictPersonnel = $event;
     }),
     options: $data.personnel,

@@ -7,6 +7,69 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function countBlmVerifikasi($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->where('ireq_status','P')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
+    public function countSudahVerifikasi($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->where('ireq_status','A')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
+    public function countSedangDikerjakan($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->where('ireq_status','T')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
+    public function countSudahDikerjakan($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->where('ireq_status','D')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
+    public function countSelesai($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->where('ireq_status','C')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
+    public function countReject($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->where('ireq_status','R')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
+    public function countRequest($usr_name)
+    {
+        $grafik = DB::table('ireq_mst')
+        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->whereNotNull('ireq_status')
+        ->where('created_by',$usr_name)
+        ->pluck('count');
+        return response()->json($grafik);
+    }
     public function getStatus()
     {
         $grafik = DB::table('VREQ_MST_STATUS')->get();

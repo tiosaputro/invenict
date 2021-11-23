@@ -729,38 +729,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 style: {
                   "min-width": "8rem"
                 }
-              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
-                style: {
-                  "min-width": "12rem"
-                }
-              }, {
-                body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
-                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-                    "class": "p-button-raised p-button-text p-mr-2 p-mb-2",
-                    label: "Closing Per-Request",
-                    onClick: function onClick($event) {
-                      return $options.ClosingPerRequest(slotProps.data.ireq_id);
-                    }
-                  }, null, 8
-                  /* PROPS */
-                  , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-                    "class": "p-button-raised p-button-text p-mr-2 p-mb-2",
-                    label: "Closing Per-Detail",
-                    onClick: function onClick($event) {
-                      return _ctx.$router.push({
-                        name: 'Ict Request Divisi 2 Closing Per-Detail',
-                        params: {
-                          code: slotProps.data.ireq_id
-                        }
-                      });
-                    }
-                  }, null, 8
-                  /* PROPS */
-                  , ["onClick"])];
-                }),
-                _: 1
-                /* STABLE */
-
               })];
             }),
             _: 1

@@ -487,6 +487,7 @@ class IctController extends Controller
         $newUpdate = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
         $ict = Ict::where('ireq_id',$ireq_id)->first();
         $ict->ireq_status = 'T';
+        $ict->ireq_verificator = Auth::user()->usr_name;
         $ict->last_update_date = $newUpdate;
         $ict->last_updated_by = Auth::user()->usr_name;
         $ict->program_name = "IctController_updateStatusPenugasan";

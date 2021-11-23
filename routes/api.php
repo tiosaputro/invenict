@@ -150,6 +150,14 @@ Route::middleware(['auth:sanctum','admin'])->group(function(){
     Route::delete('/delete-menu/{menu_id}','MngMenuController@delete');
 
     //dashboard
+    Route::get('/getCountBlmVerifikasi/{usr_name}','DashboardController@countBlmVerifikasi');
+    Route::get('/getCountSudahVerifikasi/{usr_name}','DashboardController@countSudahVerifikasi');
+    Route::get('/getCountSedangDikerjakan/{usr_name}','DashboardController@countSedangDikerjakan');
+    Route::get('/getCountSudahDikerjakan/{usr_name}','DashboardController@countSudahDikerjakan');
+    Route::get('/getCountSelesai/{usr_name}','DashboardController@countSelesai');
+    Route::get('/getCountReject/{usr_name}','DashboardController@countReject');
+    Route::get('/getCountRequest/{usr_name}','DashboardController@countRequest');
+    //grafik
     Route::get('/status-per-divisi','DashboardController@countPerStatusPerDivisi');
     Route::get('/count-per-status','DashboardController@countPerStatus');
     Route::get('/get-tahun','DashboardController@getTahun');

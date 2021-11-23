@@ -8,7 +8,7 @@ const routes = [
     },
     {
         name: 'Dashboard',
-        path: '/Dashboard',
+        path: '/dashboard',
         component: () => import('./components/Dashboard.vue'),
     },
     //lookup
@@ -155,11 +155,6 @@ const routes = [
         path: '/ict-request-divisi2-assign-per-detail/:code',
         component: ()=> import('./components/ict_request_divisi2/Ict_request_divisi2_assign_per_detail.vue'),
     },
-    {
-        name: 'Ict Request Divisi 2 Closing Per-Detail',
-        path: '/ict-request-divisi2-closing-per-detail/:code',
-        component: ()=> import('./components/ict_request_divisi2/Ict_request_divisi2_closing_per_detail.vue'),
-    },
     //ict_request_divisi3
     {
         name: 'Ict Request Divisi 3',
@@ -304,6 +299,27 @@ const routes = [
         name: 'Grafik',
         path: '/grafik',
         component: ()=> import('./components/grafik/Grafik.vue'),
+    },
+    //ict_request_divisi4
+     {
+        name: 'Ict Request Divisi 4',
+        path: '/ict-request-divisi4',
+        component: ()=> import('./components/ict_request_divisi4/Ict_request_divisi4.vue'),
+    },
+    {
+        name: 'Ict Request Divisi 4 Detail',
+        path: '/ict-request-divisi4-detail/:code',
+        component: ()=> import('./components/ict_request_divisi4/Ict_request_divisi4_detail.vue'),
+    },
+    {
+        name: 'Ict Request Divisi 4 Closing Per-Detail',
+        path: '/ict-request-divisi4-closing-per-detail/:code',
+        component: ()=> import('./components/ict_request_divisi4/Ict_request_divisi4_closing_per_detail.vue'),
+    },
+    {
+        name: 'Ict Request Divisi 4 Detaill',
+        path: '/ict-request-divisi4-detaill/:code',
+        component: ()=> import('./components/ict_request_divisi4/Ict_request_divisi4_detail_penugasan.vue'),
     },
 ];
 const router = createRouter({

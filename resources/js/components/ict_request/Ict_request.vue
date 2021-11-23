@@ -13,7 +13,7 @@
                     </div>
                   </template>
                 </Toolbar>
-            <TabView ref="tabview1">
+            <TabView ref="tabView2">
               <TabPanel header="Permohonan">
                 <DataTable
                   :value="ict"
