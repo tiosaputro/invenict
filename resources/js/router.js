@@ -11,6 +11,21 @@ const routes = [
         path: '/dashboard',
         component: () => import('./components/Dashboard.vue'),
     },
+    {
+        name: 'Dashboard-1',
+        path: '/dashboard1',
+        component: () => import('./components/Dashboard1.vue'),
+    },
+    {
+        name: 'Dashboard-2',
+        path: '/dashboard2',
+        component: () => import('./components/Dashboard2.vue'),
+    },
+    {
+        name: 'Dashboard-3',
+        path: '/dashboard3',
+        component: () => import('./components/Dashboard3.vue'),
+    },
     //lookup
     {
         name: 'Referensi Lookups',

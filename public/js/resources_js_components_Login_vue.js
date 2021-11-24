@@ -33,7 +33,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loggedIn = localStorage.getItem("loggedIn");
 
       if (this.loggedIn) {
-        this.$router.push('/Dashboard');
+        this.$router.push('/dashboard');
       }
     },
     Login: function Login() {
@@ -59,8 +59,9 @@ __webpack_require__.r(__webpack_exports__);
             localStorage.setItem("loggedIn", "true");
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("id", response.data.id);
+            localStorage.setItem("usr_name", response.data.usr_name);
             setTimeout(function () {
-              return _this.$router.push('/Dashboard');
+              return _this.$router.push('/');
             }, 1000);
           })["catch"](function (error) {
             if (error.response.status == 422) {

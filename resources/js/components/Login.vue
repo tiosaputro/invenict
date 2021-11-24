@@ -84,7 +84,7 @@ export default {
       this.Expired = localStorage.getItem("Expired");
       this.loggedIn = localStorage.getItem("loggedIn");
       if(this.loggedIn){
-        this.$router.push('/Dashboard')
+        this.$router.push('/dashboard')
       }
       },
     Login() {
@@ -111,7 +111,8 @@ export default {
               localStorage.setItem("loggedIn", "true");
               localStorage.setItem("token", response.data.token);
               localStorage.setItem("id", response.data.id);
-              setTimeout( () => this.$router.push('/Dashboard'), 1000);
+              localStorage.setItem("usr_name", response.data.usr_name);
+              setTimeout( () => this.$router.push('/'), 1000);
             }).catch(error=> {
                if (error.response.status == 422) {
                    this.errors = error.response.data;

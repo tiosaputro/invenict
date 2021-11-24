@@ -26,7 +26,7 @@ __webpack_require__.r(__webpack_exports__);
       selesai: [],
       verif: [],
       reject: [],
-      user: [],
+      usr_name: localStorage.getItem('usr_name'),
       filters: {
         'global': {
           value: null,
@@ -37,56 +37,37 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getUser();
+    this.getPermohonan();
   },
   methods: {
-    getUser: function getUser() {
+    getPermohonan: function getPermohonan() {
       var _this = this;
 
-      this.axios.get('/api/user', {
+      this.axios.get('/api/get-permohonan/' + this.usr_name, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.user = response.data;
-
-        _this.getPermohonan();
-      });
-    },
-    getPermohonan: function getPermohonan() {
-      var _this2 = this;
-
-      this.axios.get('/api/get-permohonan/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this2.permohonan = response.data;
-
-        _this2.getVerif();
-
-        _this2.getReject();
-
-        _this2.getSedangDikerjakan();
-
-        _this2.getSudahDikerjakan();
-
-        _this2.getSelesai();
-
-        _this2.loading = false;
+        _this.permohonan = response.data.ict;
+        _this.verif = response.data.ict1;
+        _this.reject = response.data.ict2;
+        _this.sedangDikerjakan = response.data.ict3;
+        _this.sudahDikerjakan = response.data.ict4;
+        _this.selesai = response.data.ict5;
+        _this.loading = false;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -95,97 +76,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this.$router.push('/login');
           }, 2000);
         }
       });
     },
-    getVerif: function getVerif() {
-      var _this3 = this;
-
-      this.axios.get('api/get-verifikasii/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this3.verif = response.data;
-      });
-    },
-    getReject: function getReject() {
-      var _this4 = this;
-
-      this.axios.get('api/get-rejectt/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this4.reject = response.data;
-      });
-    },
-    getSedangDikerjakan: function getSedangDikerjakan() {
-      var _this5 = this;
-
-      this.axios.get('api/get-sedang-dikerjakann/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this5.sedangDikerjakan = response.data;
-      });
-    },
-    getSudahDikerjakan: function getSudahDikerjakan() {
-      var _this6 = this;
-
-      this.axios.get('api/get-sudah-dikerjakann/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this6.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai: function getSelesai() {
-      var _this7 = this;
-
-      this.axios.get('api/get-selesaii/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this7.selesai = response.data;
-      });
-    },
     formatDate: function formatDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("DD MMM YYYY");
-    },
-    DeleteIct: function DeleteIct(ireq_id) {
-      var _this8 = this;
-
-      this.$confirm.require({
-        message: "Data ini benar-benar akan dihapus?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: function accept() {
-          _this8.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Record deleted",
-            life: 3000
-          });
-
-          _this8.axios["delete"]('api/delete-ict/' + ireq_id, {
-            headers: {
-              'Authorization': 'Bearer ' + _this8.token
-            }
-          });
-
-          _this8.getIct();
-        },
-        reject: function reject() {}
-      });
     }
   }
 });

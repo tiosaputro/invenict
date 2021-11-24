@@ -34,57 +34,43 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','dr.div_name')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getVerifikasi($usr_name)
-    {
-        $ict = DB::table('ireq_mst')
+
+        $ict1 = DB::table('ireq_mst')
         ->select('ireq_id','ireq_no','ireq_date','ireq_user')
         ->where('created_by',$usr_name)
         ->where('ireq_status','A')
         ->orderBy('creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getReject($usr_name)
-    {
-        $ict = DB::table('ireq_mst')
+
+        $ict2 = DB::table('ireq_mst')
         ->select('ireq_id','ireq_no','ireq_date','ireq_user','ireq_reason')
         ->where('created_by',$usr_name)
         ->where('ireq_status','R')
         ->orderBy('creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getSedangDikerjakan($usr_name)
-    {
-        $ict = DB::table('ireq_mst')
+
+        $ict3 = DB::table('ireq_mst')
         ->select('ireq_id','ireq_no','ireq_date','ireq_user')
         ->where('created_by',$usr_name)
         ->where('ireq_status','T')
         ->orderBy('creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getSudahDikerjakan($usr_name)
-    {
-        $ict = DB::table('ireq_mst')
+
+        $ict4 = DB::table('ireq_mst')
         ->select('ireq_id','ireq_no','ireq_date','ireq_user')
         ->where('created_by',$usr_name)
         ->where('ireq_status','D')
         ->orderBy('creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getSelesai($usr_name)
-    {
-        $ict = DB::table('ireq_mst')
+
+        $ict5 = DB::table('ireq_mst')
         ->select('ireq_id','ireq_no','ireq_date','ireq_user')
         ->where('created_by',$usr_name)
         ->where('ireq_status','C')
         ->orderBy('creation_date','ASC')
         ->get();
-        return response()->json($ict);
+
+        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5],200);
     }
     Public function getPermohonan($usr_name)
     {
@@ -96,11 +82,8 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','im.ireq_requestor')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getVerifikasii($usr_name)
-    {
-        $ict = DB::table('ireq_mst as im')
+        
+        $ict1 = DB::table('ireq_mst as im')
         ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.ireq_requestor')
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->where('dr.div_verificator',$usr_name)
@@ -108,11 +91,8 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','im.ireq_requestor')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getRejectt($usr_name)
-    {
-        $ict = DB::table('ireq_mst as im')
+
+        $ict2 = DB::table('ireq_mst as im')
         ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.ireq_requestor','im.ireq_reason')
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->where('dr.div_verificator',$usr_name)
@@ -120,11 +100,8 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','im.ireq_requestor','im.ireq_reason')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getSedangDikerjakann($usr_name)
-    {
-        $ict = DB::table('ireq_mst as im')
+
+        $ict3 = DB::table('ireq_mst as im')
         ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.ireq_requestor')
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->where('dr.div_verificator',$usr_name)
@@ -132,11 +109,8 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','im.ireq_requestor')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getSudahDikerjakann($usr_name)
-    {
-        $ict = DB::table('ireq_mst as im')
+        
+        $ict4 = DB::table('ireq_mst as im')
         ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.ireq_requestor')
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->where('dr.div_verificator',$usr_name)
@@ -144,11 +118,8 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','im.ireq_requestor')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
-    }
-    Public function getSelesaii($usr_name)
-    {
-        $ict = DB::table('ireq_mst as im')
+
+        $ict5 = DB::table('ireq_mst as im')
         ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.ireq_requestor')
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->where('dr.div_verificator',$usr_name)
@@ -156,29 +127,18 @@ class IctController extends Controller
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','im.ireq_requestor')
         ->orderBy('im.creation_date','ASC')
         ->get();
-        return response()->json($ict);
+
+        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5]);
     }
     Public function getPermohonanDivisi()
     {
         $ict = DB::Table('v_ireq_mst_permohonan_divisi')->get();
-        return $ict->toJson();
+        $ict1 = DB::Table('v_ireq_mst_sedang_dikerjakan')->get();
+        $ict2 = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
+        $ict3 = DB::Table('v_ireq_mst_selesai')->get();
+        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3]);
     }
-    Public function getSedangDikerjakannn()
-    {
-        $ict = DB::Table('v_ireq_mst_sedang_dikerjakan')->get();
-        return $ict->toJson();
-    }
-    Public function getSudahDikerjakannn()
-    {
-        $ict = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
-        return $ict->toJson();
-    }
-    Public function getSelesaiii()
-    {
-        $ict = DB::Table('v_ireq_mst_selesai')->get();
-        return $ict->toJson();
-    }
-    Public function getSedangDikerjakannnn($usr_fullname)
+    Public function getSedangDikerjakan($usr_fullname)
     {
         $ict = DB::table('ireq_mst as im')
         ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_requestor','im.ireq_user','im.ireq_status','im.ireq_assigned_to')
@@ -187,17 +147,16 @@ class IctController extends Controller
         ->where('idm.ireq_assigned_to',$usr_fullname)
         ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_requestor','im.ireq_user','im.ireq_status','im.ireq_assigned_to')
         ->get();
-        return $ict->toJson();
+
+        $ict1 = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
+        $ict2 = DB::Table('v_ireq_mst_selesai')->get();
+        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2]);
     }
-    Public function getSudahDikerjakannnn($usr_fullname)
+    public function ictDivisi4()
     {
         $ict = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
-        return $ict->toJson();
-    }
-    Public function getSelesaiiii($usr_fullname)
-    {
-        $ict = DB::Table('v_ireq_mst_selesai')->get();
-        return $ict->toJson();
+        $ict2 = DB::Table('v_ireq_mst_selesai')->get();
+        return response()->json(['ict'=>$ict,'ict2'=>$ict2]);
     }
     Public function save(Request $request)
     {

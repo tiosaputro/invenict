@@ -43,15 +43,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getData();
+    this.getPermohonan();
   },
   methods: {
-    getData: function getData() {
-      this.getPermohonan();
-      this.getSedangDikerjakan();
-      this.getSudahDikerjakan();
-      this.getSelesai();
-    },
     submit: function submit(ireq_id) {
       var _this = this;
 
@@ -77,8 +71,6 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           _this.getPermohonan();
-
-          _this.getSedangDikerjakan();
         },
         reject: function reject() {}
       });
@@ -134,60 +126,32 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogAssign = false;
       this.submitted = false;
     },
-    ClosingPerRequest: function ClosingPerRequest(ireq_id) {
-      var _this4 = this;
-
-      this.$confirm.require({
-        message: "Closing Permohonan Dilanjutkan?",
-        header: "Closing Per Request",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: function accept() {
-          _this4.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Berhasil Diclosing",
-            life: 3000
-          });
-
-          _this4.axios.get('api/updateStatusClosing/' + ireq_id, {
-            headers: {
-              'Authorization': 'Bearer ' + _this4.token
-            }
-          });
-
-          _this4.getSudahDikerjakan();
-
-          _this4.getSelesai();
-        },
-        reject: function reject() {}
-      });
-    },
     getPermohonan: function getPermohonan() {
-      var _this5 = this;
+      var _this4 = this;
 
       this.axios.get('api/get-permohonan-divisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this5.permohonan = response.data;
-        _this5.loading = false;
+        _this4.permohonan = response.data.ict;
+        _this4.sedangDikerjakan = response.data.ict1;
+        _this4.sudahDikerjakan = response.data.ict2;
+        _this4.selesai = response.data.ict3;
+        _this4.loading = false;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this5.$toast.add({
+          _this4.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this5.$router.push('/Dashboard');
+            return _this4.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this5.$toast.add({
+          _this4.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -196,42 +160,9 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this5.$router.push('/login');
+            return _this4.$router.push('/login');
           }, 2000);
         }
-      });
-    },
-    getSedangDikerjakan: function getSedangDikerjakan() {
-      var _this6 = this;
-
-      this.axios.get('api/get-sedang-dikerjakannn', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this6.sedangDikerjakan = response.data;
-      });
-    },
-    getSudahDikerjakan: function getSudahDikerjakan() {
-      var _this7 = this;
-
-      this.axios.get('api/get-sudah-dikerjakannn', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this7.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai: function getSelesai() {
-      var _this8 = this;
-
-      this.axios.get('api/get-selesaiii', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this8.selesai = response.data;
       });
     },
     formatDate: function formatDate(date) {
@@ -693,6 +624,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "ireqd_id",
+                header: "No. Detail",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "invent_code",
+                header: "Nama Peripheral",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_date",
                 header: "Tgl.Request",
                 sortable: true,
@@ -780,14 +725,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 header: "No. Request",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "ireqd_id",
+                header: "No. Detail",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "invent_code",
+                header: "Nama Peripheral",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_date",
                 header: "Tgl.Request",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }, {
                 body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
@@ -803,14 +762,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 header: "Pemohon",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_user",
                 header: "Pengguna",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "ireq_assigned_to",
+                header: "Petugas(ICT)",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 style: {

@@ -5,17 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mng_role_menu;
 use App\Mng_roles;
+use App\Mng_menu;
 use Auth;
 Use carbon\Carbon;
 use DB;
 class MngRoleMenuController extends Controller
 {
-    public function getMenuId(Request $request)
-    {
-        $role = $request->all();
-            $rolemenu = Mng_role_menu::select('menu_id')->whereIn('rol_id',$role)->pluck('menu_id');
-            return response()->json($rolemenu);
-    }
     public function save(Request $request)
     {
         $date = Carbon::now();

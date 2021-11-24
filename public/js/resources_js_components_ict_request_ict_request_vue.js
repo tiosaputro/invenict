@@ -33,59 +33,41 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       token: localStorage.getItem('token'),
-      user: []
+      usr_name: localStorage.getItem('usr_name')
     };
   },
   created: function created() {
-    this.getUser();
+    this.getIct();
   },
   methods: {
-    getUser: function getUser() {
+    getIct: function getIct() {
       var _this = this;
 
-      this.axios.get('api/user', {
+      this.axios.get('api/get-ict/' + this.usr_name, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.user = response.data;
-
-        _this.getIct();
-
-        _this.getVerif();
-
-        _this.getReject();
-
-        _this.getSedangDikerjakan();
-
-        _this.getSudahDikerjakan();
-
-        _this.getSelesai();
-      });
-    },
-    getIct: function getIct() {
-      var _this2 = this;
-
-      this.axios.get('/api/get-ict/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this2.ict = response.data;
-        _this2.loading = false;
+        _this.ict = response.data.ict;
+        _this.loading = false;
+        _this.verif = response.data.ict1;
+        _this.reject = response.data.ict2;
+        _this.sedangDikerjakan = response.data.ict3;
+        _this.sudahDikerjakan = response.data.ict4;
+        _this.selesai = response.data.ict5;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -94,71 +76,16 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this.$router.push('/login');
           }, 2000);
         }
-      });
-    },
-    getVerif: function getVerif() {
-      var _this3 = this;
-
-      this.axios.get('api/get-verifikasi/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this3.verif = response.data;
-      });
-    },
-    getReject: function getReject() {
-      var _this4 = this;
-
-      this.axios.get('api/get-reject/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this4.reject = response.data;
-      });
-    },
-    getSedangDikerjakan: function getSedangDikerjakan() {
-      var _this5 = this;
-
-      this.axios.get('api/get-sedang-dikerjakan/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this5.sedangDikerjakan = response.data;
-      });
-    },
-    getSudahDikerjakan: function getSudahDikerjakan() {
-      var _this6 = this;
-
-      this.axios.get('api/get-sudah-dikerjakan/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this6.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai: function getSelesai() {
-      var _this7 = this;
-
-      this.axios.get('api/get-selesai/' + this.user.usr_name, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this7.selesai = response.data;
       });
     },
     formatDate: function formatDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("DD MMM YYYY");
     },
     SubmitIct: function SubmitIct(ireq_id) {
-      var _this8 = this;
+      var _this2 = this;
 
       this.$confirm.require({
         message: "Apakah Anda Yakin Mensubmit?",
@@ -168,26 +95,26 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this8.$toast.add({
+          _this2.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Submit",
             life: 3000
           });
 
-          _this8.axios.get('api/updateStatusSubmit/' + ireq_id, {
+          _this2.axios.get('api/updateStatusSubmit/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this8.token
+              'Authorization': 'Bearer ' + _this2.token
             }
           });
 
-          _this8.getIct();
+          _this2.getIct();
         },
         reject: function reject() {}
       });
     },
     DeleteIct: function DeleteIct(ireq_id) {
-      var _this9 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -197,20 +124,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this9.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this9.axios["delete"]('api/delete-ict/' + ireq_id, {
+          _this3.axios["delete"]('api/delete-ict/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this9.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this9.getIct();
+          _this3.getIct();
         },
         reject: function reject() {}
       });
@@ -559,13 +486,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_user",
                 header: "Pengguna",
-                sortable: true,
-                style: {
-                  "min-width": "12rem"
-                }
-              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
-                field: "div_name",
-                header: "Divisi Pengguna",
                 sortable: true,
                 style: {
                   "min-width": "12rem"

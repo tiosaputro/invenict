@@ -14,109 +14,6 @@
                   </template>
                 </Toolbar>
             <TabView ref="tabview1">
-              <TabPanel header="Permohonan Divisi">
-                <DataTable
-                  :value="permohonan"
-                  :paginator="true"
-                  :rows="25"
-                  :loading="loading"
-                  :filters="filters"
-                  :rowHover="true"
-                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                  :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
-                  responsiveLayout="scroll"
-                >
-                <template #header>
-                    <div class="table-header p-text-right">
-                      <span class="p-input-icon-left">
-                        <i class="pi pi-search" />
-                        <InputText
-                          v-model="filters['global'].value"
-                          placeholder="Search. . ."
-                        />
-                      </span>
-                    </div>
-                  </template>
-                  <template #empty>
-                    Not Found
-                  </template>
-                  <template #loading>
-                    Loading ICT Request data. Please wait.
-                  </template>
-                  <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:8rem"/>
-                  <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:8rem">
-                    <template #body="slotProps">
-                      {{ formatDate(slotProps.data.ireq_date) }}
-                    </template>
-                  </Column>
-                  <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:8rem"/>
-                  <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:8rem"/>
-                  <Column field="ireq_assigned_to" header="Petugas(ICT)" :sortable="true" style="min-width:8rem"/>
-                  <Column style="min-width:12rem">
-                    <template #body="slotProps">
-                      <Button
-                        class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
-                        icon="pi pi-info-circle"
-                        @click="$router.push({
-                            name: 'Ict Request Divisi 4 Detail',
-                            params: { code: slotProps.data.ireq_id }, })"
-                      />
-                    </template>
-                  </Column>
-                </DataTable>   
-              </TabPanel>
-                <TabPanel header="Sedang Dikerjakan">
-                  <DataTable
-                    :value="sedangDikerjakan"
-                    :paginator="true"
-                    :rows="25"
-                    :loading="loading"
-                    :filters="filters"
-                    :rowHover="true"
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
-                    responsiveLayout="scroll"
-                 >
-                <template #header>
-                    <div class="table-header p-text-right">
-                      <span class="p-input-icon-left">
-                        <i class="pi pi-search" />
-                        <InputText
-                          v-model="filters['global'].value"
-                          placeholder="Search. . ."
-                        />
-                      </span>
-                    </div>
-                  </template>
-                  <template #empty>
-                    Not Found
-                  </template>
-                  <template #loading>
-                    Loading ICT Request data. Please wait.
-                  </template>
-                  <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
-                  <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
-                    <template #body="slotProps">
-                      {{ formatDate(slotProps.data.ireq_date) }}
-                    </template>
-                  </Column>
-                  <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:12rem"/>
-                  <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
-                  <Column style="min-width:12rem">
-                    <template #body="slotProps">
-                      <Button
-                        class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
-                        icon="pi pi-info-circle"
-                        @click="$router.push({
-                            name: 'Ict Request Divisi 4 Detaill',
-                            params: { code: slotProps.data.ireq_id }, })"
-                      />
-                    </template>
-                  </Column>
-                </DataTable>   
-                </TabPanel>
                 <TabPanel header="Sudah Dikerjakan">
                    <DataTable
                     :value="sudahDikerjakan"
@@ -148,14 +45,13 @@
                     Loading ICT Request data. Please wait.
                   </template>
                   <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:8rem"/>
+                  <Column field="ireqd_id" header="No. Detail" :sortable="true" style="min-width:8rem"/>
+                  <Column field="invent_code" header="Nama Peripheral" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:8rem">
                     <template #body="slotProps">
                       {{ formatDate(slotProps.data.ireq_date) }}
                     </template>
                   </Column>
-                  <Column field="ireqd_id" header="ID Detail" :sortable="true" style="min-width:8rem"/>
-                  <Column field="invent_code" header="Kode" :sortable="true" style="min-width:8rem"/>
-                  <Column field="invent_desc" header="Deskripsi" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_assigned_to" header="Petugas(ICT)" :sortable="true" style="min-width:8rem"/>
@@ -202,14 +98,17 @@
                   <template #loading>
                     Loading ICT Request data. Please wait.
                   </template>
-                  <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
-                  <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+                  <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:8rem"/>
+                  <Column field="ireqd_id" header="No. Detail" :sortable="true" style="min-width:8rem"/>
+                  <Column field="invent_code" header="Nama Peripheral" :sortable="true" style="min-width:8rem"/>
+                  <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:8rem">
                     <template #body="slotProps">
                       {{ formatDate(slotProps.data.ireq_date) }}
                     </template>
                   </Column>
-                  <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:12rem"/>
-                  <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+                  <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:8rem"/>
+                  <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:8rem"/>
+                  <Column field="ireq_assigned_to" header="Petugas(ICT)" :sortable="true" style="min-width:8rem"/>
                   <Column style="min-width:12rem">
                     <template #body="slotProps">
                       <Button
@@ -268,14 +167,12 @@ export default {
         loading: true,
         dialogAssign: false,
         submitted:false,
-        permohonan: [],
         assign:{
           id:null,
           name: null
           },
         petugas:[],
         verif: [],
-        sedangDikerjakan:[],
         sudahDikerjakan:[],
         selesai:[],
         reject:[],
@@ -284,10 +181,10 @@ export default {
     };
   },
   created() {
-    this.getData();
+    this.getSudahDikerjakan();
   },
   methods: {
-      ClosingPerDetail(ireqd_id,ireq_no){
+    ClosingPerDetail(ireqd_id,ireq_no){
         this.$confirm.require({
           message: "Closing Permohonan Dilanjutkan?",
           header: "Closing Per Detail",
@@ -308,13 +205,7 @@ export default {
           reject: () => {},
         });
       },
-      getData(){
-        this.getPermohonan();
-        this.getSedangDikerjakan();
-        this.getSudahDikerjakan();
-        this.getSelesai();
-      },
-      submit(ireq_id){
+    submit(ireq_id){
         this.$confirm.require({
         message: "Apakah Anda Yakin Ingin Mensubmit?",
         header: "ICT Request    ",
@@ -330,20 +221,19 @@ export default {
             life: 3000,
           });
           this.axios.get('api/updateStatusPenugasan/' +ireq_id, {headers: {'Authorization': 'Bearer '+this.token}});
-          this.getPermohonan();
           this.getSedangDikerjakan();
         },
         reject: () => {},
       });
       },
-      AssignPerRequest(ireq_id){
+    AssignPerRequest(ireq_id){
           this.assign.id = ireq_id;
           this.axios.get('api/get-pekerja', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
             this.petugas = response.data;
           });
           this.dialogAssign = true;
       },
-      updateAssign(){
+    updateAssign(){
         this.submitted = true;
         if(this.assign.name != null){
           this.axios.post('api/updateAssign',this.assign, {headers: {'Authorization': 'Bearer '+this.token}}).then(()=>{
@@ -359,11 +249,10 @@ export default {
               detail: "Berhasil Assign",
               life: 3000,
             });
-            this.getPermohonan();
           });
         }
       },
-      cancelAssign(){
+    cancelAssign(){
           this.assign =
           {
               id : null,
@@ -373,8 +262,8 @@ export default {
           this.dialogAssign = false;
           this.submitted = false;
       },
-      ClosingPerRequest(ireq_id){
-         this.$confirm.require({
+    ClosingPerRequest(ireq_id){
+      this.$confirm.require({
         message: "Closing Permohonan Dilanjutkan?",
         header: "Closing Per Request",
         icon: "pi pi-info-circle",
@@ -390,45 +279,15 @@ export default {
           });
           this.axios.get('api/updateStatusClosing/' +ireq_id, {headers: {'Authorization': 'Bearer '+this.token}});
           this.getSudahDikerjakan();
-          this.getSelesai();
         },
         reject: () => {},
       });
       },
-     getPermohonan(){
-      this.axios.get('api/get-permohonan-divisi',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.permohonan = response.data;
-        this.loading = false;
-      }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
-            this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-            });
-            localStorage.clear();
-            localStorage.setItem('Expired','true')
-            setTimeout( () => this.$router.push('/login'),2000);
-           }
-        });
-    },
-    getSedangDikerjakan(){
-      this.axios.get('api/get-sedang-dikerjakannn',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.sedangDikerjakan = response.data;
-      });
-    },
     getSudahDikerjakan(){
-      this.axios.get('api/get-sudah-dikerjakannn',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai(){
-      this.axios.get('api/get-selesaiii',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.selesai = response.data;
+      this.axios.get('api/get-ictDivisi4',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
+        this.sudahDikerjakan = response.data.ict;
+        this.selesai = response.data.ict2;
+        this.loading = false;
       });
     },
     formatDate(date) {

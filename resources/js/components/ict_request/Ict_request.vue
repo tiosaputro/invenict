@@ -57,7 +57,6 @@
                     </template>
                   </Column>
                   <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
-                  <Column field="div_name" header="Divisi Pengguna" :sortable="true" style="min-width:12rem"/>
                   <Column style="min-width:12rem">
                     <template #body="slotProps">
                       <Button
@@ -483,28 +482,22 @@ export default {
         selesai:[],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
-        user:[],
+        usr_name: localStorage.getItem('usr_name'),
     };
   },
   created() {
-    this.getUser();
+    this.getIct();
   },
   methods: {
-    getUser(){
-      this.axios.get('api/user',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-        this.user = response.data;
-        this.getIct();
-        this.getVerif();
-        this.getReject();
-        this.getSedangDikerjakan();
-        this.getSudahDikerjakan();
-        this.getSelesai();
-      });
-    },
     getIct(){
-      this.axios.get('/api/get-ict/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.ict = response.data;
+      this.axios.get('api/get-ict/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
+        this.ict = response.data.ict;
         this.loading = false;
+        this.verif = response.data.ict1;
+        this.reject = response.data.ict2
+        this.sedangDikerjakan = response.data.ict3
+        this.sudahDikerjakan = response.data.ict4
+        this.selesai = response.data.ict5
       }).catch(error=>{
           if (error.response.status == 403) {
            this.$toast.add({
@@ -522,31 +515,6 @@ export default {
            }
         });
     },  
-      getVerif(){
-       this.axios.get('api/get-verifikasi/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.verif = response.data;
-       });
-    },
-    getReject(){
-       this.axios.get('api/get-reject/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.reject = response.data;
-       });
-    },
-    getSedangDikerjakan(){
-      this.axios.get('api/get-sedang-dikerjakan/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.sedangDikerjakan = response.data;
-      });
-    },
-    getSudahDikerjakan(){
-      this.axios.get('api/get-sudah-dikerjakan/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai(){
-      this.axios.get('api/get-selesai/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.selesai = response.data;
-      });
-    },
     formatDate(date) {
       return moment(date).format("DD MMM YYYY")
     },

@@ -23,7 +23,8 @@ class LoginController extends Controller
                         'success'   => true,
                         'user'      => $user,
                         'token'     => $token,
-                        'id'        => $id
+                        'id'        => $id,
+                        'usr_name'  => $user->usr_name
                     ];
                     return response($response, 201);
                 }else{

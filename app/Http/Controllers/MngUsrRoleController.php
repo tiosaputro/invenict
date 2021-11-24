@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Mng_usr_roles;
+use App\Mng_role_menu;
 use App\Mng_User;
+use App\Mng_menu;
 use Auth;
 use DB;
 use carbon\Carbon;
@@ -14,7 +16,10 @@ class MngUsrRoleController extends Controller
     public function getRole($id)
     {
         $role = Mng_usr_roles::select('rol_id')->where('usr_id',$id)->pluck('rol_id');
-        return response()->json($role);
+          $rolemenu = Mng_role_menu::select('menu_id')->whereIn('rol_id',$role)->pluck('menu_id');
+            $menu = Mng_menu::select('parent_id','menu_display as label','controller as to')
+                    ->whereIn('menu_id',$rolemenu)->orderBy('label','ASC')->get();
+                    return response()->json($menu);
     }
     public function save(Request $request)
     {

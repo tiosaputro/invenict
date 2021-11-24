@@ -10,7 +10,7 @@
         v-show="isSidebarVisible()"
       >
         <div class="layout-logo">
-          <router-link to="/Dashboard">
+          <router-link to="/dashboard">
             <img alt="Emp" src="/assets/layout/images/logo_emp_new.png" width="100" />
           </router-link>
         </div>
@@ -52,36 +52,6 @@ export default {
       staticMenuInactive: false,
       overlayMenuActive: false,
       mobileMenuActive: false,
-      menuAdmin: [
-        { label: "Dashboard", icon: "pi pi-fw pi-home", to: "/Dashboard" },
-        {
-          label: 'Peripheral', icon: 'pi pi-fw pi-sitemap',
-          	items: [
-               { label: "Master Peripheral", icon: "pi pi-fw pi-th-large", to: "/master-peripheral" },
-               { label: "Mutasi Peripheral", icon: "pi pi-fw pi-bookmark", to: "/mutasi-peripheral" },
-               { label: "Pembelian Peripheral", icon: "pi pi-fw pi-bars", to: "/pembelian-peripheral" },
-            ]
-        },
-        { label: "Referensi", icon: 'pi pi-fw pi-list', 
-            items: [
-               { label: "Referensi Suplier", icon: "pi pi-fw pi-briefcase", to: "/referensi-supplier" },
-               { label: "Referensi Lookups ", icon: "pi pi-fw pi-clone", to: "/referensi-lookups" },
-            ]
-        },
-        { label: "ICT request", icon: "pi pi-fw pi-ticket", to: "/ict-request" },
-        { label: "ICT request Divisi 1", icon: "pi pi-fw pi-ticket", to: "/ict-request-divisi1" },
-        { label: "ICT request Divisi 2", icon: "pi pi-fw pi-ticket", to: "/ict-request-divisi2" },
-        { label: "ICT request Divisi 3", icon: "pi pi-fw pi-ticket", to: "/ict-request-divisi3" },
-        { label: "Cash Advance", icon: "pi pi-fw pi-money-bill", to: "/cash-advance" },
-         { label: "Management", icon: 'pi pi-fw pi-list', 
-            items: [
-                { label: "Management User", icon: "pi pi-fw pi-money-bill", to: "/mng-user" },
-                { label: "Management Role", icon: "pi pi-fw pi-money-bill", to: "/mng-role" },
-                { label: "Management Module", icon: "pi pi-fw pi-money-bill", to: "/mng-module" },
-                { label: "Management Menu", icon: "pi pi-fw pi-money-bill", to: "/mng-menu" },
-            ]
-        },
-      ],
       menuUser:[],
       role:[],
       menuId:[]
@@ -110,23 +80,11 @@ export default {
         if(!this.menuUser.length){
           this.id = localStorage.getItem("id");
           this.token = localStorage.getItem("token");
-          this.axios.get('/api/get-role/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-            this.role = response.data;
-            this.cekMenuId();
+          this.axios.get('/api/get-rolee/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.menuUser = response.data;
           });
         }
       }
-    },
-    cekMenuId(){
-          this.axios.post('/api/get-menu-id',this.role,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-            this.menuId = response.data;
-            this.getMenu();
-          });
-    },
-    getMenu(){
-          this.axios.post('/api/get-menu-user',this.menuId,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-            this.menuUser = response.data;
-          });
     },
     onWrapperClick() {
       if (!this.menuClick) {

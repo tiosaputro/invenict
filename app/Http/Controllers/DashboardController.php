@@ -7,67 +7,46 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function countBlmVerifikasi($usr_name)
+    public function countUser($usr_name)
     {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
-        ->where('ireq_status','P')
-        ->where('created_by',$usr_name)
-        ->pluck('count');
+        $grafik = DB::table('ireq_mst as im')
+        ->select(DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'P' AND ireq_mst.created_by = '$usr_name') as belumdiverifikasi"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'A' AND ireq_mst.created_by = '$usr_name') as sudahdiverifikasi"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'R' AND ireq_mst.created_by = '$usr_name') as direject"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'T' AND ireq_mst.created_by = '$usr_name') as sedangdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'D' AND ireq_mst.created_by = '$usr_name') as sudahdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'C' AND ireq_mst.created_by = '$usr_name') as sudahselesai"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status IS NOT NULL AND ireq_mst.created_by = '$usr_name') as countrequest"))
+        ->first();
         return response()->json($grafik);
     }
-    public function countSudahVerifikasi($usr_name)
+    public function countDivisi1($usr_name)
+    {
+        $grafik = DB::table('ireq_mst as im')
+        ->select(DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'P' AND divisi_refs.div_verificator = '$usr_name') as belumdiverifikasi"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'A' AND divisi_refs.div_verificator = '$usr_name') as sudahdiverifikasi"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'R' AND divisi_refs.div_verificator = '$usr_name') as direject"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'T' AND divisi_refs.div_verificator = '$usr_name') as sedangdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'D' AND divisi_refs.div_verificator = '$usr_name') as sudahdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'C' AND divisi_refs.div_verificator = '$usr_name') as sudahselesai"))
+        ->first();
+        return response()->json($grafik);
+    }
+    public function countDivisi2()
     {
         $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
+        ->select(DB::raw('count(ireq_id) as count'))
         ->where('ireq_status','A')
-        ->where('created_by',$usr_name)
         ->pluck('count');
         return response()->json($grafik);
     }
-    public function countSedangDikerjakan($usr_name)
+    public function countDivisi3($fullname)
     {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
-        ->where('ireq_status','T')
-        ->where('created_by',$usr_name)
-        ->pluck('count');
-        return response()->json($grafik);
-    }
-    public function countSudahDikerjakan($usr_name)
-    {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
-        ->where('ireq_status','D')
-        ->where('created_by',$usr_name)
-        ->pluck('count');
-        return response()->json($grafik);
-    }
-    public function countSelesai($usr_name)
-    {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
-        ->where('ireq_status','C')
-        ->where('created_by',$usr_name)
-        ->pluck('count');
-        return response()->json($grafik);
-    }
-    public function countReject($usr_name)
-    {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
-        ->where('ireq_status','R')
-        ->where('created_by',$usr_name)
-        ->pluck('count');
-        return response()->json($grafik);
-    }
-    public function countRequest($usr_name)
-    {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(DISTINCT(ireq_id)) as count'))
-        ->whereNotNull('ireq_status')
-        ->where('created_by',$usr_name)
-        ->pluck('count');
+        $grafik = DB::table('ireq_dtl as im')
+        ->select(DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'T' AND ireq_dtl.ireq_assigned_to = '$fullname') as belumselesai"),
+                 DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'D' AND ireq_dtl.ireq_assigned_to = '$fullname') as sudahdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'C' AND ireq_dtl.ireq_assigned_to = '$fullname') as sudahselesai"))
+        ->first();
         return response()->json($grafik);
     }
     public function getStatus()

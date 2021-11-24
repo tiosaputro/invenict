@@ -120,13 +120,12 @@ Route::middleware(['auth:sanctum','admin'])->group(function(){
     Route::delete('/delete-role/{rol_id}','MngRolesController@delete');
 
     //Mng_usr_roles
-    Route::get('/get-role/{id}','MngUsrRoleController@getRole');
+    Route::get('/get-rolee/{id}','MngUsrRoleController@getRole');
     Route::post('/save-usr-role','MngUsrRoleController@save');
     Route::get('/edit-usr-role/{code}','MngUsrRoleController@edit');
     Route::put('/update-usr-role/{code}','MngUsrRoleController@update');
 
     //Mng_role_menu
-    Route::post('/get-menu-id','MngRoleMenuController@getMenuId');
     Route::post('/save-role-menu','MngRoleMenuController@save');
     Route::get('/edit-role-menu/{code}','MngRoleMenuController@edit');
     Route::put('/update-role-menu/{code}','MngRoleMenuController@update');
@@ -150,14 +149,10 @@ Route::middleware(['auth:sanctum','admin'])->group(function(){
     Route::delete('/delete-menu/{menu_id}','MngMenuController@delete');
 
     //dashboard
-    Route::get('/getCountBlmVerifikasi/{usr_name}','DashboardController@countBlmVerifikasi');
-    Route::get('/getCountSudahVerifikasi/{usr_name}','DashboardController@countSudahVerifikasi');
-    Route::get('/getCountSedangDikerjakan/{usr_name}','DashboardController@countSedangDikerjakan');
-    Route::get('/getCountSudahDikerjakan/{usr_name}','DashboardController@countSudahDikerjakan');
-    Route::get('/getCountSelesai/{usr_name}','DashboardController@countSelesai');
-    Route::get('/getCountReject/{usr_name}','DashboardController@countReject');
-    Route::get('/getCountRequest/{usr_name}','DashboardController@countRequest');
-    //grafik
+    Route::get('/getCountUser/{usr_name}','DashboardController@countUser');
+    Route::get('/getCountDivisi1/{usr_name}','DashboardController@countDivisi1');
+    Route::get('/getCountDivisi2','DashboardController@countDivisi2');
+    Route::get('/getCountDivisi3/{full_name}','DashboardController@countDivisi3');
     Route::get('/status-per-divisi','DashboardController@countPerStatusPerDivisi');
     Route::get('/count-per-status','DashboardController@countPerStatus');
     Route::get('/get-tahun','DashboardController@getTahun');
@@ -178,11 +173,6 @@ Route::middleware(['auth:sanctum','admin'])->group(function(){
 Route::middleware(['auth:sanctum','user'])->group(function(){
     //ict request
     Route::get('/get-ict/{usr_name}','IctController@getIct');
-    Route::get('/get-verifikasi/{usr_name}','IctController@getVerifikasi');
-    Route::get('/get-reject/{usr_name}','IctController@getReject');
-    Route::get('/get-sedang-dikerjakan/{usr_name}','IctController@getSedangDikerjakan');
-    Route::get('/get-sudah-dikerjakan/{usr_name}','IctController@getSudahDikerjakan');
-    Route::get('/get-selesai/{usr_name}','IctController@getSelesai');
     Route::post('/add-ict','IctController@save');
     Route::get('/edit-ict/{code}','IctController@edit');
     Route::put('/update-ict/{code}','IctController@update');
@@ -191,23 +181,16 @@ Route::middleware(['auth:sanctum','user'])->group(function(){
     Route::get('/getNameBu/{noreq}','IctController@getNameBu');
     //divisi 1
     Route::get('/get-permohonan/{usr_name}','IctController@getPermohonan');
-    Route::get('/get-verifikasii/{usr_name}','IctController@getVerifikasii');
-    Route::get('/get-rejectt/{usr_name}','IctController@getRejectt');
-    Route::get('/get-sedang-dikerjakann/{usr_name}','IctController@getSedangDikerjakann');
-    Route::get('/get-sudah-dikerjakann/{usr_name}','IctController@getSudahDikerjakann');
-    Route::get('/get-selesaii/{usr_name}','IctController@getSelesaii');
     
     //divisi 2
     Route::get('/get-permohonan-divisi','IctController@getPermohonanDivisi');
-    Route::get('/get-sedang-dikerjakannn','IctController@getSedangDikerjakannn');
-    Route::get('/get-sudah-dikerjakannn','IctController@getSudahDikerjakannn');
-    Route::get('/get-selesaiii','IctController@getSelesaiii');
-
     //divisi 3
-    Route::get('/get-sedang-dikerjakannnn/{usr_fullname}','IctController@getSedangDikerjakannnn');
-    Route::get('/get-sudah-dikerjakannnn/{usr_fullname}','IctController@getSudahDikerjakannnn');
-    Route::get('/get-selesaiiii/{usr_fullname}','IctController@getSelesaiiii');
+    Route::get('/get-sedang-dikerjakan/{usr_fullname}','IctController@getSedangDikerjakan');
     //end divisi 3
+
+    //divisi 4
+    Route::get('/get-ictDivisi4','IctController@ictDivisi4');
+    //end
 
     Route::post('/updateAssign','IctController@updateAssign');
     Route::get('/updateStatusPermohonan/{code}','IctController@updateStatusPermohonan');

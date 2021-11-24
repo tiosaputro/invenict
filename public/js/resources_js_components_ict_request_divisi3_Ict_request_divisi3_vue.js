@@ -41,23 +41,15 @@ __webpack_require__.r(__webpack_exports__);
     getUser: function getUser() {
       var _this = this;
 
-      this.axios.get('/api/user', {
+      this.axios.get('api/user', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
         _this.user = response.data;
 
-        _this.getSedangDikerjakan();
-
-        _this.getSudahDikerjakan();
-
-        _this.getSelesai();
+        _this.getData();
       });
-    },
-    getData: function getData() {
-      this.getSedangDikerjakan();
-      this.getSudahDikerjakan();
     },
     submit: function submit(ireq_id) {
       var _this2 = this;
@@ -83,7 +75,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           });
 
-          _this2.getData();
+          _this2.getSedangDikerjakan();
         },
         reject: function reject() {}
       });
@@ -96,38 +88,18 @@ __webpack_require__.r(__webpack_exports__);
       this.assign = [];
       this.dialogAssign = false;
     },
-    getSedangDikerjakan: function getSedangDikerjakan() {
+    getData: function getData() {
       var _this3 = this;
 
-      this.axios.get('api/get-sedang-dikerjakannnn/' + this.user.usr_fullname, {
+      this.axios.get('api/get-sedang-dikerjakan/' + this.user.usr_fullname, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.sedangDikerjakan = response.data;
+        _this3.sedangDikerjakan = response.data.ict;
+        _this3.sudahDikerjakan = response.data.ict1;
+        _this3.selesai = response.data.ict2;
         _this3.loading = false;
-      });
-    },
-    getSudahDikerjakan: function getSudahDikerjakan() {
-      var _this4 = this;
-
-      this.axios.get('api/get-sudah-dikerjakannnn/' + this.user.usr_fullname, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this4.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai: function getSelesai() {
-      var _this5 = this;
-
-      this.axios.get('api/get-selesaiiii/' + this.user.usr_fullname, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this5.selesai = response.data;
       });
     },
     formatDate: function formatDate(date) {
@@ -431,14 +403,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 header: "No. Request",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "ireqd_id",
+                header: "No. Detail",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "invent_code",
+                header: "Nama Peripheral",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_date",
                 header: "Tgl.Request",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }, {
                 body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
@@ -454,14 +440,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 header: "Pemohon",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_user",
                 header: "Pengguna",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 style: {
@@ -538,14 +524,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 header: "No. Request",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "ireqd_id",
+                header: "No. Detail",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
+                }
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+                field: "invent_code",
+                header: "Nama Peripheral",
+                sortable: true,
+                style: {
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_date",
                 header: "Tgl.Request",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }, {
                 body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
@@ -561,14 +561,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 header: "Pemohon",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 field: "ireq_user",
                 header: "Pengguna",
                 sortable: true,
                 style: {
-                  "min-width": "12rem"
+                  "min-width": "8rem"
                 }
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
                 style: {

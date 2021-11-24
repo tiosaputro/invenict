@@ -346,29 +346,23 @@ export default {
         selesai:[],
         verif: [],
         reject:[],
-        user:[],
+        usr_name : localStorage.getItem('usr_name'),
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
     };
   },
   created() {
-    this.getUser();
+    this.getPermohonan();
   },
   methods: {
-    getUser(){
-      this.axios.get('/api/user',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-      this.user = response.data;
-      this.getPermohonan();
-      });
-    },
      getPermohonan(){
-      this.axios.get('/api/get-permohonan/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.permohonan = response.data;
-        this.getVerif();
-        this.getReject();
-        this.getSedangDikerjakan();
-        this.getSudahDikerjakan();
-        this.getSelesai();
+      this.axios.get('/api/get-permohonan/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
+        this.permohonan = response.data.ict;
+        this.verif = response.data.ict1;
+        this.reject = response.data.ict2;
+        this.sedangDikerjakan = response.data.ict3;
+        this.sudahDikerjakan = response.data.ict4;
+        this.selesai = response.data.ict5;
         this.loading = false;
       }).catch(error=>{
           if (error.response.status == 403) {
@@ -387,54 +381,8 @@ export default {
            }
         });
     },
-    getVerif(){
-       this.axios.get('api/get-verifikasii/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.verif = response.data;
-       });
-    },
-    getReject(){
-       this.axios.get('api/get-rejectt/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.reject = response.data;
-       });
-    },
-    getSedangDikerjakan(){
-      this.axios.get('api/get-sedang-dikerjakann/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.sedangDikerjakan = response.data;
-      });
-    },
-    getSudahDikerjakan(){
-      this.axios.get('api/get-sudah-dikerjakann/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.sudahDikerjakan = response.data;
-      });
-    },
-    getSelesai(){
-      this.axios.get('api/get-selesaii/'+this.user.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.selesai = response.data;
-      });
-    },
     formatDate(date) {
       return moment(date).format("DD MMM YYYY")
-    },
-    DeleteIct(ireq_id){
-       this.$confirm.require({
-        message: "Data ini benar-benar akan dihapus?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: () => {
-          this.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Record deleted",
-            life: 3000,
-          });
-          this.axios.delete('api/delete-ict/' +ireq_id,{headers: {'Authorization': 'Bearer '+this.token}});
-          this.getIct();
-        },
-        reject: () => {},
-      });
     },
   },
 };
