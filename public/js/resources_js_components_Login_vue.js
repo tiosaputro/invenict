@@ -102,7 +102,8 @@ var _hoisted_2 = {
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
   src: "/assets/layout/images/logo_emp.png",
-  width: "350"
+  "class": "rounded",
+  width: "400"
 }, null, -1
 /* HOISTED */
 );
@@ -253,9 +254,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["modelValue", "class"]), $data.submitted && !$data.password ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_19, "Password Wajib Diisi. ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.errors.password ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_20, " Unable to login. Incorrect password. ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _hoisted_21]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     type: "submit",
-    "class": "p-button-sm",
     icon: "pi pi-check",
-    label: "Login"
+    "class": "p-button-raised p-button-info p-button-text",
+    label: "Login",
+    iconPos: "right"
   })], 32
   /* HYDRATE_EVENTS */
   )])])])]);

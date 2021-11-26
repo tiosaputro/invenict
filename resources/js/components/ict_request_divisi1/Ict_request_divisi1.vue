@@ -13,7 +13,7 @@
                     </div>
                   </template>
                 </Toolbar>
-            <TabView ref="tabview1">
+            <TabView ref="tabview1" v-model:activeIndex="active1">
               <TabPanel header="Permohonan">
                 <DataTable
                   :value="permohonan"
@@ -339,6 +339,7 @@ import {FilterMatchMode} from 'primevue/api';
 export default {
   data() {
     return {
+        active1:0,
         loading: true,
         permohonan: [],
         sedangDikerjakan:[],
@@ -356,6 +357,10 @@ export default {
   },
   methods: {
      getPermohonan(){
+       if(localStorage.getItem('active')){
+        this.active1 = parseFloat(localStorage.getItem('active'));
+        localStorage.removeItem('active');
+      }
       this.axios.get('/api/get-permohonan/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.permohonan = response.data.ict;
         this.verif = response.data.ict1;

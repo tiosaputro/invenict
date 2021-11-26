@@ -19,6 +19,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      active1: 0,
       loading: true,
       ict: [],
       verif: [],
@@ -42,6 +43,11 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getIct: function getIct() {
       var _this = this;
+
+      if (localStorage.getItem('active')) {
+        this.active1 = parseFloat(localStorage.getItem('active'));
+        localStorage.removeItem('active');
+      }
 
       this.axios.get('api/get-ict/' + this.usr_name, {
         headers: {
@@ -399,7 +405,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TabView, {
-    ref: "tabView2"
+    ref: "tabView2",
+    activeIndex: $data.active1,
+    "onUpdate:activeIndex": _cache[19] || (_cache[19] = function ($event) {
+      return $data.active1 = $event;
+    })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TabPanel, {
@@ -1155,9 +1165,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }, 512
-  /* NEED_PATCH */
-  )])])]);
+  }, 8
+  /* PROPS */
+  , ["activeIndex"])])])]);
 }
 
 /***/ }),

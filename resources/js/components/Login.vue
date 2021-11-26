@@ -2,7 +2,7 @@
 <div class="container py-2">
     <div class="col-md-8 text-center mb-10">
         <Toast />
-        <img src="/assets/layout/images/logo_emp.png" width="350"/>
+        <img src="/assets/layout/images/logo_emp.png" class="rounded" width="400"/>
         <div class="card">
           <Message severity="success" v-if="this.logOut" >Berhasil Logout, Silahkan Login Kembali</Message>
           <Message severity="warn" v-else-if ="this.Expired">Sesi Login Telah Berakhir, Silahkan Login Kembali</Message> 
@@ -52,9 +52,10 @@
               </div>
                  <Button
                   type="submit"
-                  class="p-button-sm"
                   icon="pi pi-check"
+                  class="p-button-raised p-button-info p-button-text"
                   label="Login"
+                  iconPos="right"
                 />
             </form>
           </div>

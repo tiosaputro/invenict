@@ -34,11 +34,27 @@ class DashboardController extends Controller
     }
     public function countDivisi2()
     {
-        $grafik = DB::table('ireq_mst')
-        ->select(DB::raw('count(ireq_id) as count'))
-        ->where('ireq_status','A')
-        ->pluck('count');
-        return response()->json($grafik);
+        $blmdiassign = DB::table('ireq_mst')
+            ->select(DB::raw('count(ireq_id) as blmdiassign'))
+            ->where('ireq_status','A')
+            ->pluck('blmdiassign')
+            ->first();
+        $sdgdikerjakan = DB::table('ireq_mst')
+            ->select(DB::raw('count(ireq_id) as sdgdikerjakan'))
+            ->where('ireq_status','T')
+            ->pluck('sdgdikerjakan')
+            ->first();
+        $sdhdikerjakan = DB::table('ireq_dtl')
+            ->select(DB::raw('count(ireqd_id) as sdhdikerjakan'))
+            ->where('ireq_status','D')
+            ->pluck('sdhdikerjakan')
+            ->first();
+        $sdhselesai = DB::table('ireq_dtl')
+            ->select(DB::raw('count(ireqd_id) as sdhselesai'))
+            ->where('ireq_status','C')
+            ->pluck('sdhselesai')
+            ->first();
+        return response()->json(['blmdiassign'=>$blmdiassign,'sdgdikerjakan'=>$sdgdikerjakan,'sdhdikerjakan'=>$sdhdikerjakan,'sdhselesai'=>$sdhselesai]);
     }
     public function countDivisi3($fullname)
     {

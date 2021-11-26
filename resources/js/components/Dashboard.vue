@@ -7,10 +7,10 @@
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
               <div class="align-self-center">
-                <i class="pi pi-check" style="fontSize: 4rem; color: gray;"></i>
+                <i class="pi pi-check" style="fontSize: 4rem; color: red;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.belumdiverifikasi}}</h3>
+                <h3 @click="blmDiverifikasi()" style="cursor:pointer;">{{count.belumdiverifikasi}}</h3>
                 <p class="mb-0">Request Yang Belum Diverifikasi</p>
               </div>
             </div>
@@ -22,10 +22,10 @@
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
               <div class="align-self-center">
-                <i class="bi bi-check2-all" style="fontSize: 3.5rem; color: #07f13a;"></i>
+                <i class="pi pi-check" style="fontSize: 3.5rem; color: green;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.sudahdiverifikasi}}</h3>
+                <h3 @click="sdhDiverifikasi()" style="cursor:pointer;">{{count.sudahdiverifikasi}}</h3>
                 <p class="mb-0">Request Yang Sudah Diverifikasi</p>
               </div>
             </div>
@@ -40,7 +40,7 @@
                 <i class="pi pi-times" style="fontSize: 4rem; color: red;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.direject}}</h3>
+                <h3 @click="diReject()" style="cursor:pointer;">{{count.direject}}</h3>
                 <p class="mb-0">Request Yang Di Reject</p>
               </div>
             </div>
@@ -55,7 +55,7 @@
                 <i class="bi bi-arrow-repeat" style="fontSize: 3.5rem; color: green;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.sedangdikerjakan}}</h3>
+                <h3 @click="sdgDikerjakan()" style="cursor:pointer;">{{count.sedangdikerjakan}}</h3>
                 <p class="mb-0">Request Yang Sedang Dikerjakan</p>
               </div>
             </div>
@@ -67,10 +67,10 @@
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
               <div class="align-self-center">
-                <i class="bi bi-journal-check" style="fontSize: 4rem; color: #0ff5d7;"></i>
+                <i class="bi bi-check2-all" style="fontSize: 4rem; color: red;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.sudahdikerjakan}}</h3>
+                <h3 @click="sdhDikerjakan()" style="cursor:pointer;">{{count.sudahdikerjakan}}</h3>
                 <p class="mb-0">Request Yang Sudah Dikerjakan</p>
               </div>
             </div>
@@ -82,10 +82,10 @@
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
               <div class="align-self-center">
-                <i class="bi bi-folder-check" style="fontSize: 4rem; color : #0c65fc;"></i>
+                <i class="bi bi-check2-all" style="fontSize: 4rem; color : green;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.sudahselesai}}</h3>
+                <h3 @click="sdhSelesai()" style="cursor:pointer;">{{count.sudahselesai}}</h3>
                 <p class="mb-0">Request Yang Sudah Selesai</p>
               </div>
             </div>
@@ -128,6 +128,30 @@ export default {
             this.axios.get('api/getCountUser/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.count = response.data;
             });
+        },
+        blmDiverifikasi(){
+          this.$router.push('/ict-request')
+          localStorage.setItem('active',0);
+        },
+        sdhDiverifikasi(){
+          this.$router.push('/ict-request')
+          localStorage.setItem('active',1);
+        },
+        diReject(){
+          this.$router.push('/ict-request')
+          localStorage.setItem('active',2);
+        },
+        sdgDikerjakan(){
+          this.$router.push('/ict-request')
+          localStorage.setItem('active',3);
+        },
+        sdhDikerjakan(){
+          this.$router.push('/ict-request')
+          localStorage.setItem('active',4);
+        },
+        sdhSelesai(){
+          this.$router.push('/ict-request')
+          localStorage.setItem('active',5);
         },
     }
 }

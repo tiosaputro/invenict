@@ -13,7 +13,7 @@
                     </div>
                   </template>
                 </Toolbar>
-            <TabView ref="tabview1">
+            <TabView ref="tabview1" v-model:activeIndex="active1">
                 <TabPanel header="Sudah Dikerjakan">
                    <DataTable
                     :value="sudahDikerjakan"
@@ -164,6 +164,7 @@ import {FilterMatchMode} from 'primevue/api';
 export default {
   data() {
     return {
+        active1: 0,
         loading: true,
         dialogAssign: false,
         submitted:false,

@@ -46,6 +46,18 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this2.count = response.data;
       });
+    },
+    blmSelesai: function blmSelesai() {
+      this.$router.push('/ict-request-divisi3');
+      localStorage.setItem('active', 0);
+    },
+    sdgDikerjakan: function sdgDikerjakan() {
+      this.$router.push('/ict-request-divisi3');
+      localStorage.setItem('active', 1);
+    },
+    sdhSelesai: function sdhSelesai() {
+      this.$router.push('/ict-request-divisi3');
+      localStorage.setItem('active', 2);
     }
   }
 });
@@ -90,10 +102,10 @@ var _hoisted_6 = {
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "align-self-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "bi bi-hourglass-bottom",
+  "class": "bi bi-hourglass-split",
   style: {
     "fontSize": "4rem",
-    "color": "green"
+    "color": "red"
   }
 })], -1
 /* HOISTED */
@@ -132,7 +144,7 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "bi bi-check2-all",
   style: {
     "fontSize": "4rem",
-    "color": "gray"
+    "color": "red"
   }
 })], -1
 /* HOISTED */
@@ -188,11 +200,9 @@ var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _this = this;
-
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _this.$router.push('/ict-request-divisi3');
+      return $options.blmSelesai();
     }),
     style: {
       "cursor": "pointer"
@@ -201,7 +211,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_9])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return _this.$router.push('/ict-request-divisi3');
+      return $options.sdgDikerjakan();
     }),
     style: {
       "cursor": "pointer"
@@ -210,7 +220,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_16])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[2] || (_cache[2] = function ($event) {
-      return _this.$router.push('/ict-request-divisi3');
+      return $options.sdhSelesai();
     }),
     style: {
       "cursor": "pointer"

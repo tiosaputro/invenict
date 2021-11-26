@@ -16,10 +16,17 @@ class MngUsrRoleController extends Controller
     public function getRole($id)
     {
         $role = Mng_usr_roles::select('rol_id')->where('usr_id',$id)->pluck('rol_id');
-          $rolemenu = Mng_role_menu::select('menu_id')->whereIn('rol_id',$role)->pluck('menu_id');
-            $menu = Mng_menu::select('parent_id','menu_display as label','controller as to')
-                    ->whereIn('menu_id',$rolemenu)->orderBy('label','ASC')->get();
-                    return response()->json($menu);
+        $rolemenu = Mng_role_menu::select('menu_id')->whereIn('rol_id',$role)->pluck('menu_id');
+        // $menu = Mng_menu::select('parent_id','menu_display as label','controller as to')
+        //         ->whereIn('menu_id',$rolemenu)->orderBy('label','ASC')->get();
+        $menu = DB::table('mng_menus as mm')
+                ->leftjoin('mng_menus as imm','mm.menu_id','imm.parent_id')
+                ->select('mm.menu_display as label','mm.controller as to')
+                ->whereIn('mm.menu_id',$rolemenu)
+                ->groupBy('imm.menu_display','mm.menu_display','mm.controller')
+                ->orderBy('mm.menu_display','ASC')
+                ->get();
+        return response()->json($menu);
     }
     public function save(Request $request)
     {

@@ -15,7 +15,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       count: [],
-      user: localStorage.getItem('usr_name'),
+      usr_name: localStorage.getItem('usr_name'),
       token: localStorage.getItem('token')
     };
   },
@@ -33,6 +33,30 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.count = response.data;
       });
+    },
+    blmDiverifikasi: function blmDiverifikasi() {
+      this.$router.push('/ict-request-divisi1');
+      localStorage.setItem('active', 0);
+    },
+    sdhDiverifikasi: function sdhDiverifikasi() {
+      this.$router.push('/ict-request-divisi1');
+      localStorage.setItem('active', 1);
+    },
+    diReject: function diReject() {
+      this.$router.push('/ict-request-divisi1');
+      localStorage.setItem('active', 2);
+    },
+    sdgDikerjakan: function sdgDikerjakan() {
+      this.$router.push('/ict-request-divisi1');
+      localStorage.setItem('active', 3);
+    },
+    sdhDikerjakan: function sdhDikerjakan() {
+      this.$router.push('/ict-request-divisi1');
+      localStorage.setItem('active', 4);
+    },
+    sdhSelesai: function sdhSelesai() {
+      this.$router.push('/ict-request-divisi1');
+      localStorage.setItem('active', 5);
     }
   }
 });
@@ -62,7 +86,7 @@ var _hoisted_3 = {
 };
 var _hoisted_4 = {
   key: 0,
-  "class": "shadow-lg p-3 mb-5 bg-body rounded",
+  "class": "shadow-lg p-2 mb-5 bg-body rounded",
   style: {
     "border": "1px solid black"
   }
@@ -80,7 +104,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "pi pi-check",
   style: {
     "fontSize": "4rem",
-    "color": "gray"
+    "color": "red"
   }
 })], -1
 /* HOISTED */
@@ -92,7 +116,7 @@ var _hoisted_8 = {
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   "class": "mb-0"
-}, "Request Yang Belum Diverifikasi", -1
+}, "Request Yang Menunggu Diverifikasi", -1
 /* HOISTED */
 );
 
@@ -116,10 +140,10 @@ var _hoisted_13 = {
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "align-self-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "bi bi-check2-all",
+  "class": "pi pi-check",
   style: {
     "fontSize": "3.5rem",
-    "color": "#07f13a"
+    "color": "green"
   }
 })], -1
 /* HOISTED */
@@ -233,10 +257,10 @@ var _hoisted_34 = {
 var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "align-self-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "bi bi-journal-check",
+  "class": "bi bi-check2-all",
   style: {
     "fontSize": "4rem",
-    "color": "#0ff5d7"
+    "color": "red"
   }
 })], -1
 /* HOISTED */
@@ -272,10 +296,10 @@ var _hoisted_41 = {
 var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "align-self-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "bi bi-folder-check",
+  "class": "bi bi-check2-all",
   style: {
     "fontSize": "4rem",
-    "color": "#0c65fc"
+    "color": "green"
   }
 })], -1
 /* HOISTED */
@@ -292,11 +316,9 @@ var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _this = this;
-
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return $options.blmDiverifikasi();
     }),
     style: {
       "cursor": "pointer"
@@ -305,7 +327,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_9])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return $options.sdhDiverifikasi();
     }),
     style: {
       "cursor": "pointer"
@@ -314,7 +336,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_16])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[2] || (_cache[2] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return $options.diReject();
     }),
     style: {
       "cursor": "pointer"
@@ -323,7 +345,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_23])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[3] || (_cache[3] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return $options.sdgDikerjakan();
     }),
     style: {
       "cursor": "pointer"
@@ -332,7 +354,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_30])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[4] || (_cache[4] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return $options.sdhDikerjakan();
     }),
     style: {
       "cursor": "pointer"
@@ -341,7 +363,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_37])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[5] || (_cache[5] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return $options.sdhSelesai();
     }),
     style: {
       "cursor": "pointer"

@@ -26,10 +26,10 @@ __webpack_require__.r(__webpack_exports__);
         code: "F"
       }],
       type: [{
-        nama: "None",
+        nama: "Node",
         code: "N"
       }, {
-        nama: "L",
+        nama: "Leaf",
         code: "L"
       }],
       token: localStorage.getItem('token')
@@ -91,10 +91,13 @@ __webpack_require__.r(__webpack_exports__);
 
         setTimeout(function () {
           return _this4.$router.push('/mng-menu');
-        }, 1000); // }).catch(error=>{
-        //    if ((error.response.status == 422)) {
-        //   this.errors = error.response.data.errors;
-        //   };
+        }, 1000);
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this4.errors = error.response.data.errors;
+        }
+
+        ;
       });
     }
   }

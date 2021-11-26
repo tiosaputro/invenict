@@ -209,8 +209,8 @@ export default {
         { nama: "Tidak Aktif", code: "F" },
       ],
       type: [
-        { nama: "None", code: "N" },
-        { nama: "L", code: "L"}
+        { nama: "Node", code: "N" },
+        { nama: "Leaf", code: "L"}
       ],
       token: localStorage.getItem('token')
     };
@@ -239,7 +239,6 @@ export default {
     UpdateMenu() {
         this.errors = [];
 
-
         this.axios.put('/api/update-menu/'+this.$route.params.code ,this.menu,{headers: {'Authorization': 'Bearer '+this.token}}).then(()=>{
         this.$toast.add({
           severity: "success",
@@ -247,10 +246,10 @@ export default {
           detail: "Success Update",
         });
         setTimeout( () => this.$router.push('/mng-menu'),1000);
-        // }).catch(error=>{
-        //    if ((error.response.status == 422)) {
-        //   this.errors = error.response.data.errors;
-        //   };
+        }).catch(error=>{
+           if ((error.response.status == 422)) {
+          this.errors = error.response.data.errors;
+          };
          });
       },
   },
