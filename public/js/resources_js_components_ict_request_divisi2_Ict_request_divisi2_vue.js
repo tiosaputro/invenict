@@ -19,7 +19,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      active1: null,
+      active1: 0,
       loading: true,
       dialogAssign: false,
       submitted: false,
@@ -130,11 +130,10 @@ __webpack_require__.r(__webpack_exports__);
     getPermohonan: function getPermohonan() {
       var _this4 = this;
 
-      if (localStorage.getItem('active')) {
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
-
+      //  if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('api/get-permohonan-divisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token

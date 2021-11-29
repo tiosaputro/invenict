@@ -65,15 +65,19 @@ class DashboardController extends Controller
         ->first();
         return response()->json($grafik);
     }
-    public function getStatus()
-    {
-        $grafik = DB::table('VREQ_MST_STATUS')->get();
-        return response()->Json($grafik,200);
-    }
     public function getTahun()
     {
         $grafik = DB::table('VREQ_MST_TAHUN')->get();
-        return response()->Json($grafik);
+        $grafik1 = DB::table('VREQ_MST_STATUS')->get();
+        $grafik2 = DB::table('VREQ_MST_BULAN')->get();
+        $grafik3 = DB::table('VREQ_PER_STATUS')->get();
+        $personnel = DB::table('ireq_mst')
+        ->select('ireq_assigned_to as name')
+        ->whereNotNull('ireq_assigned_to')
+        ->groupBy('ireq_assigned_to')
+        ->get();
+
+        return response()->Json(['grafik'=>$grafik,'grafik1'=>$grafik1,'grafik2'=>$grafik2,'grafik3'=>$grafik3,'personnel'=>$personnel],200);
     }
     public function getTahunUser($bulanUser)
     {
@@ -95,19 +99,9 @@ class DashboardController extends Controller
         ->get();
         return response()->Json($grafik);
     }
-    public function getBulan()
-    {
-        $grafik = DB::table('VREQ_MST_BULAN')->get();
-        return response()->Json($grafik);
-    }
     public function countStatusPerDivisi()
     {
         $grafik = DB::table('vreg_per_divuser_status')->get();
-        return response()->Json($grafik);
-    }
-    public function countPerStatus()
-    {
-        $grafik = DB::table('VREQ_PER_STATUS')->get();
         return response()->Json($grafik);
     }
     public function countPerDivUserTahun($tahunUser)
@@ -180,15 +174,6 @@ class DashboardController extends Controller
     {
         $grafik= DB::table('VREQ_PER_ICTPERSON')->get();
         return response()->Json($grafik); 
-    }
-    public function getPersonnel()
-    {
-        $personnel = DB::table('ireq_mst')
-        ->select('ireq_assigned_to as name')
-        ->whereNotNull('ireq_assigned_to')
-        ->groupBy('ireq_assigned_to')
-        ->get();
-        return response()->Json($personnel); 
     }
     public function countPerStatusIct($ictPersonnel)
     {

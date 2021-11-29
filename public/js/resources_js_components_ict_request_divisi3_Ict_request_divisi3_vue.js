@@ -42,11 +42,10 @@ __webpack_require__.r(__webpack_exports__);
     getUser: function getUser() {
       var _this = this;
 
-      if (localStorage.getItem('active')) {
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
-
+      // if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('api/user', {
         headers: {
           'Authorization': 'Bearer ' + this.token

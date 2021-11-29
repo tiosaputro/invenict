@@ -34,20 +34,20 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     blmDiassign: function blmDiassign() {
-      this.$router.push('/ict-request-divisi2');
-      localStorage.setItem('active', 0);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 13);
     },
     sdgDikerjakan: function sdgDikerjakan() {
-      this.$router.push('/ict-request-divisi2');
-      localStorage.setItem('active', 1);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 14);
     },
     sdhDikerjakan: function sdhDikerjakan() {
-      this.$router.push('/ict-request-divisi2');
-      localStorage.setItem('active', 2);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 15);
     },
     sdhSelesai: function sdhSelesai() {
-      this.$router.push('/ict-request-divisi2');
-      localStorage.setItem('active', 3);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 16);
     }
   }
 });

@@ -40,21 +40,31 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this.menu = response.data;
-        _this.loading = false; // }).catch(error=>{
-        //     if (error.response.status == 403) {
-        //      this.$toast.add({
-        //       severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-        //     });
-        //     setTimeout( () => this.$router.push('/Dashboard'),2000);
-        //     }
-        //      else if (error.response.status == 401){
-        //       this.$toast.add({
-        //       severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-        //     });
-        //     localStorage.clear();
-        //     localStorage.setItem("Expired","true")
-        //     setTimeout( () => this.$router.push('/login'),2000);
-        //      }
+        _this.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        } else if (error.response.status == 401) {
+          _this.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     DeleteMenu: function DeleteMenu(menu_id) {

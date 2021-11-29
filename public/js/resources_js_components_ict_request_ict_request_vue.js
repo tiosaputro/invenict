@@ -44,11 +44,10 @@ __webpack_require__.r(__webpack_exports__);
     getIct: function getIct() {
       var _this = this;
 
-      if (localStorage.getItem('active')) {
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
-
+      // if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('api/get-ict/' + this.usr_name, {
         headers: {
           'Authorization': 'Bearer ' + this.token

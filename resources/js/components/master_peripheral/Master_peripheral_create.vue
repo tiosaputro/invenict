@@ -159,7 +159,7 @@
                 <div class="p-inputgroup">
                   <InputText v-model="barcode" readonly  v-if="barcode"/>
                   <Button icon="pi pi-trash" class="p-button-danger" v-if="barcode" @click="hapus()"/>
-                  <Button label="Scan" v-if="aktif" class="p-button" @click="Scan()" />
+                  <Button icon="bi bi-qr-code-scan" v-if="aktif" class="p-button p-button-info" @click="Scan()" />
                   </div>
                       <small v-if="errors.barcode" class="p-error">
                           {{ errors.barcode[0] }}

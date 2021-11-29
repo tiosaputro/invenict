@@ -491,10 +491,10 @@ export default {
   },
   methods: {
     getIct(){
-      if(localStorage.getItem('active')){
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
+      // if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('api/get-ict/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.ict = response.data.ict;
         this.loading = false;

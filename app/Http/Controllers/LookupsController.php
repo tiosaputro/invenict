@@ -120,7 +120,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('merk')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return response()->Json($ref,200);
     }
     public function getKondisi()
     {

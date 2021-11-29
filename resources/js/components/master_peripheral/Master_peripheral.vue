@@ -30,7 +30,7 @@
               <Button
               label="Add"
               class="p-button-raised"
-              icon="pi pi-plus"
+              icon="bi bi-file-earmark-plus"
               @click="$router.push('/Add-master-peripheral')"
             />
               <span class="p-input-icon-left">
@@ -72,7 +72,7 @@
             <template #body="slotProps">
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
-                icon="pi pi-pencil"
+                icon="bi bi-pencil-square"
                 @click="
                   $router.push({
                     name: 'Edit Master Peripheral',
@@ -81,12 +81,12 @@
                 "
               />
               <Button
-                icon="pi pi-trash"
+                icon="bi bi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 @click="DeleteMas(slotProps.data.invent_code)"
               />
               <Button
-                icon="pi pi-print"
+                icon="bi bi-qr-code"
                 class="p-button-rounded p-button-success p-mr-2 p-mb-2"
                 @click="previewBarcode(slotProps.data.invent_code)"
               />
@@ -105,7 +105,7 @@
                   <Button 
                     label="Excel"
                     class="p-button-raised p-button-success p-mr-2 p-mb-2"
-                    icon="pi pi-print"
+                    icon="bi bi-file-earmark-spreadsheet"
                     @click="CetakExcel()" 
                   />
                 </div>

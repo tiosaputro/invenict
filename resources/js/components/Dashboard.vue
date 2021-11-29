@@ -100,7 +100,7 @@
                 <i class="bi bi-journal-bookmark-fill" style="fontSize: 4rem;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request')" style="cursor:pointer;">{{count.countrequest}}</h3>
+                <h3 @click="this.$router.push('/ict-request-desc')" style="cursor:pointer;">{{count.countrequest}}</h3>
                 <p class="mb-0">Total Keseluruhan Request</p>
               </div>
             </div>
@@ -130,28 +130,28 @@ export default {
             });
         },
         blmDiverifikasi(){
-          this.$router.push('/ict-request')
-          localStorage.setItem('active',0);
-        },
-        sdhDiverifikasi(){
-          this.$router.push('/ict-request')
+          this.$router.push('/ict-request-desc')
           localStorage.setItem('active',1);
         },
-        diReject(){
-          this.$router.push('/ict-request')
+        sdhDiverifikasi(){
+          this.$router.push('/ict-request-desc')
           localStorage.setItem('active',2);
         },
-        sdgDikerjakan(){
-          this.$router.push('/ict-request')
+        diReject(){
+          this.$router.push('/ict-request-desc')
           localStorage.setItem('active',3);
         },
-        sdhDikerjakan(){
-          this.$router.push('/ict-request')
+        sdgDikerjakan(){
+          this.$router.push('/ict-request-desc')
           localStorage.setItem('active',4);
         },
-        sdhSelesai(){
-          this.$router.push('/ict-request')
+        sdhDikerjakan(){
+          this.$router.push('/ict-request-desc')
           localStorage.setItem('active',5);
+        },
+        sdhSelesai(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',6);
         },
     }
 }

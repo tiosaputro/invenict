@@ -7,6 +7,28 @@ const routes = [
 
     },
     {
+        name: 'Ict Request Detail Desc',
+        path: '/ict-request-desc/:code',
+        component: () => import('./components/ict_request_desc/ict_request_desc_detail.vue'),
+
+    },
+    {
+        name: 'Ict Request Desc Verifikasi',
+        path: '/ict-request-desc/:code',
+        component: () => import('./components/ict_request_desc/ict_request_desc_verifikasi.vue'),
+    },
+    {
+        name: 'Ict Request Desc Assign Per Detail',
+        path: '/ict-request-desc-assign/:code',
+        component: () => import('./components/ict_request_desc/ict_request_assign_per_detail_desc.vue'),
+    },
+    {
+        name: 'Desc',
+        path: '/ict-request-desc',
+        component: () => import('./components/ict_request_desc/ict_request_desc.vue'),
+
+    },
+    {
         name: 'Dashboard',
         path: '/dashboard',
         component: () => import('./components/Dashboard.vue'),

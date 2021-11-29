@@ -235,7 +235,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
         label: "Add",
         "class": "p-button-raised",
-        icon: "pi pi-plus",
+        icon: "bi bi-file-earmark-plus",
         onClick: _cache[0] || (_cache[0] = function ($event) {
           return _ctx.$router.push('/Add-master-peripheral');
         })
@@ -266,7 +266,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
         label: "Excel",
         "class": "p-button-raised p-button-success p-mr-2 p-mb-2",
-        icon: "pi pi-print",
+        icon: "bi bi-file-earmark-spreadsheet",
         onClick: _cache[3] || (_cache[3] = function ($event) {
           return $options.CetakExcel();
         })
@@ -331,7 +331,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
             "class": "p-button-rounded p-button-info p-mr-2 p-mb-2",
-            icon: "pi pi-pencil",
+            icon: "bi bi-pencil-square",
             onClick: function onClick($event) {
               return _ctx.$router.push({
                 name: 'Edit Master Peripheral',
@@ -343,7 +343,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }, null, 8
           /* PROPS */
           , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-            icon: "pi pi-trash",
+            icon: "bi bi-trash",
             "class": "p-button-rounded p-button-danger p-mr-2 p-mb-2",
             onClick: function onClick($event) {
               return $options.DeleteMas(slotProps.data.invent_code);
@@ -351,7 +351,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }, null, 8
           /* PROPS */
           , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-            icon: "pi pi-print",
+            icon: "bi bi-qr-code",
             "class": "p-button-rounded p-button-success p-mr-2 p-mb-2",
             onClick: function onClick($event) {
               return $options.previewBarcode(slotProps.data.invent_code);

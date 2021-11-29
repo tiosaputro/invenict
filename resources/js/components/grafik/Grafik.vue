@@ -1,9 +1,9 @@
 <template>
 <Toast />
-<div class="card">
-<ColorPicker v-model="color" :inline="true" @click="ifChangeColor()" />
-</div>
 
+<div class="card">
+    <ColorPicker v-model="color" :inline="true" @click="getTahun()"/>
+</div>
 <div class="card">
     <div class="p-text-left">
         <Button class="p-button-lg p-button-rounded p-button-danger" @click="printperStatus()" icon="pi pi-print" label="PDF"/>
@@ -11,7 +11,7 @@
     <div class="p-text-center" id="perStatus">
         <h5 style="font-size:20pt; font-weight: bold;">Statistik Permintaan User</h5>
         <Chart type="bar" :data="perStatus" />
-        </div>
+    </div>
 </div>
 <div class="card">
     <div class="p-text-left">
@@ -31,7 +31,7 @@
         <h5 style="font-size:20pt; font-weight: bold;">Statistik Request Divisi Requestor Per Tahun</h5>
         <Dropdown @change="getPerDivisiRequestorTahun()" :showClear="true" v-model="tahunRequestor" :options="tahunn" optionValue="tahun" optionLabel="tahun" placeholder="Pilih Tahun" />
         <Chart type="bar" :data="perDivisiRequestorTahun" v-if="this.tahunRequestor" />
-        </div>
+    </div>
 </div>
 <div class="card">
     <div class="p-text-left">
@@ -133,23 +133,10 @@ export default {
             nameStatusUser : null,
         }
     },
-    created(){
-        this.getPerStatus();
-        this.getTahun();
-        this.getBulan();
-        this.getStatus();
-        this.getStatusPerIctPersonnel();
-        this.getPersonnel();
+    created(){   
+        this.getTahun(); 
     },
     methods: {
-        ifChangeColor(){
-            this.getStatusPerIctPersonnel();
-            this.getPerStatus();
-            this.getPerDivisiUserTahun();
-            this.getPerDivisiRequestorTahun();
-            this.getPerDivisiUserBulan();
-            this.getPerDivisiRequestorBulan();
-        },
         printPerDivisiUserTahun(){
             let bar = document.getElementById("perDivisiUserTahun");
             const exp = new Exporter([bar]);
@@ -213,14 +200,31 @@ export default {
                 pdf.save("Statistik Permintaan User.pdf");
             });
         },
-        getStatus(){
-            this.axios.get('api/get-status', {headers: {'Authorization': 'Bearer '+this.token}}).then((res)=>{
-                this.status = res.data;
-            })
-        },
         getTahun(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-                this.tahunn = response.data;
+                this.tahunn = response.data.grafik;
+                this.status = response.data.grafik1;
+                this.bulan = response.data.grafik2;
+                this.statusPerIctPersonnel = {
+                        labels : response.data.personnel.map((x)=>x.ireq_assigned_to),
+                        datasets : [
+                            {
+                                label:'ICT Personnel',
+                                backgroundColor: '#'+this.color,
+                                data: response.data.personnel.map((x)=>x.jumlah)
+                            },
+                        ]
+                    }
+                this.perStatus = {
+                    labels : response.data.grafik3.map((x)=>x.ireq_status),
+                    datasets : [
+                        {
+                            label: 'Data Request Per Status',
+                            backgroundColor: '#'+this.color,
+                            data: response.data.grafik3.map((x)=>x.jumlah)
+                        },
+                    ]
+                }
             });
         },
         getTahunUser(){
@@ -238,25 +242,6 @@ export default {
                     this.tahunnnn = response.data;
                 });
             }
-        },
-        getBulan(){
-            this.axios.get('api/get-bulan', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-                this.bulan = response.data;
-            });
-        },
-        getPerStatus(){
-            this.axios.get('api/count-per-status', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-                this.perStatus = {
-                    labels : response.data.map((x)=>x.ireq_status),
-                    datasets : [
-                        {
-                            label: 'Data Request Per Status',
-                            backgroundColor: '#'+this.color,
-                            data: response.data.map((x)=>x.jumlah)
-                        },
-                    ]
-                }
-            });
         },
         getPerDivisiUserTahun(){
             if(this.tahunUser != null){
@@ -364,25 +349,6 @@ export default {
                     }
                 });
             }
-        },
-        getStatusPerIctPersonnel(){
-            this.axios.get('api/count-per-personel', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-                this.statusPerIctPersonnel = {
-                        labels : response.data.map((x)=>x.ireq_assigned_to),
-                        datasets : [
-                            {
-                                label:'ICT Personnel',
-                                backgroundColor: '#'+this.color,
-                                data: response.data.map((x)=>x.jumlah)
-                            },
-                        ]
-                    }
-            });
-        },
-        getPersonnel(){
-            this.axios.get('api/get-personnel', {headers: {'Authorization': 'Bearer '+this.token}}).then((res)=>{
-                this.personnel = res.data;
-            });
         },
         getPerStatusIct(){
             if(this.ictPersonnel !=null){

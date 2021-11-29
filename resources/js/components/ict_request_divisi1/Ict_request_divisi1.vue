@@ -357,10 +357,10 @@ export default {
   },
   methods: {
      getPermohonan(){
-       if(localStorage.getItem('active')){
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
+      //  if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('/api/get-permohonan/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.permohonan = response.data.ict;
         this.verif = response.data.ict1;

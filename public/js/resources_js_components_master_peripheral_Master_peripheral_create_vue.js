@@ -843,8 +843,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.aktif ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 2,
-    label: "Scan",
-    "class": "p-button",
+    icon: "bi bi-qr-code-scan",
+    "class": "p-button p-button-info",
     onClick: _cache[10] || (_cache[10] = function ($event) {
       return $options.Scan();
     })

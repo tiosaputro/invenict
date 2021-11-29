@@ -35,28 +35,28 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     blmDiverifikasi: function blmDiverifikasi() {
-      this.$router.push('/ict-request');
-      localStorage.setItem('active', 0);
-    },
-    sdhDiverifikasi: function sdhDiverifikasi() {
-      this.$router.push('/ict-request');
+      this.$router.push('/ict-request-desc');
       localStorage.setItem('active', 1);
     },
-    diReject: function diReject() {
-      this.$router.push('/ict-request');
+    sdhDiverifikasi: function sdhDiverifikasi() {
+      this.$router.push('/ict-request-desc');
       localStorage.setItem('active', 2);
     },
-    sdgDikerjakan: function sdgDikerjakan() {
-      this.$router.push('/ict-request');
+    diReject: function diReject() {
+      this.$router.push('/ict-request-desc');
       localStorage.setItem('active', 3);
     },
-    sdhDikerjakan: function sdhDikerjakan() {
-      this.$router.push('/ict-request');
+    sdgDikerjakan: function sdgDikerjakan() {
+      this.$router.push('/ict-request-desc');
       localStorage.setItem('active', 4);
     },
-    sdhSelesai: function sdhSelesai() {
-      this.$router.push('/ict-request');
+    sdhDikerjakan: function sdhDikerjakan() {
+      this.$router.push('/ict-request-desc');
       localStorage.setItem('active', 5);
+    },
+    sdhSelesai: function sdhSelesai() {
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 6);
     }
   }
 });
@@ -412,7 +412,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_44])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [this.count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [_hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     onClick: _cache[6] || (_cache[6] = function ($event) {
-      return _this.$router.push('/ict-request');
+      return _this.$router.push('/ict-request-desc');
     }),
     style: {
       "cursor": "pointer"

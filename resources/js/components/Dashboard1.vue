@@ -115,28 +115,28 @@ export default {
             });
         },
         blmDiverifikasi(){
-          this.$router.push('/ict-request-divisi1')
-          localStorage.setItem('active',0);
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',7);
         },
         sdhDiverifikasi(){
-          this.$router.push('/ict-request-divisi1')
-          localStorage.setItem('active',1);
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',8);
         },
         diReject(){
-          this.$router.push('/ict-request-divisi1')
-          localStorage.setItem('active',2);
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',9);
         },
         sdgDikerjakan(){
-          this.$router.push('/ict-request-divisi1')
-          localStorage.setItem('active',3);
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',10);
         },
         sdhDikerjakan(){
-          this.$router.push('/ict-request-divisi1')
-          localStorage.setItem('active',4);
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',11);
         },
         sdhSelesai(){
-          this.$router.push('/ict-request-divisi1')
-          localStorage.setItem('active',5);
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',12);
         },
     }
 }

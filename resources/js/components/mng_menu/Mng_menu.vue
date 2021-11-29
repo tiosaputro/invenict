@@ -86,21 +86,21 @@ export default {
       this.axios.get('api/menu', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.menu = response.data;
         this.loading = false;
-      // }).catch(error=>{
-      //     if (error.response.status == 403) {
-      //      this.$toast.add({
-      //       severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-      //     });
-      //     setTimeout( () => this.$router.push('/Dashboard'),2000);
-      //     }
-      //      else if (error.response.status == 401){
-      //       this.$toast.add({
-      //       severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-      //     });
-      //     localStorage.clear();
-      //     localStorage.setItem("Expired","true")
-      //     setTimeout( () => this.$router.push('/login'),2000);
-      //      }
+      }).catch(error=>{
+          if (error.response.status == 403) {
+           this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          }
+           else if (error.response.status == 401){
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+          });
+          localStorage.clear();
+          localStorage.setItem("Expired","true")
+          setTimeout( () => this.$router.push('/login'),2000);
+           }
       });
     },
     DeleteMenu(menu_id){

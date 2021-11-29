@@ -50,22 +50,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getPerStatus();
     this.getTahun();
-    this.getBulan();
-    this.getStatus();
-    this.getStatusPerIctPersonnel();
-    this.getPersonnel();
   },
   methods: {
-    ifChangeColor: function ifChangeColor() {
-      this.getStatusPerIctPersonnel();
-      this.getPerStatus();
-      this.getPerDivisiUserTahun();
-      this.getPerDivisiRequestorTahun();
-      this.getPerDivisiUserBulan();
-      this.getPerDivisiRequestorBulan();
-    },
     printPerDivisiUserTahun: function printPerDivisiUserTahun() {
       var _this = this;
 
@@ -143,30 +130,45 @@ __webpack_require__.r(__webpack_exports__);
         pdf.save("Statistik Permintaan User.pdf");
       });
     },
-    getStatus: function getStatus() {
-      var _this8 = this;
-
-      this.axios.get('api/get-status', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (res) {
-        _this8.status = res.data;
-      });
-    },
     getTahun: function getTahun() {
-      var _this9 = this;
+      var _this8 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this9.tahunn = response.data;
+        _this8.tahunn = response.data.grafik;
+        _this8.status = response.data.grafik1;
+        _this8.bulan = response.data.grafik2;
+        _this8.statusPerIctPersonnel = {
+          labels: response.data.personnel.map(function (x) {
+            return x.ireq_assigned_to;
+          }),
+          datasets: [{
+            label: 'ICT Personnel',
+            backgroundColor: '#' + _this8.color,
+            data: response.data.personnel.map(function (x) {
+              return x.jumlah;
+            })
+          }]
+        };
+        _this8.perStatus = {
+          labels: response.data.grafik3.map(function (x) {
+            return x.ireq_status;
+          }),
+          datasets: [{
+            label: 'Data Request Per Status',
+            backgroundColor: '#' + _this8.color,
+            data: response.data.grafik3.map(function (x) {
+              return x.jumlah;
+            })
+          }]
+        };
       });
     },
     getTahunUser: function getTahunUser() {
-      var _this10 = this;
+      var _this9 = this;
 
       this.tahunnUser = null;
 
@@ -176,12 +178,12 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this10.tahunnn = response.data;
+          _this9.tahunnn = response.data;
         });
       }
     },
     getTahunRequestor: function getTahunRequestor() {
-      var _this11 = this;
+      var _this10 = this;
 
       this.tahunnRequestor = null;
 
@@ -191,45 +193,12 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this11.tahunnnn = response.data;
+          _this10.tahunnnn = response.data;
         });
       }
     },
-    getBulan: function getBulan() {
-      var _this12 = this;
-
-      this.axios.get('api/get-bulan', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this12.bulan = response.data;
-      });
-    },
-    getPerStatus: function getPerStatus() {
-      var _this13 = this;
-
-      this.axios.get('api/count-per-status', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this13.perStatus = {
-          labels: response.data.map(function (x) {
-            return x.ireq_status;
-          }),
-          datasets: [{
-            label: 'Data Request Per Status',
-            backgroundColor: '#' + _this13.color,
-            data: response.data.map(function (x) {
-              return x.jumlah;
-            })
-          }]
-        };
-      });
-    },
     getPerDivisiUserTahun: function getPerDivisiUserTahun() {
-      var _this14 = this;
+      var _this11 = this;
 
       if (this.tahunUser != null) {
         this.axios.get('api/count-per-divuser-tahun/' + this.tahunUser, {
@@ -237,13 +206,13 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this14.perDivisiUserTahun = {
+          _this11.perDivisiUserTahun = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: _this14.tahunUser,
-              backgroundColor: '#' + _this14.color,
+              label: _this11.tahunUser,
+              backgroundColor: '#' + _this11.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -253,7 +222,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getPerDivisiRequestorTahun: function getPerDivisiRequestorTahun() {
-      var _this15 = this;
+      var _this12 = this;
 
       if (this.tahunRequestor != null) {
         this.axios.get('api/count-per-divreq-tahun/' + this.tahunRequestor, {
@@ -261,13 +230,13 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this15.perDivisiRequestorTahun = {
+          _this12.perDivisiRequestorTahun = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: _this15.tahunRequestor,
-              backgroundColor: '#' + _this15.color,
+              label: _this12.tahunRequestor,
+              backgroundColor: '#' + _this12.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -277,7 +246,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getPerDivisiUserBulan: function getPerDivisiUserBulan() {
-      var _this16 = this;
+      var _this13 = this;
 
       if (this.tahunnUser != null && this.bulanUser != null) {
         this.axios.get('api/count-per-divuser-bulan/' + this.tahunnUser + '/' + this.bulanUser, {
@@ -285,15 +254,15 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this16.nameBulanUser = response.data[0].bulan + _this16.tahunnUser;
-          _this16.kosong = false;
-          _this16.perDivisiUserBulan = {
+          _this13.nameBulanUser = response.data[0].bulan + _this13.tahunnUser;
+          _this13.kosong = false;
+          _this13.perDivisiUserBulan = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: _this16.nameBulanUser,
-              backgroundColor: '#' + _this16.color,
+              label: _this13.nameBulanUser,
+              backgroundColor: '#' + _this13.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -305,7 +274,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getPerDivisiRequestorBulan: function getPerDivisiRequestorBulan() {
-      var _this17 = this;
+      var _this14 = this;
 
       if (this.tahunnRequestor != null && this.bulanRequestor != null) {
         this.axios.get('api/count-per-divreq-bulan/' + this.tahunnRequestor + '/' + this.bulanRequestor, {
@@ -313,15 +282,15 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this17.nameBulanRequestor = response.data[0].bulan + _this17.tahunnRequestor;
-          _this17.kosong = false;
-          _this17.perDivisiRequestorBulan = {
+          _this14.nameBulanRequestor = response.data[0].bulan + _this14.tahunnRequestor;
+          _this14.kosong = false;
+          _this14.perDivisiRequestorBulan = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: response.data[0].bulan + _this17.tahunnRequestor,
-              backgroundColor: '#' + _this17.color,
+              label: response.data[0].bulan + _this14.tahunnRequestor,
+              backgroundColor: '#' + _this14.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -333,7 +302,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getStatusDivisiUser: function getStatusDivisiUser() {
-      var _this18 = this;
+      var _this15 = this;
 
       if (this.statusUser != null) {
         this.axios.get('api/count-per-divuser-status/' + this.statusUser, {
@@ -341,14 +310,14 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this18.nameStatusUser = response.data[0].name;
-          _this18.statusPerDivisiUser = {
+          _this15.nameStatusUser = response.data[0].name;
+          _this15.statusPerDivisiUser = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
               label: response.data[0].name,
-              backgroundColor: '#' + _this18.color,
+              backgroundColor: '#' + _this15.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -358,7 +327,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getStatusDivisiRequestor: function getStatusDivisiRequestor() {
-      var _this19 = this;
+      var _this16 = this;
 
       if (this.statusRequestor != null) {
         this.axios.get('api/count-per-divreq-status/' + this.statusRequestor, {
@@ -366,14 +335,14 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this19.nameStatusRequestor = response.data[0].name;
-          _this19.statusPerDivisiRequestor = {
+          _this16.nameStatusRequestor = response.data[0].name;
+          _this16.statusPerDivisiRequestor = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
               label: response.data[0].name,
-              backgroundColor: '#' + _this19.color,
+              backgroundColor: '#' + _this16.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -382,41 +351,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    getStatusPerIctPersonnel: function getStatusPerIctPersonnel() {
-      var _this20 = this;
-
-      this.axios.get('api/count-per-personel', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this20.statusPerIctPersonnel = {
-          labels: response.data.map(function (x) {
-            return x.ireq_assigned_to;
-          }),
-          datasets: [{
-            label: 'ICT Personnel',
-            backgroundColor: '#' + _this20.color,
-            data: response.data.map(function (x) {
-              return x.jumlah;
-            })
-          }]
-        };
-      });
-    },
-    getPersonnel: function getPersonnel() {
-      var _this21 = this;
-
-      this.axios.get('api/get-personnel', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (res) {
-        _this21.personnel = res.data;
-      });
-    },
     getPerStatusIct: function getPerStatusIct() {
-      var _this22 = this;
+      var _this17 = this;
 
       if (this.ictPersonnel != null) {
         this.axios.get('api/count-per-status-ict/' + this.ictPersonnel, {
@@ -424,13 +360,13 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this22.PerStatusIct = {
+          _this17.PerStatusIct = {
             labels: response.data.map(function (x) {
               return x.status;
             }),
             datasets: [{
-              label: _this22.ictPersonnel,
-              backgroundColor: '#' + _this22.color,
+              label: _this17.ictPersonnel,
+              backgroundColor: '#' + _this17.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -658,7 +594,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     inline: true,
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.ifChangeColor();
+      return $options.getTahun();
     })
   }, null, 8
   /* PROPS */

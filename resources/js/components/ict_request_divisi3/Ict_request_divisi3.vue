@@ -213,10 +213,10 @@ export default {
   },
   methods: {
     getUser(){
-      if(localStorage.getItem('active')){
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
+      // if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('api/user',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.user = response.data;
         this.getData();

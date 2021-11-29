@@ -274,7 +274,7 @@ import {FilterMatchMode} from 'primevue/api';
 export default {
   data() {
     return {
-      active1:null,
+        active1:0,
         loading: true,
         dialogAssign: false,
         submitted:false,
@@ -356,10 +356,10 @@ export default {
           this.submitted = false;
       },
      getPermohonan(){
-       if(localStorage.getItem('active')){
-        this.active1 = parseFloat(localStorage.getItem('active'));
-        localStorage.removeItem('active');
-      }
+      //  if(localStorage.getItem('active')){
+      //   this.active1 = parseFloat(localStorage.getItem('active'));
+      //   localStorage.removeItem('active');
+      // }
       this.axios.get('api/get-permohonan-divisi',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.permohonan = response.data.ict;
         this.sedangDikerjakan = response.data.ict1;
