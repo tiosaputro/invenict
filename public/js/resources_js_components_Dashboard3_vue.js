@@ -48,16 +48,16 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     blmSelesai: function blmSelesai() {
-      this.$router.push('/ict-request-divisi3');
-      localStorage.setItem('active', 0);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 17);
     },
     sdgDikerjakan: function sdgDikerjakan() {
-      this.$router.push('/ict-request-divisi3');
-      localStorage.setItem('active', 1);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 18);
     },
     sdhSelesai: function sdhSelesai() {
-      this.$router.push('/ict-request-divisi3');
-      localStorage.setItem('active', 2);
+      this.$router.push('/ict-request-desc');
+      localStorage.setItem('active', 19);
     }
   }
 });

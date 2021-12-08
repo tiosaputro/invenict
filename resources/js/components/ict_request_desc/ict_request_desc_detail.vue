@@ -141,27 +141,6 @@
                     @click="CetakExcel()" 
                   />
                 </div>
-                <!-- <div class="box" v-else>
-                   <Button
-                    label="back"
-                    class="p-button-raised p-button p-mr-2 p-mb-2"
-                    icon="pi pi-chevron-left"
-                    @click="$router.push({
-                    name: 'Ict Request'})"
-                  />
-                  <Button
-                    label="Pdf"
-                    class="p-button-raised p-button-danger p-mr-2 p-mb-2"
-                    icon="pi pi-file-pdf"
-                    @click="CetakPdf()"
-                  />
-                  <Button 
-                    label="Excel"
-                    class="p-button-raised p-button-success p-mr-2 p-mb-2"
-                    icon="pi pi-print"
-                    @click="CetakExcel()" 
-                  />
-                </div> -->
 			        </div>
             </div>
            </template>

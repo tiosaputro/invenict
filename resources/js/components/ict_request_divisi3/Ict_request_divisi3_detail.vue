@@ -23,15 +23,15 @@
         >
         
        <template #header>
-              <div class="table-header p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                  <label style="width:110px">No. Request: {{kode.noreq}}</label>
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-search" />
-                        <InputText
-                        v-model="filters['global'].value"
-                        placeholder="Search. . ."
-                        />
-                    </span>
+          <div class="table-header p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+            <label style="width:110px">No. Request: {{kode.noreq}}</label>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                  <InputText
+                    v-model="filters['global'].value"
+                    placeholder="Search. . ."
+                  />
+              </span>
             </div>
           </template>
            <template #empty>

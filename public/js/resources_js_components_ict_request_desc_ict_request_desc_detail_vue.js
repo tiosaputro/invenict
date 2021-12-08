@@ -323,7 +323,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[7] || (_cache[7] = function ($event) {
           return $options.CetakExcel();
         })
-      })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"box\" v-else>\r\n                   <Button\r\n                    label=\"back\"\r\n                    class=\"p-button-raised p-button p-mr-2 p-mb-2\"\r\n                    icon=\"pi pi-chevron-left\"\r\n                    @click=\"$router.push({\r\n                    name: 'Ict Request'})\"\r\n                  />\r\n                  <Button\r\n                    label=\"Pdf\"\r\n                    class=\"p-button-raised p-button-danger p-mr-2 p-mb-2\"\r\n                    icon=\"pi pi-file-pdf\"\r\n                    @click=\"CetakPdf()\"\r\n                  />\r\n                  <Button \r\n                    label=\"Excel\"\r\n                    class=\"p-button-raised p-button-success p-mr-2 p-mb-2\"\r\n                    icon=\"pi pi-print\"\r\n                    @click=\"CetakExcel()\" \r\n                  />\r\n                </div> ")])])];
+      })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
