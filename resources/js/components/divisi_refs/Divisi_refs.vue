@@ -8,7 +8,7 @@
           <template v-slot:left>
             <div class="p-grid p-dir-col">
 			        <div class="p-col">
-				        <h4>Divisi Refs</h4>
+				        <h4>Referensi - Divisi</h4>
 			        </div>
             </div>
           </template>

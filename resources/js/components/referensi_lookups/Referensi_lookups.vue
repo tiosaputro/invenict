@@ -8,7 +8,7 @@
           <template v-slot:left>
             <div class="p-grid p-dir-col">
 			        <div class="p-col">
-				        <h4>Referensi Lookups</h4>
+				        <h4>Referensi - Lookups</h4>
 			        </div>
             </div>
           </template>

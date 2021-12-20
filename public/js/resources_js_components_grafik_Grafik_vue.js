@@ -603,7 +603,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.printperStatus();
     }),
-    icon: "pi pi-print",
+    icon: "pi pi-file-pdf",
     label: "PDF"
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Chart, {
     type: "bar",

@@ -7,7 +7,7 @@
           <template v-slot:left>
             <div class="p-grid p-dir-col">
 			        <div class="p-col">
-				        <h4>Referensi Lookups</h4>
+				        <h4>Referensi - Lookups</h4>
 			        </div>
             </div>
           </template>
@@ -131,12 +131,13 @@ export default {
       },
     UpdateLookup(){
         this.errors = [];   
-        this.axios.put('/api/update-ref/' + this.$route.params.code + '/' + this.$route.params.type, this.ref, {headers: {'Authorization': 'Bearer '+this.token}} ).then(() => {
+        this.axios.put('/api/update-ref/' + this.$route.params.code + '/' + this.$route.params.type, this.ref, {headers: {'Authorization': 'Bearer '+this.token}} ).then((response) => {
            this.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Update",
           });
+          console.log(response.data)
          setTimeout( () => this.$router.push('/referensi-lookups'),1000);
         }).catch(error => {
           this.errors = error.response.data.errors;

@@ -88,7 +88,6 @@ class MngMenuController extends Controller
             'menu_display.required'=>'Menu Display Wajib Diisi',
             'menu_type.required'=>'Metu Type Wajib Diisi',
             'menu_stat.required'=>'Menu Status Wajib Diisi',
-            'controller.required'=>'Controller Wajib Diisi',
         ];
         $request->validate([
             'mod_id' => 'required',
@@ -96,8 +95,7 @@ class MngMenuController extends Controller
             'menu_desc' => 'required',
             'menu_display'=>'required',
             'menu_type' => 'required',
-            'menu_stat'=>'required',
-            'controller' => 'required'
+            'menu_stat'=>'required',    
         ],$message);
 
         $date = Carbon::now();

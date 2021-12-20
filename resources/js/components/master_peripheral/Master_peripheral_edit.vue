@@ -6,7 +6,7 @@
             <template v-slot:left>
               <div class="p-grid p-dir-col">
                 <div class="p-col">
-                  <h4>Master Peripheral ICT</h4>
+                  <h4>Master Peripheral</h4>
 			          </div>
               </div>
             </template>
@@ -410,7 +410,7 @@ export default {
         this.master.invent_lokasi_previous != null &&
         this.master.invent_pengguna_previous != null  
       ) {
-        this.axios.put('/api/update-mas/' + this.$route.params.code ,this.master, {headers: {'Authorization': 'Bearer '+this.token}}).then(()=>{
+        this.axios.put('/api/update-mas/' + this.$route.params.code ,this.master, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           localStorage.removeItem("barcode");
           setTimeout( () => this.$router.push('/master-peripheral'),1000);
           this.$toast.add({
@@ -418,6 +418,7 @@ export default {
             summary: "Success Message",
             detail: "Success Update",
           });
+          console.log(response.data); 
         }).catch(error=>{
           if (error.response.status == 422) {
             this.submitted = false;

@@ -43,18 +43,18 @@
           <template #loading>
             Loading data. Please wait.
           </template>
-          <Column field="usr_id" header="User ID" :sortable="true" style="min-width:10rem"/>
+          <Column field="usr_id" header="User ID" :sortable="true" style="min-width:8 rem"/>
           <Column field="usr_fullname" header="User Fullname" :sortable="true" style="min-width:10rem"/>
           <Column field="usr_name" header="User Name" :sortable="true" style="min-width:10rem"/>
           <Column field="usr_email" header="User Email" :sortable="true" style="min-width:10rem"/>
           <Column field="div_name" header="User Divisi" :sortable="true" style="min-width:10rem"/>
-          <Column header="User Photo" style="min-width:10rem">
+          <Column header="User Photo" style="min-width:8rem">
             <template #body="slotProps">
                 <img :src="'/profile/' +slotProps.data.usr_foto" class="profile-image" />
             </template>
           </Column>
-          <Column field="usr_stat" header="User Status" :sortable="true" style="min-width:10rem"/>
-          <Column style="min-width:10rem">
+          <Column field="usr_stat" header="User Status" :sortable="true" style="min-width:8rem"/>
+          <Column style="min-width:8rem">
             <template #body="slotProps">
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"

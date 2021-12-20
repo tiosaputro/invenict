@@ -79,7 +79,7 @@ __webpack_require__.r(__webpack_exports__);
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
-      }).then(function () {
+      }).then(function (resoonse) {
         _this2.$toast.add({
           severity: "success",
           summary: "Success Message",
@@ -124,7 +124,7 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "p-grid p-dir-col"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "p-col"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "Referensi Lookups")])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "Referensi - Lookups")])], -1
 /* HOISTED */
 );
 

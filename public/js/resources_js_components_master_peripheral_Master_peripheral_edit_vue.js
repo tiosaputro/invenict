@@ -162,7 +162,7 @@ __webpack_require__.r(__webpack_exports__);
           headers: {
             'Authorization': 'Bearer ' + this.token
           }
-        }).then(function () {
+        }).then(function (response) {
           localStorage.removeItem("barcode");
           setTimeout(function () {
             return _this7.$router.push('/master-peripheral');
@@ -173,6 +173,8 @@ __webpack_require__.r(__webpack_exports__);
             summary: "Success Message",
             detail: "Success Update"
           });
+
+          console.log(response.data);
         })["catch"](function (error) {
           if (error.response.status == 422) {
             _this7.submitted = false;
@@ -209,7 +211,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "p-grid p-dir-col"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "p-col"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "Master Peripheral ICT")])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "Master Peripheral")])], -1
 /* HOISTED */
 );
 

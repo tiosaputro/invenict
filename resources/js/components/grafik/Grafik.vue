@@ -6,7 +6,7 @@
 </div>
 <div class="card">
     <div class="p-text-left">
-        <Button class="p-button-lg p-button-rounded p-button-danger" @click="printperStatus()" icon="pi pi-print" label="PDF"/>
+        <Button class="p-button-lg p-button-rounded p-button-danger" @click="printperStatus()" icon="pi pi-file-pdf" label="PDF"/>
     </div>
     <div class="p-text-center" id="perStatus">
         <h5 style="font-size:20pt; font-weight: bold;">Statistik Permintaan User</h5>

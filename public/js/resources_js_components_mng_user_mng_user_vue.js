@@ -229,7 +229,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         header: "User ID",
         sortable: true,
         style: {
-          "min-width": "10rem"
+          "min-width": "8 rem"
         }
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
         field: "usr_fullname",
@@ -262,7 +262,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
         header: "User Photo",
         style: {
-          "min-width": "10rem"
+          "min-width": "8rem"
         }
       }, {
         body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
@@ -281,11 +281,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         header: "User Status",
         sortable: true,
         style: {
-          "min-width": "10rem"
+          "min-width": "8rem"
         }
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
         style: {
-          "min-width": "10rem"
+          "min-width": "8rem"
         }
       }, {
         body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
