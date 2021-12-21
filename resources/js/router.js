@@ -338,10 +338,41 @@ const routes = [
     },
     //grafik
     {
-        name: 'Grafik',
-        path: '/grafik',
-        component: ()=> import('./components/grafik/Grafik.vue'),
+        name: 'Statistik Permintaan User Per Status',
+        path: '/req-per-status',
+        component: ()=> import('./components/grafik/JmlRqstPerStatus.vue'),
     },
+    {
+        name: 'Statistik Permintaan Divisi User Per Status',
+        path: '/req-per-divisi-per-status',
+        component: ()=> import('./components/grafik/JmlhRqstDivisiUserPerStatus.vue'),
+    },
+    {
+        name: 'Statistik Permintaan Divisi Req Per Status',
+        path: '/req-per-divisi-req-per-status',
+        component: ()=> import('./components/grafik/JmlhRqstDivisiReqPerStatus.vue'),
+    },
+    {
+        name: 'Statistik Permintaan Divisi User Per Tahun',
+        path: '/req-per-divisi-user-per-tahun',
+        component: ()=> import('./components/grafik/JmlhRqstDivisiUserPerTahun.vue'),
+    },
+    {
+        name: 'Statistik Permintaan Divisi Req Per Tahun',
+        path: '/req-per-divisi-req-per-tahun',
+        component: ()=> import('./components/grafik/JmlhRqstDivisiReqPerTahun.vue'),
+    },
+    {
+        name: 'Statistik Permintaan Divisi User Per Bulan',
+        path: '/req-per-divisi-user-per-bulan',
+        component: ()=> import('./components/grafik/JmlhRqstDivisiUserPerBulan.vue'),
+    },
+    {
+        name: 'Statistik Permintaan Divisi Req Per Bulan',
+        path: '/req-per-divisi-req-per-bulan',
+        component: ()=> import('./components/grafik/JmlhRqstDivisiReqPerBulan.vue'),
+    },
+
     //ict_request_divisi4
      {
         name: 'Ict Request Divisi 4',

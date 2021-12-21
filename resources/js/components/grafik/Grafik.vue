@@ -316,7 +316,7 @@ export default {
                 }).catch(error => console.log(error))
             }
         },
-        getStatusDivisiUser(){
+        (){
             if(this.statusUser != null){
                 this.axios.get('api/count-per-divuser-status/'+this.statusUser, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                     this.nameStatusUser = response.data[0].name;
@@ -330,7 +330,7 @@ export default {
                             },
                         ]
                     }
-                });
+            getStatusDivisiUser    });
             }
         },
         getStatusDivisiRequestor(){
