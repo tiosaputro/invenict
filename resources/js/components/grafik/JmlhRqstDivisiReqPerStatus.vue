@@ -1,10 +1,10 @@
 <template>
     <div class="card">
         <div class="table-header p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-            <Button class="p-button-lg p-button-rounded p-button-danger" @click="printstatusPerDivisiRequestor()" icon="pi pi-file-pdf" label="PDF"/>
+            <Button class="p-button-lg p-button-rounded p-button-danger" v-if="this.statusRequestor" @click="printstatusPerDivisiRequestor()" icon="pi pi-file-pdf" label="PDF"/>
             <ColorPicker v-model="color" v-if="this.statusRequestor"/> 
         </div>
-        <div class="p-text-center" id="perStatus">
+        <div class="p-text-center" id="statusPerDivisiRequestor">
             <h5 style="font-size:20pt; font-weight: bold;">Statistik Request Divisi Requestor Per Status</h5>
             <Dropdown @change="getStatusDivisiRequestor()" :showClear="true" v-model="statusRequestor" :options="status" optionValue="code" optionLabel="name" placeholder="Pilih Status"/>
             <Chart type="bar" :data="statusPerDivisiRequestor" v-if="this.statusRequestor" />
@@ -21,6 +21,7 @@ export default {
             statusPerDivisiRequestor:{},
             statusRequestor: null,
             status: [],
+            nameStatusRequestor:null,
         };
     },
     watch : {
@@ -54,13 +55,14 @@ export default {
                 });
             }
         },
-        printperStatus(){
-                let bar = document.getElementById("perStatus");
-                const exp = new Exporter([bar]);
-                exp.export_pdf().then((pdf) => {
-                    pdf.save("Statistik Permintaan User.pdf");
-                });
-            },
+        
+        printstatusPerDivisiRequestor(){
+            let bar = document.getElementById("statusPerDivisiRequestor");
+            const exp = new Exporter([bar]);
+            exp.export_pdf().then((pdf) => {
+                pdf.save('Statistik Request Divisi Requestor Per Status ' +this.nameStatusRequestor);
+            });
+        },
     }
 }
 

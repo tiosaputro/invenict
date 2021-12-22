@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="table-header p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-            <Button class="p-button-lg p-button-rounded p-button-danger" @click="printstatusPerDivisiUser()" icon="pi pi-file-pdf" label="PDF"/>
+            <Button class="p-button-lg p-button-rounded p-button-danger" v-if="this.statusUser" @click="printstatusPerDivisiUser()" icon="pi pi-file-pdf" label="PDF"/>
             <ColorPicker v-model="color" v-if="this.statusUser"/> 
         </div>
         <div class="p-text-center" id="statusPerDivisiUser">

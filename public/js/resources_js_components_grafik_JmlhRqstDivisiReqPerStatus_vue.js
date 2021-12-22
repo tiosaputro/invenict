@@ -20,7 +20,8 @@ __webpack_require__.r(__webpack_exports__);
       token: localStorage.getItem('token'),
       statusPerDivisiRequestor: {},
       statusRequestor: null,
-      status: []
+      status: [],
+      nameStatusRequestor: null
     };
   },
   watch: {
@@ -68,11 +69,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    printperStatus: function printperStatus() {
-      var bar = document.getElementById("perStatus");
+    printstatusPerDivisiRequestor: function printstatusPerDivisiRequestor() {
+      var _this3 = this;
+
+      var bar = document.getElementById("statusPerDivisiRequestor");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save("Statistik Permintaan User.pdf");
+        pdf.save('Statistik Request Divisi Requestor Per Status ' + _this3.nameStatusRequestor);
       });
     }
   }
@@ -101,7 +104,7 @@ var _hoisted_2 = {
 };
 var _hoisted_3 = {
   "class": "p-text-center",
-  id: "perStatus"
+  id: "statusPerDivisiRequestor"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
@@ -122,15 +125,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_Chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Chart");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [this.statusRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+    key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _ctx.printstatusPerDivisiRequestor();
+      return $options.printstatusPerDivisiRequestor();
     }),
     icon: "pi pi-file-pdf",
     label: "PDF"
-  }), this.statusRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ColorPicker, {
-    key: 0,
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.statusRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ColorPicker, {
+    key: 1,
     modelValue: $data.color,
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.color = $event;

@@ -71,13 +71,18 @@ class DashboardController extends Controller
         $grafik1 = DB::table('VREQ_MST_STATUS')->get();
         $grafik2 = DB::table('VREQ_MST_BULAN')->get();
         $grafik3 = DB::table('VREQ_PER_STATUS')->get();
-        $personnel = DB::table('ireq_mst')
+        $personnel = DB::table('ireq_dtl')
+        ->select('ireq_assigned_to',DB::raw("count(ireqd_id) as jumlah"))
+        ->whereNotNull('ireq_assigned_to')
+        ->groupBy('ireq_assigned_to')
+        ->get();
+        $personnell = DB::table('ireq_dtl')
         ->select('ireq_assigned_to as name')
         ->whereNotNull('ireq_assigned_to')
         ->groupBy('ireq_assigned_to')
         ->get();
 
-        return response()->Json(['grafik'=>$grafik,'grafik1'=>$grafik1,'grafik2'=>$grafik2,'grafik3'=>$grafik3,'personnel'=>$personnel],200);
+        return response()->Json(['grafik'=>$grafik,'grafik1'=>$grafik1,'grafik2'=>$grafik2,'grafik3'=>$grafik3,'personnel'=>$personnel,'personnell'=>$personnell],200);
     }
     public function getTahunUser($bulanUser)
     {
@@ -177,7 +182,7 @@ class DashboardController extends Controller
     }
     public function countPerStatusIct($ictPersonnel)
     {
-        $grafik = DB::table('ireq_mst as imm')
+        $grafik = DB::table('ireq_dtl as imm')
         ->select(DB::raw("count(imm.ireq_id) as jumlah"),DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end as status "))
         ->where('imm.ireq_assigned_to',$ictPersonnel)
         ->groupBy(DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end "))

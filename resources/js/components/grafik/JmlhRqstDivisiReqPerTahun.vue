@@ -1,10 +1,10 @@
 <template>
     <div class="card">
         <div class="table-header p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-            <Button class="p-button-lg p-button-rounded p-button-danger" @click="printperDivisiRequestorTahun()" icon="pi pi-file-pdf" label="PDF"/>
+            <Button class="p-button-lg p-button-rounded p-button-danger" v-if="this.tahunRequestor" @click="printperDivisiRequestorTahun()" icon="pi pi-file-pdf" label="PDF"/>
             <ColorPicker v-model="color" v-if="this.tahunRequestor"/> 
         </div>
-        <div class="p-text-center" id="perStatus">
+        <div class="p-text-center" id="perDivisiRequestorTahun">
             <h5 style="font-size:20pt; font-weight: bold;">Statistik Request Divisi Requestor Per Tahun</h5>
             <Dropdown @change="getPerDivisiRequestorTahun()" :showClear="true" v-model="tahunRequestor" :options="tahunn" optionValue="tahun" optionLabel="tahun" placeholder="Pilih Tahun" />
             <Chart type="bar" :data="perDivisiRequestorTahun" v-if="this.tahunRequestor" />

@@ -372,7 +372,32 @@ const routes = [
         path: '/req-per-divisi-req-per-bulan',
         component: ()=> import('./components/grafik/JmlhRqstDivisiReqPerBulan.vue'),
     },
-
+    {
+        name: 'Statistik Permintaan Per Status Per Personnel',
+        path: '/req-per-status-per-personnel',
+        component: ()=> import('./components/grafik/JmlhRqstPerStatusPerPersonnel.vue'),
+    },
+    {
+        name: 'Statistik Permintaan Per Personnel',
+        path: '/req-per-personnel',
+        component: ()=> import('./components/grafik/JmlhRqstPerPersonnel.vue'),
+    },
+//laporan
+{
+    name: 'Laporan Permintaan Per status',
+    path: '/report-per-status',
+    component: ()=> import('./components/laporan/LaporanRqsPerStatus.vue'),
+},
+{
+    name: 'Laporan Permintaan Divisi Requestor Per Bulan',
+    path: '/report-div-req-per-bulan',
+    component: ()=> import('./components/laporan/LaporanRqsDivisiPerBulan.vue'),
+},
+{
+    name: 'Laporan Permintaan Divisi User Per Bulan',
+    path: '/report-div-user-per-bulan',
+    component: ()=> import('./components/laporan/LaporanRqsDivisiUserPerBulan.vue'),
+},
     //ict_request_divisi4
      {
         name: 'Ict Request Divisi 4',

@@ -102,7 +102,7 @@ var _hoisted_2 = {
 };
 var _hoisted_3 = {
   "class": "p-text-center",
-  id: "perStatus"
+  id: "perDivisiRequestorTahun"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
@@ -123,15 +123,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_Chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Chart");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [this.tahunRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+    key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.printperDivisiRequestorTahun();
     }),
     icon: "pi pi-file-pdf",
     label: "PDF"
-  }), this.tahunRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ColorPicker, {
-    key: 0,
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.tahunRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ColorPicker, {
+    key: 1,
     modelValue: $data.color,
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.color = $event;

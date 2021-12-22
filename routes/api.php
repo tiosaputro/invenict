@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', 'LoginController@index');
 Route::get('/logout', 'LoginController@logout')->middleware('auth:sanctum');
 //referensi_lookups
-Route::middleware(['auth:sanctum','admin'])->group(function(){
+Route::middleware('auth:sanctum')->group(function(){
     Route::get('/ref', 'LookupsController@index');
     Route::post('/add-ref','LookupsController@save');
     Route::get('/edit-ref/{code}/{type}','LookupsController@edit');
@@ -169,8 +169,9 @@ Route::middleware(['auth:sanctum','admin'])->group(function(){
     Route::get('/count-per-personel','DashboardController@countPerPersonnel');
     Route::get('/get-personnel','DashboardController@getPersonnel');
     Route::get('/count-per-status-ict/{ictPersonnel}','DashboardController@countPerStatusIct');
+
 });
-Route::middleware(['auth:sanctum','user'])->group(function(){
+Route::middleware('auth:sanctum')->group(function(){
     //ict request
     Route::get('/get-ict/{usr_name}','IctController@getIct');
     Route::post('/add-ict','IctController@save');
@@ -229,6 +230,13 @@ Route::middleware(['auth:sanctum','user'])->group(function(){
     Route::get('/get-kode','MasterController@getKode');
     Route::get('/get-kode-ict/{code}','MasterController@getKodeIct');
 });
+//laporan
+Route::get('/req-per-status-excel','LaporanController@cetak_excel_per_status');
+Route::get('/req-per-status-pdf','LaporanController@cetak_pdf_per_status');
+Route::get('/req-div-req-per-bulan-pdf/{tahunnRequestor}/{bulanRequestor}','LaporanController@cetak_pdf_div_req_per_bulan');
+Route::get('/req-div-req-per-bulan-excel/{tahunnRequestor}/{bulanRequestor}','LaporanController@cetak_excel_div_req_per_bulan');
+Route::get('/req-div-user-per-bulan-excel/{tahunnUser}/{bulanUser}','LaporanController@cetak_excel_div_user_per_bulan');
+Route::get('/req-div-user-per-bulan-pdf/{tahunnUser}/{bulanUser}','LaporanController@cetak_pdf_div_user_per_bulan');
 //bisnis
 Route::get('/get-bisnis','BisnisController@getBisnis');
 Route::get('/report-master-pdf','MasterController@cetak_pdf');
