@@ -18,27 +18,31 @@
           :rows="25"
           :rowHover="true"
           responsiveLayout="scroll"
+          :loading="loading"
           stripedRows
         >
+         <template #loading>
+            Loading data. Please wait.
+         </template>
          <template #header>
             <div class="table-header p-text-left">
                 <Dropdown @change="getTahunUser()" :showClear="true" v-model="bulanUser" :options="bulan" optionValue="code" optionLabel="name" placeholder="Pilih Bulan" class="p-mr-2 p-mb-2" />
                 <Dropdown @change="getPerDivisiUserBulan()" :showClear="true" v-model="tahunnUser" :options="tahunn" optionValue="tahun" optionLabel="tahun" placeholder="Pilih Tahun" class="p-mr-2 p-mb-2" v-if="this.bulanUser" />
             </div>
           </template>
-          <Column field="div_name" header="Divisi User" style="min-width:12rem" v-if="tahunnUser"/>
-          <Column field="jumlah" header="Jumlah Request" style="min-width:12rem" v-if="tahunnUser"/>
+          <Column field="div_name" header="Divisi User" style="min-width:10rem" v-if="tahunnUser"/>
+          <Column field="jumlah" header="Jumlah Request" style="min-width:10rem" v-if="tahunnUser"/>
           <template #footer v-if="tahunnUser">
-                <div class="p-grid p-dir-col">
+            <div class="p-grid p-dir-col">
 			        <div class="p-col">
 				        <div class="box">
-                            <SplitButton 
-                                label="Print" 
-                                :model="items"
-                            />
-                        </div>
-			        </div>
+                  <SplitButton 
+                    label="Print" 
+                    :model="items"
+                  />
                 </div>
+			        </div>
+            </div>
            </template>
         </DataTable>   
       </div>
@@ -94,8 +98,10 @@ export default {
         getPerDivisiUserBulan(){
             if(this.tahunnUser != null &&
                 this.bulanUser != null){
+                this.loading = true;
                 this.axios.get('api/count-per-divuser-bulan/'+this.tahunnUser +'/'+this.bulanUser, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{ 
-                    this.req = response.data
+                    this.req = response.data;
+                    this.loading = false;
                 }).catch(error => console.log(error.response))
             }
         },

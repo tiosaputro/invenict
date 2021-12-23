@@ -103,7 +103,7 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "p-grid p-dir-col"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "p-col"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "Laporan Permintaan Per Status")])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "Laporan Request Per Status")])], -1
 /* HOISTED */
 );
 
@@ -169,13 +169,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         field: "ireq_status",
         header: "Status ICT Request",
         style: {
-          "min-width": "12rem"
+          "min-width": "10rem"
         }
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
         field: "jumlah",
         header: "Jumlah Request",
         style: {
-          "min-width": "12rem"
+          "min-width": "10rem"
         }
       })];
     }),

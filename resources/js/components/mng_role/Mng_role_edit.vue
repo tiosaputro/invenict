@@ -91,7 +91,6 @@
                 placeholder="Select Menu" 
                 :class="{ 'p-invalid': errors.menu }"
                />
-               {{menuss.menu}}
                    <small v-if="errors.menu" class="p-error">
                       {{ errors.menu[0] }}
                   </small>

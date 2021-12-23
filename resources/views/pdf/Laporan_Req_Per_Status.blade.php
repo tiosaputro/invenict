@@ -31,7 +31,7 @@
 		<div class="">
 			<div class="row justify-content-center">
 				<div class="col-md-5 text-center mb-5">
-					<h2 style="font-size:30pt; font-weight: bold;"> Laporan Permintaan Per Status </h2>
+					<h2 style="font-size:30pt; font-weight: bold;"> Laporan Request Per Status </h2>
 					 <h4 style="font-size:20pt; font-weight: bold;">Pada tanggal : {{date('d M Y')}}</h4>
 				</div>
 			</div>

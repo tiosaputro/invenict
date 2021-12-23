@@ -1,7 +1,7 @@
 <table style ="width:100%">
     <thead>
         <tr>
-            <th colspan="3" style="text-align:center; font-weight: bold; font-size: 14px;"> Laporan Permintaan Divisi User Pada Bulan {{$status[0]->bulan}} {{$status[0]->tahun}} </th>
+            <th colspan="3" style="text-align:center; font-weight: bold; font-size: 14px;"> Laporan Request Divisi User Pada Bulan {{$status[0]->bulan}} {{$status[0]->tahun}} </th>
         </tr>
         <tr>
             <th colspan="3" style="text-align:center; font-weight: bold; font-size: 12px;"> {{date('d M Y')}}</th>

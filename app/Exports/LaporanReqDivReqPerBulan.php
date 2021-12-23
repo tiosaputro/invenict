@@ -23,6 +23,7 @@ class LaporanReqDivReqPerBulan implements FromView
                 DB::raw("TO_CHAR(im.ireq_date,'YYYY') as Tahun"))
         ->whereYear('im.ireq_date',$this->tahunRequestor)
         ->whereMonth('im.ireq_date',$this->bulanRequestor)
+        ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name', DB::raw("TO_CHAR(im.ireq_date,'Month')"),DB::raw("TO_CHAR(im.ireq_date,'YYYY')"))
         ->get()
         ]);

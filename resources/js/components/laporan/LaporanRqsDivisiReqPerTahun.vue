@@ -18,26 +18,30 @@
           :rows="25"
           :rowHover="true"
           responsiveLayout="scroll"
+          :loading="loading"
           stripedRows
         >
+         <template #loading>
+            Loading data. Please wait.
+         </template>
          <template #header>
             <div class="table-header p-text-left">
                <Dropdown @change="getPerDivisiRequestorTahun()" :showClear="true" v-model="tahunRequestor" :options="tahunn" optionValue="tahun" optionLabel="tahun" placeholder="Pilih Tahun" />
             </div>
           </template>
-          <Column field="div_name" header="Divisi Requestor" style="min-width:12rem" v-if="tahunRequestor"/>
-          <Column field="jumlah" header="Jumlah Request" style="min-width:12rem" v-if="tahunRequestor"/>
+          <Column field="div_name" header="Divisi Requestor" style="min-width:10rem" v-if="tahunRequestor"/>
+          <Column field="jumlah" header="Jumlah Request" style="min-width:10rem" v-if="tahunRequestor"/>
           <template #footer v-if="tahunRequestor">
-                <div class="p-grid p-dir-col">
+            <div class="p-grid p-dir-col">
 			        <div class="p-col">
 				        <div class="box">
-                            <SplitButton 
-                                label="Print" 
-                                :model="items"
-                            />
-                        </div>
-			        </div>
+                  <SplitButton 
+                    label="Print" 
+                    :model="items"
+                  />
                 </div>
+			        </div>
+            </div>
            </template>
         </DataTable>   
       </div>
@@ -78,8 +82,10 @@ export default {
   methods: {
         getPerDivisiRequestorTahun(){
             if(this.tahunRequestor != null){
+              this.loading = true;
                 this.axios.get('api/count-per-divreq-tahun/'+this.tahunRequestor, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{ 
                     this.req = response.data;
+                    this.loading = false;
                 });
             }
         },

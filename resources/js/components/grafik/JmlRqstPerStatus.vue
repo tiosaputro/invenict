@@ -5,7 +5,7 @@
             <ColorPicker v-model="color"/> 
         </div>
         <div class="p-text-center" id="perStatus">
-            <h5 style="font-size:20pt; font-weight: bold;">Statistik Permintaan User</h5>
+            <h5 style="font-size:20pt; font-weight: bold;">Statistik Request User</h5>
             <Chart type="bar" :data="perStatus" />
         </div>
     </div>
@@ -47,7 +47,7 @@ export default {
                 let bar = document.getElementById("perStatus");
                 const exp = new Exporter([bar]);
                 exp.export_pdf().then((pdf) => {
-                    pdf.save("Statistik Permintaan User.pdf");
+                    pdf.save("Statistik Request User.pdf");
                 });
             },
     }

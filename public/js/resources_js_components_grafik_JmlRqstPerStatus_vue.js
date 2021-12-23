@@ -56,7 +56,7 @@ __webpack_require__.r(__webpack_exports__);
       var bar = document.getElementById("perStatus");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save("Statistik Permintaan User.pdf");
+        pdf.save("Statistik Request User.pdf");
       });
     }
   }
@@ -93,7 +93,7 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
     "font-size": "20pt",
     "font-weight": "bold"
   }
-}, "Statistik Permintaan User", -1
+}, "Statistik Request User", -1
 /* HOISTED */
 );
 

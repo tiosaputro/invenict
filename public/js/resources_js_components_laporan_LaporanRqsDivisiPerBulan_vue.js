@@ -72,14 +72,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       if (this.tahunnRequestor != null && this.bulanRequestor != null) {
+        this.loading = true;
         this.axios.get('api/count-per-divreq-bulan/' + this.tahunnRequestor + '/' + this.bulanRequestor, {
           headers: {
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
           _this4.req = response.data;
-        })["catch"](function (error) {
-          return console.log(error);
+          _this4.loading = false;
         });
       }
     }
@@ -118,16 +118,18 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_5 = {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Loading data. Please wait. ");
+
+var _hoisted_6 = {
   "class": "table-header p-text-left"
 };
-var _hoisted_6 = {
+var _hoisted_7 = {
   "class": "p-grid p-dir-col"
 };
-var _hoisted_7 = {
+var _hoisted_8 = {
   "class": "p-col"
 };
-var _hoisted_8 = {
+var _hoisted_9 = {
   "class": "box"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -161,10 +163,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     rows: 25,
     rowHover: true,
     responsiveLayout: "scroll",
+    loading: $data.loading,
     stripedRows: ""
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createSlots)({
+    loading: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_5];
+    }),
     header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
         onChange: _cache[0] || (_cache[0] = function ($event) {
           return $options.getTahunRequestor();
         }),
@@ -205,14 +211,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         field: "div_name",
         header: "Divisi Requestor",
         style: {
-          "min-width": "12rem"
+          "min-width": "10rem"
         }
       })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.tahunnRequestor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Column, {
         key: 1,
         field: "jumlah",
         header: "Jumlah Request",
         style: {
-          "min-width": "12rem"
+          "min-width": "10rem"
         }
       })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
@@ -222,7 +228,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [$data.tahunnRequestor ? {
     name: "footer",
     fn: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SplitButton, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SplitButton, {
         label: "Print",
         model: $data.items
       }, null, 8
@@ -231,7 +237,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   } : undefined]), 1032
   /* PROPS, DYNAMIC_SLOTS */
-  , ["value"])])])]);
+  , ["value", "loading"])])])]);
 }
 
 /***/ }),

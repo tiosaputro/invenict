@@ -115,6 +115,7 @@ class DashboardController extends Controller
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->select('dr.div_name',DB::raw("count(im.ireq_id) as jumlah"))
         ->whereYear('im.ireq_date',$tahunUser)
+        ->orderBy('dr.div_name','ASC') 
         ->groupBy('dr.div_name')
         ->get();
         return response()->Json($grafik);
@@ -126,6 +127,7 @@ class DashboardController extends Controller
         ->leftjoin('divisi_refs as dr','im.ireq_divisi_requestor','dr.div_id')
         ->select('dr.div_name',DB::raw("count(im.ireq_id) as jumlah"))
         ->whereYear('im.ireq_date',$tahunRequestor)
+        ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name')
         ->get();
         return response()->Json($grafik);
@@ -137,6 +139,7 @@ class DashboardController extends Controller
         ->select('dr.div_name',DB::raw("count(im.ireq_id) as jumlah"),DB::raw("TO_CHAR(im.ireq_date,'Month') as bulan"))
         ->whereYear('im.ireq_date',$tahunnUser)
         ->whereMonth('im.ireq_date',$bulanUser)
+        ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name', DB::raw("TO_CHAR(im.ireq_date,'Month')"))
         ->get();
         return response()->Json($grafik);
@@ -149,6 +152,7 @@ class DashboardController extends Controller
         ->select('dr.div_name',DB::raw("count(im.ireq_id) as jumlah"),DB::raw("TO_CHAR(im.ireq_date,'Month') as bulan"))
         ->whereYear('im.ireq_date',$tahunRequestor)
         ->whereMonth('im.ireq_date',$bulanRequestor)
+        ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name', DB::raw("TO_CHAR(im.ireq_date,'Month')"))
         ->get();
         return response()->Json($grafik);
@@ -160,6 +164,7 @@ class DashboardController extends Controller
                   DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end as name "))
         ->leftjoin('divisi_refs as dr','imm.ireq_divisi_user','dr.div_id')
         ->where('imm.ireq_status',$statusUser)
+        ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name',DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end"))
         ->get();
         return response()->Json($grafik);
@@ -170,6 +175,7 @@ class DashboardController extends Controller
         ->select('dr.div_name',DB::raw("count(imm.ireq_id) as jumlah"),
                   DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end as name "))
         ->leftjoin('divisi_refs as dr','imm.ireq_divisi_requestor','dr.div_id')
+        ->orderBy('dr.div_name','ASC')
         ->where('imm.ireq_status',$statusRequestor)
         ->groupBy('dr.div_name',DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end"))
         ->get();

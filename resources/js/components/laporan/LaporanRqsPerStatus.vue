@@ -8,7 +8,7 @@
           <template v-slot:left>
             <div class="p-grid p-dir-col">
 			        <div class="p-col">
-				        <h4>Laporan Permintaan Per Status</h4>
+				        <h4>Laporan Request Per Status</h4>
 			        </div>
             </div>
           </template>
@@ -27,8 +27,8 @@
           <template #loading>
             Loading. Please wait.
           </template>
-          <Column field="ireq_status" header="Status ICT Request" style="min-width:12rem"/>
-          <Column field="jumlah" header="Jumlah Request" style="min-width:12rem"/>
+          <Column field="ireq_status" header="Status ICT Request" style="min-width:10rem"/>
+          <Column field="jumlah" header="Jumlah Request" style="min-width:10rem"/>
           <template #footer>
                 <div class="p-grid p-dir-col">
 			        <div class="p-col">
