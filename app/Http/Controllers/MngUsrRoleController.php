@@ -20,17 +20,24 @@ class MngUsrRoleController extends Controller
         // $menu = Mng_menu::select('menu_display as label','controller as to')
         //         ->whereIn('menu_id',$rolemenu)->where('menu_stat','T')->orderBy('label','ASC')
         //         ->get();
-        $menu = DB::table('mng_menus as mu')
-        ->leftjoin('mng_menus as mm','mm.menu_id','mu.parent_id')
-        ->select('mm.menu_display as labell','mu.menu_display as label', 'mu.controller as to')
-        ->whereIn('mu.menu_id',$rolemenu)
-        ->where(function($query){
-            $query->where('mu.menu_stat','T');
-        }) 
-        ->orderBy('label','ASC')
-        ->groupBy('mm.menu_display','mu.menu_display','mu.controller')
-        ->get();
-        return response()->json($menu);
+        // $menu = DB::table('mng_menus as mu')
+        // ->leftjoin('mng_menus as mm','mm.menu_id','mu.parent_id')
+        // ->select('mm.menu_display as labell','mu.menu_display as label', 'mu.controller as to')
+        // ->whereIn('mu.menu_id',$rolemenu)
+        // ->where(function($query){
+        //     $query->where('mu.menu_stat','T');
+        // }) 
+        // ->orderBy('label','ASC')
+        // ->groupBy('mm.menu_display','mu.menu_display','mu.controller')
+        // ->get();
+        $rolemenus = preg_replace('/"/','' ,$rolemenu );
+        $menu = DB::SELECT('SELECT menu_display as label, controller as "to", LEVEL as items FROM mng_menus 
+                WHERE mod_id = 1
+                START WITH menu_id IN (7,8,22) 
+                CONNECT BY PRIOR parent_id = menu_id 
+                GROUP BY menu_display, controller,LEVEL ORDER BY menu_display, controller, LEVEL');
+        
+        return response()->json($rr);
     }
     public function save(Request $request)
     {
