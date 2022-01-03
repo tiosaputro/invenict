@@ -10,7 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
  
-    <title>E-App</title>
+    <title>ICT INVENTORY</title>
     <style>
         .bg-light {
             background-color: #eae9e9 !important;

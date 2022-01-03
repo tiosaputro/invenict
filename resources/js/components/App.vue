@@ -55,7 +55,6 @@ export default {
       menuUser:[],
       role:[],
       menuId:[],
-      text:null,
     };
   },
   created(){
@@ -82,8 +81,7 @@ export default {
           this.id = localStorage.getItem("id");
           this.token = localStorage.getItem("token");
           this.axios.get('/api/get-rolee/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-            this.menuUser = response.data;
-            this.text = response.data;
+            this.menuUser = response.data
           });
         }
       }
