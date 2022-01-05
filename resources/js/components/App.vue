@@ -10,9 +10,7 @@
         v-show="isSidebarVisible()"
       >
         <div class="layout-logo">
-          <router-link to="/dashboard">
-            <img alt="Emp" src="/assets/layout/images/logo_emp_new.png" width="100" />
-          </router-link>
+            <img alt="Emp" @click="test()" src="/assets/layout/images/logo_emp_new.png" width="100" />
         </div>
 
         <AppProfile />
@@ -68,6 +66,9 @@ export default {
     },
 },
   methods: {
+    test(){
+      window.open('api/test-dulu');
+    },
     cekRole(){
       this.loggedIn = localStorage.getItem("loggedIn");
       if(!this.loggedIn){

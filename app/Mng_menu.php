@@ -29,4 +29,7 @@ class Mng_menu extends Model
     protected $primaryKey = 'menu_id';
     public $incrementing = false;
     public $timestamps = false;
+    public function childs() {
+        return $this->hasMany('App\Mng_menu','parent_id','menu_id') ;
+    }
 }
