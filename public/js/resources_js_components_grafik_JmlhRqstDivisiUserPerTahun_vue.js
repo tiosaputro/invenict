@@ -20,7 +20,10 @@ __webpack_require__.r(__webpack_exports__);
       token: localStorage.getItem('token'),
       perDivisiUserTahun: {},
       tahunUser: null,
-      tahunn: []
+      tahunn: [],
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   watch: {
@@ -29,22 +32,53 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.getTahun();
+    this.cekUser();
   },
   methods: {
-    getTahun: function getTahun() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        console.log(_this.check);
+
+        if (_this.checkname.includes("Statistik Permintaan Divisi User Per Tahun") || _this.checkto.includes("/req-per-divisi-user-per-tahun")) {
+          _this.getTahun();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getTahun: function getTahun() {
+      var _this2 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.tahunn = response.data.grafik;
+        _this2.tahunn = response.data.grafik;
       });
     },
     getPerDivisiUserTahun: function getPerDivisiUserTahun() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.tahunUser != null) {
         this.axios.get('api/count-per-divuser-tahun/' + this.tahunUser, {
@@ -52,13 +86,13 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this2.perDivisiUserTahun = {
+          _this3.perDivisiUserTahun = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: _this2.tahunUser,
-              backgroundColor: '#' + _this2.color,
+              label: _this3.tahunUser,
+              backgroundColor: '#' + _this3.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -68,12 +102,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     printPerDivisiUserTahun: function printPerDivisiUserTahun() {
-      var _this3 = this;
+      var _this4 = this;
 
       var bar = document.getElementById("perDivisiUserTahun");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save('Statistik Request Divisi User Tahun ' + _this3.tahunUser);
+        pdf.save('Statistik Request Divisi User Tahun ' + _this4.tahunUser);
       });
     }
   }

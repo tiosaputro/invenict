@@ -350,17 +350,32 @@ export default {
         usr_name : localStorage.getItem('usr_name'),
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getPermohonan();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Approval Atasan") || this.checkto.includes("/ict-request-divisi1")){ 
+          this.getPermohonan();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
      getPermohonan(){
-      //  if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
+
       this.axios.get('/api/get-permohonan/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.permohonan = response.data.ict;
         this.verif = response.data.ict1;
@@ -370,13 +385,7 @@ export default {
         this.selesai = response.data.ict5;
         this.loading = false;
       }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
+         if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
             });

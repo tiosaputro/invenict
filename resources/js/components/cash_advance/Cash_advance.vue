@@ -118,16 +118,35 @@ import {FilterMatchMode} from 'primevue/api';
 export default {
   data() {
     return {
-        loading: true,
+         loading: true,
          cash: [],
          filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
          token: localStorage.getItem('token'),
+         id : localStorage.getItem('id'),
+         checkname : [],
+         checkto : []
     };
   },
   created() {
-    this.getCash();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkname = response.data.map((x)=> x.name)
+        this.checkto = response.data.map((x)=> x.to)
+        console.log(this.check)
+        if(this.checkname.includes("Cash Advance") || this.checkto.includes("/cash-advance")){
+          this.getCash();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     formatDate(date) {
       return moment(date).format("DD MMM YYYY")
     },
@@ -144,13 +163,7 @@ export default {
         this.cash = response.data;
         this.loading = false;
       }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
+         if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
           });

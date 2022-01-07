@@ -22,39 +22,62 @@ __webpack_require__.r(__webpack_exports__);
       kode: null,
       type: [],
       bu: [],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getKode();
+    this.cekUser();
   },
   methods: {
-    getKode: function getKode() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/get-kode', {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.kodeperi = response.data;
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
 
-        _this.getReq();
-
-        _this.getIct();
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        if (_this.checkname.includes("Request") || _this.checkto.includes("/ict-request")) {
+          _this.getKode();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
+        }
+      });
+    },
+    getKode: function getKode() {
+      var _this2 = this;
+
+      this.axios.get('/api/get-kode', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.kodeperi = response.data;
+
+        _this2.getReq();
+
+        _this2.getIct();
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -63,35 +86,35 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     getIct: function getIct() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/edit-ict-detail/' + this.$route.params.code + '/' + this.$route.params.ireq, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.ict = response.data;
+        _this3.ict = response.data;
       });
     },
     getReq: function getReq() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/getType', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.type = response.data;
+        _this4.type = response.data;
       });
     },
     getImage: function getImage() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.kode = this.ict.invent_code;
 
@@ -101,12 +124,12 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this4.ict.photo = response.data;
+          _this5.ict.photo = response.data;
         });
       }
     },
     UpdateIctDetail: function UpdateIctDetail() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.errors = [];
       this.error = [];
@@ -117,17 +140,17 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this5.$toast.add({
+          _this6.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Update"
           });
 
           setTimeout(function () {
-            return _this5.$router.push('/ict-request-detail/' + _this5.$route.params.code);
+            return _this6.$router.push('/ict-request-detail/' + _this6.$route.params.code);
           }, 1000);
         })["catch"](function (error) {
-          _this5.errors = error.response.data.errors;
+          _this6.errors = error.response.data.errors;
         });
       } else {
         if (this.ict.ireq_type == null) {

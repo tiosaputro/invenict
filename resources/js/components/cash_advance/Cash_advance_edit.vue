@@ -12,7 +12,7 @@
             </template>
           </Toolbar>
           <div class="card-body">
-            <form @submit.prevent="UpdateCash">
+            <form @submit.prevent="UpdateCash" v-if="this.ca">
               <div class="p-fluid p-formgrid p-grid">
                <div class="p-field p-grid p-col">
                     <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:160px">No. Request</label>
@@ -236,12 +236,31 @@ export default {
         input: 'DD MMM YYYY'
       }, 
       token: localStorage.getItem('token'),
+      id : localStorage.getItem('id'),
+      checkname : [],
+      checkto : []
     };
   },
-  created(){
-      this.getCash();
+  mounted(){
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        console.log(this.check)
+        if(this.checkname.includes("Cash Advance") || this.checkto.includes("/cash-advance")){
+            this.getCash();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getCash(){
       this.axios.get('/api/edit-cash/' + this.$route.params.code, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.ca = response.data;

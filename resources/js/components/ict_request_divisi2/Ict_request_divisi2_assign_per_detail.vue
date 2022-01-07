@@ -140,13 +140,31 @@ export default {
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         code : this.$route.params.code,
         token: localStorage.getItem('token'),
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   mounted() {
-    this.getIctDetail();
-    this.getNoreq();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Assign Request Ke ICT Personnel") || this.checkto.includes("/ict-request-divisi2")){ 
+         this.getIctDetail();
+         this.getNoreq();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
       cancelAssign(){
           this.assign = [];
           this.petugas = [];
@@ -188,13 +206,7 @@ export default {
         this.detail = response.data;
         this.loading = false;
       }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
+          if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
           });

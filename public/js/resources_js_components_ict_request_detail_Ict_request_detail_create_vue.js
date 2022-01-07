@@ -26,15 +26,48 @@ __webpack_require__.r(__webpack_exports__);
       kodeperi: [],
       type: [],
       bu: [],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getNoreq();
+    this.cekUser();
   },
   methods: {
-    getImage: function getImage() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Request") || _this.checkto.includes("/ict-request")) {
+          _this.getNoreq();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getImage: function getImage() {
+      var _this2 = this;
 
       if (this.kode) {
         this.axios.get('/api/getImage/' + this.kode, {
@@ -42,36 +75,26 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this.photo = response.data;
+          _this2.photo = response.data;
         });
       }
     },
     getNoreq: function getNoreq() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/get-noreq/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.detail = response.data;
+        _this3.detail = response.data;
 
-        _this2.getKode();
+        _this3.getKode();
 
-        _this2.getType();
+        _this3.getType();
       })["catch"](function (error) {
-        if (error.response.status == 403) {
-          _this2.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Cannot Access This Page'
-          });
-
-          setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
-          }, 2000);
-        } else if (error.response.status == 401) {
-          _this2.$toast.add({
+        if (error.response.status == 401) {
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -80,35 +103,35 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this3.$router.push('/login');
           }, 2000);
         }
       });
     },
     getType: function getType() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/getType', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.type = response.data;
+        _this4.type = response.data;
       });
     },
     getKode: function getKode() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.get('/api/get-kode', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.kodeperi = response.data;
+        _this5.kodeperi = response.data;
       });
     },
     CreateIctDetail: function CreateIctDetail() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.errors = [];
       this.error = [];
@@ -125,17 +148,17 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this5.$toast.add({
+          _this6.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Create"
           });
 
           setTimeout(function () {
-            return _this5.$router.push('/ict-request-detail/' + _this5.$route.params.code);
+            return _this6.$router.push('/ict-request-detail/' + _this6.$route.params.code);
           }, 1000);
         })["catch"](function (error) {
-          _this5.errors = error.response.data.errors;
+          _this6.errors = error.response.data.errors;
         });
       } else {
         if (this.kode == null) {

@@ -121,12 +121,30 @@ export default {
         token: localStorage.getItem('token'),
         mutasi: [],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getMutasi();
+    this.cekUser();
   },
   methods: {
+  cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Mutasi Peripheral") || this.checkto.includes("/mutasi-peripheral")){
+          this.getMutasi();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getMutasi(){
       this.axios.get('api/mut',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.mutasi = response.data;

@@ -144,12 +144,30 @@ export default {
         mas: [],
         barcode:'',
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getMaster();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Master Peripheral") || this.checkto.includes("/master-peripheral")){
+          this.getMaster();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     downloadBarcodePdf(){
       const doc = new Jspdf();
       const contentHtml = this.$refs.qr.$el;

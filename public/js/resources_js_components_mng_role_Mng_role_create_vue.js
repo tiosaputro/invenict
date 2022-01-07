@@ -14,7 +14,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      selectedNodes1: null,
       errors: [],
       role: {
         rol_name: '',
@@ -30,23 +29,59 @@ __webpack_require__.r(__webpack_exports__);
         nama: "Tidak Aktif",
         code: "F"
       }],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    var _this = this;
-
-    this.axios.get('api/get-menu', {
-      headers: {
-        'Authorization': 'Bearer ' + this.token
-      }
-    }).then(function (response) {
-      _this.menus = response.data;
-    });
+    this.cekUser();
   },
   methods: {
-    CreateRole: function CreateRole() {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Role Menu") || _this.checkto.includes("/mng-role")) {
+          _this.getMenu();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getMenu: function getMenu() {
       var _this2 = this;
+
+      this.axios.get('api/get-menu', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.menus = response.data;
+      });
+    },
+    CreateRole: function CreateRole() {
+      var _this3 = this;
 
       this.errors = [];
       this.axios.post('api/save-role', this.role, {
@@ -54,23 +89,23 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this2.axios.post('api/save-role-menu', _this2.role, {
+        _this3.axios.post('api/save-role-menu', _this3.role, {
           headers: {
-            'Authorization': 'Bearer ' + _this2.token
+            'Authorization': 'Bearer ' + _this3.token
           }
         });
 
-        _this2.$toast.add({
+        _this3.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Create"
         });
 
         setTimeout(function () {
-          return _this2.$router.push('/mng-role');
+          return _this3.$router.push('/mng-role');
         }, 1000);
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     }
   }
@@ -293,14 +328,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     options: $data.menus,
     optionValue: "code",
     optionLabel: "name",
-    display: "chip",
-    placeholder: "Select Menu",
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-      'p-invalid': $data.errors.menu
-    })
+    placeholder: "Select Cities",
+    display: "chip"
   }, null, 8
   /* PROPS */
-  , ["modelValue", "options", "class"]), $data.errors.menu ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors.menu[0]), 1
+  , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <TreeSelect \r\n                      v-model=\"menu\" \r\n                      :options=\"menus\"\r\n                      display=\"chip\"\r\n                      selectionMode=\"checkbox\" \r\n                      :metaKeySelection=\"false\"\r\n                      selectable=\"key\"\r\n                      placeholder=\"Select Items\"\r\n                    />{{ menu }} "), $data.errors.menu ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors.menu[0]), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     "class": "p-button-rounded p-button-primary p-mr-2 p-mb-2",

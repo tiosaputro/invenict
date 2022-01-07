@@ -180,13 +180,31 @@ export default {
       mask:{
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
-  created(){
-      this.getKode();
+  mounted(){
+    this.cekUser();
   },
   methods: {
+  cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Mutasi Peripheral") || this.checkto.includes("/mutasi-peripheral")){
+          this.getKode();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getImage(){
       if(this.kode){
       this.axios.get('api/getImage/'+this.kode, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

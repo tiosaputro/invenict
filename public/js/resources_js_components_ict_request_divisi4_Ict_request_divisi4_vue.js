@@ -38,15 +38,48 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_1__.FilterMatchMode.CONTAINS
         }
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getSudahDikerjakan();
+    this.cekUser();
   },
   methods: {
-    ClosingPerDetail: function ClosingPerDetail(ireqd_id, ireq_no) {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Closing Request") || _this.checkto.includes("/ict-request-divisi4")) {
+          _this.getSudahDikerjakan();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    ClosingPerDetail: function ClosingPerDetail(ireqd_id, ireq_no) {
+      var _this2 = this;
 
       this.$confirm.require({
         message: "Closing Permohonan Dilanjutkan?",
@@ -56,26 +89,26 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Diclosing",
             life: 3000
           });
 
-          _this.axios.get('/api/updateStatusClosingDetail/' + ireqd_id + '/' + ireq_no, {
+          _this2.axios.get('/api/updateStatusClosingDetail/' + ireqd_id + '/' + ireq_no, {
             headers: {
-              'Authorization': 'Bearer ' + _this.token
+              'Authorization': 'Bearer ' + _this2.token
             }
           });
 
-          _this.getSudahDikerjakan();
+          _this2.getSudahDikerjakan();
         },
         reject: function reject() {}
       });
     },
     submit: function submit(ireq_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Apakah Anda Yakin Ingin Mensubmit?",
@@ -85,26 +118,26 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Disubmit",
             life: 3000
           });
 
-          _this2.axios.get('api/updateStatusPenugasan/' + ireq_id, {
+          _this3.axios.get('api/updateStatusPenugasan/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getSedangDikerjakan();
+          _this3.getSedangDikerjakan();
         },
         reject: function reject() {}
       });
     },
     AssignPerRequest: function AssignPerRequest(ireq_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.assign.id = ireq_id;
       this.axios.get('api/get-pekerja', {
@@ -112,12 +145,12 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.petugas = response.data;
+        _this4.petugas = response.data;
       });
       this.dialogAssign = true;
     },
     updateAssign: function updateAssign() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.submitted = true;
 
@@ -127,14 +160,14 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this4.assign = {
+          _this5.assign = {
             id: null,
             name: null
           };
-          _this4.submitted = false;
-          _this4.dialogAssign = false;
+          _this5.submitted = false;
+          _this5.dialogAssign = false;
 
-          _this4.$toast.add({
+          _this5.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Assign",
@@ -153,7 +186,7 @@ __webpack_require__.r(__webpack_exports__);
       this.submitted = false;
     },
     ClosingPerRequest: function ClosingPerRequest(ireq_id) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$confirm.require({
         message: "Closing Permohonan Dilanjutkan?",
@@ -163,35 +196,49 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this5.$toast.add({
+          _this6.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Diclosing",
             life: 3000
           });
 
-          _this5.axios.get('api/updateStatusClosing/' + ireq_id, {
+          _this6.axios.get('api/updateStatusClosing/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this5.token
+              'Authorization': 'Bearer ' + _this6.token
             }
           });
 
-          _this5.getSudahDikerjakan();
+          _this6.getSudahDikerjakan();
         },
         reject: function reject() {}
       });
     },
     getSudahDikerjakan: function getSudahDikerjakan() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.axios.get('api/get-ictDivisi4', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this6.sudahDikerjakan = response.data.ict;
-        _this6.selesai = response.data.ict2;
-        _this6.loading = false;
+        _this7.sudahDikerjakan = response.data.ict;
+        _this7.selesai = response.data.ict2;
+        _this7.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this7.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem('Expired', 'true');
+          setTimeout(function () {
+            return _this7.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     formatDate: function formatDate(date) {

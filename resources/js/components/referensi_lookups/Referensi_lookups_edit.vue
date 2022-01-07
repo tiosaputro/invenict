@@ -96,6 +96,9 @@ export default {
   data() {
     return {
       errors: [],
+      id : localStorage.getItem('id'),
+      checkname : [],
+      checkto : [],
       ref: [],
       stat: [
         { nama: "Aktif", code: "T" },
@@ -106,9 +109,24 @@ export default {
     };
   },
   created(){
-    this.getRef();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Lookups") || this.checkto.includes("/referensi-lookups")){
+          this.getRef();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
       getRef(){
         this.axios.get('/api/edit-ref/' + this.$route.params.code + '/' + this.$route.params.type, {headers: {'Authorization': 'Bearer '+this.token}} ).then((response)=> {
             this.ref = response.data;

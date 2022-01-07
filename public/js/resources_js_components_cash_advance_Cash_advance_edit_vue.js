@@ -19,35 +19,69 @@ __webpack_require__.r(__webpack_exports__);
       mask: {
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
-  created: function created() {
-    this.getCash();
+  mounted: function mounted() {
+    this.cekUser();
   },
   methods: {
-    getCash: function getCash() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/edit-cash/' + this.$route.params.code, {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.ca = response.data;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        console.log(_this.check);
+
+        if (_this.checkname.includes("Cash Advance") || _this.checkto.includes("/cash-advance")) {
+          _this.getCash();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
+        }
+      });
+    },
+    getCash: function getCash() {
+      var _this2 = this;
+
+      this.axios.get('/api/edit-cash/' + this.$route.params.code, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.ca = response.data;
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -56,13 +90,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     UpdateCash: function UpdateCash() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.errors = [];
       this.axios.put('/api/update-cash/' + this.$route.params.code, this.ca, {
@@ -71,16 +105,16 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         setTimeout(function () {
-          return _this2.$router.push('/cash-advance');
+          return _this3.$router.push('/cash-advance');
         }, 1000);
 
-        _this2.$toast.add({
+        _this3.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Update"
         });
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     }
   }
@@ -376,7 +410,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.ca ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
+    key: 0,
     onSubmit: _cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.UpdateCash && $options.UpdateCash.apply($options, arguments);
     }, ["prevent"]))
@@ -665,7 +700,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   })])], 32
   /* HYDRATE_EVENTS */
-  )])])]);
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
 }
 
 /***/ }),

@@ -26,7 +26,10 @@ __webpack_require__.r(__webpack_exports__);
         nama: "Tidak Aktif",
         code: "F"
       }],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
@@ -36,32 +39,29 @@ __webpack_require__.r(__webpack_exports__);
     cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('api/ref', {
+      this.axios.get('api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
-      }).then(function () {})["catch"](function (error) {
-        if (error.response.status == 403) {
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Lookups") || _this.checkto.includes("/referensi-lookups")) {
+          console.log('sip');
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
-          }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Sesi Login Expired'
-          });
-
-          localStorage.clear();
-          localStorage.setItem("Expired", "true");
-          setTimeout(function () {
-            return _this.$router.push('/login');
           }, 2000);
         }
       });

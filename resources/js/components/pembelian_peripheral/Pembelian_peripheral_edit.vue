@@ -198,6 +198,9 @@ export default {
       methode_pay:[],
       errors: [],
       submitted: false,
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
       stat: [
         { nama: "Aktif", code: "T" },
         { nama: "Tidak Aktif", code: "F" },
@@ -209,9 +212,25 @@ export default {
     };
   },
   created(){
+    this.cekUser();
       this.getPurch();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Pembelian Peripheral") || this.checkto.includes("/pembelian-peripheral")){
+          this.getPurch();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
       getPurch(){
           this.axios.get('/api/edit-pem/'+this.$route.params.code,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
               this.purch = response.data;

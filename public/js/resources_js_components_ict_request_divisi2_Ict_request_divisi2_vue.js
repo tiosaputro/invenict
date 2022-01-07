@@ -40,15 +40,48 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_1__.FilterMatchMode.CONTAINS
         }
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getPermohonan();
+    this.cekUser();
   },
   methods: {
-    submit: function submit(ireq_id) {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Assign Request Ke ICT Personnel") || _this.checkto.includes("/ict-request-divisi2")) {
+          _this.getPermohonan();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    submit: function submit(ireq_id) {
+      var _this2 = this;
 
       this.$confirm.require({
         message: "Apakah Anda Yakin Ingin Mensubmit?",
@@ -58,26 +91,26 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Disubmit",
             life: 3000
           });
 
-          _this.axios.get('api/updateStatusPenugasan/' + ireq_id, {
+          _this2.axios.get('api/updateStatusPenugasan/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this.token
+              'Authorization': 'Bearer ' + _this2.token
             }
           });
 
-          _this.getPermohonan();
+          _this2.getPermohonan();
         },
         reject: function reject() {}
       });
     },
     AssignPerRequest: function AssignPerRequest(ireq_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.assign.id = ireq_id;
       this.axios.get('api/get-pekerja', {
@@ -85,12 +118,12 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.petugas = response.data;
+        _this3.petugas = response.data;
       });
       this.dialogAssign = true;
     },
     updateAssign: function updateAssign() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.submitted = true;
 
@@ -100,21 +133,21 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this3.assign = {
+          _this4.assign = {
             id: null,
             name: null
           };
-          _this3.submitted = false;
-          _this3.dialogAssign = false;
+          _this4.submitted = false;
+          _this4.dialogAssign = false;
 
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Assign",
             life: 3000
           });
 
-          _this3.getPermohonan();
+          _this4.getPermohonan();
         });
       }
     },
@@ -128,35 +161,21 @@ __webpack_require__.r(__webpack_exports__);
       this.submitted = false;
     },
     getPermohonan: function getPermohonan() {
-      var _this4 = this;
+      var _this5 = this;
 
-      //  if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
       this.axios.get('api/get-permohonan-divisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.permohonan = response.data.ict;
-        _this4.sedangDikerjakan = response.data.ict1;
-        _this4.sudahDikerjakan = response.data.ict2;
-        _this4.selesai = response.data.ict3;
-        _this4.loading = false;
+        _this5.permohonan = response.data.ict;
+        _this5.sedangDikerjakan = response.data.ict1;
+        _this5.sudahDikerjakan = response.data.ict2;
+        _this5.selesai = response.data.ict3;
+        _this5.loading = false;
       })["catch"](function (error) {
-        if (error.response.status == 403) {
-          _this4.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Cannot Access This Page'
-          });
-
-          setTimeout(function () {
-            return _this4.$router.push('/Dashboard');
-          }, 2000);
-        } else if (error.response.status == 401) {
-          _this4.$toast.add({
+        if (error.response.status == 401) {
+          _this5.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -165,7 +184,7 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this4.$router.push('/login');
+            return _this5.$router.push('/login');
           }, 2000);
         }
       });

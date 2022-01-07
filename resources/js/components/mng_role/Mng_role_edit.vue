@@ -132,15 +132,33 @@ export default {
         { nama: "Aktif", code: "T" },
         { nama: "Tidak Aktif", code: "F" },
       ],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
-      this.getRole();
-      this.getMenus();
-      this.getMenu();
+      this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Role Menu") || this.checkto.includes("/mng-role")){
+          this.getRole();
+          this.getMenus();
+          this.getMenu();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getMenus(){
         this.axios.get('/api/get-menu',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           this.menus = response.data

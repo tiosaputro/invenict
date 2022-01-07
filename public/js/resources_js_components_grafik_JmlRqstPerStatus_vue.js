@@ -18,7 +18,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       color: '1976D2',
       token: localStorage.getItem('token'),
-      perStatus: {}
+      perStatus: {},
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   watch: {
@@ -27,24 +30,54 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.getTahun();
+    this.cekUser();
   },
   methods: {
-    getTahun: function getTahun() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+
+        if (_this.checkname.includes("Statistik Permintaan Per Status") || _this.checkto.includes("/req-per-divisi-req-per-status")) {
+          _this.getTahun();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getTahun: function getTahun() {
+      var _this2 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.perStatus = {
+        _this2.perStatus = {
           labels: response.data.grafik3.map(function (x) {
             return x.ireq_status;
           }),
           datasets: [{
             label: 'Data Request Per Status',
-            backgroundColor: '#' + _this.color,
+            backgroundColor: '#' + _this2.color,
             data: response.data.grafik3.map(function (x) {
               return x.jumlah;
             })

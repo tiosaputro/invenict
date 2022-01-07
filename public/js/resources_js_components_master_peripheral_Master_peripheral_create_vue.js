@@ -44,61 +44,67 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getMerk();
+    this.cekUser();
   },
   methods: {
-    getMerk: function getMerk() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('api/getMerk', {
+      this.axios.get('api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.merks = response.data;
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
 
-        _this.getKondisi();
-
-        _this.getBisnis();
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        if (_this.checkname.includes("Master Peripheral") || _this.checkto.includes("/master-peripheral")) {
+          _this.getMerk();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Sesi Login Expired'
-          });
-
-          localStorage.clear();
-          localStorage.setItem("Expired", "true");
-          setTimeout(function () {
-            return _this.$router.push('/login');
-          }, 2000);
         }
       });
     },
-    getKondisi: function getKondisi() {
+    getMerk: function getMerk() {
       var _this2 = this;
+
+      this.axios.get('api/getMerk', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.merks = response.data;
+
+        _this2.getKondisi();
+
+        _this2.getBisnis();
+      });
+    },
+    getKondisi: function getKondisi() {
+      var _this3 = this;
 
       this.axios.get('api/getKondisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.kondi = response.data;
+        _this3.kondi = response.data;
       });
     },
     Scan: function Scan() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.aktif = false;
       var routeData = this.$router.resolve({
@@ -106,17 +112,17 @@ __webpack_require__.r(__webpack_exports__);
       });
       window.open(routeData.href, '_blank');
       setTimeout(function () {
-        return _this3.getBarcode();
+        return _this4.getBarcode();
       }, 2000);
     },
     getBarcode: function getBarcode() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.barcode = localStorage.getItem('barcode');
 
       if (!this.barcode) {
         setTimeout(function () {
-          return _this4.getBarcode();
+          return _this5.getBarcode();
         }, 3000);
       }
     },
@@ -126,14 +132,14 @@ __webpack_require__.r(__webpack_exports__);
       this.aktif = true;
     },
     getBisnis: function getBisnis() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.axios.get('api/get-bisnis', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this5.bisnis = response.data;
+        _this6.bisnis = response.data;
       });
     },
     fileImage: function fileImage(event) {
@@ -154,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
       reader.readAsDataURL(invent_photo);
     },
     CreateMaster: function CreateMaster() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.errors = [];
       this.error = [];
@@ -183,16 +189,16 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function () {
           localStorage.removeItem("barcode");
           setTimeout(function () {
-            return _this6.$router.push('/master-peripheral');
+            return _this7.$router.push('/master-peripheral');
           }, 1000);
 
-          _this6.$toast.add({
+          _this7.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Create"
           });
         })["catch"](function (error) {
-          _this6.errors = error.response.data.errors;
+          _this7.errors = error.response.data.errors;
         });
       } else {
         if (this.bu == null) {

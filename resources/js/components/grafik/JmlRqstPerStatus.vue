@@ -18,6 +18,9 @@ export default {
             color: '1976D2',
             token: localStorage.getItem('token'),
             perStatus:{},
+            id : localStorage.getItem('id'),
+            checkname : [],
+            checkto : []
         };
     },
     watch : {
@@ -26,9 +29,24 @@ export default {
         }
     },
     created(){ 
-        this.getTahun();  
+        this.cekUser();  
     },
-    methods: {
+    methods: {    
+        cekUser(){
+            this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+                this.checkname = response.data.map((x)=> x.name)
+                this.checkto = response.data.map((x)=> x.to)
+                    if(this.checkname.includes("Statistik Permintaan Per Status") || this.checkto.includes("/req-per-divisi-req-per-status")){
+                    this.getTahun();
+                    }
+                    else {
+                    this.$toast.add({
+                        severity:'error', summary: '403', detail:'Cannot Access This Page'
+                    });
+                    setTimeout( () => this.$router.push('/Dashboard'),2000);
+                    }
+             });
+            },
         getTahun(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                     this.perStatus = {

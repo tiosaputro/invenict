@@ -26,13 +26,46 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_0__.FilterMatchMode.CONTAINS
         }
       },
-      displaySupp: false
+      displaySupp: false,
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
-    this.getSupp();
+    this.cekUser();
   },
   methods: {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {
+          _this.getSupp();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
     CetakPdf: function CetakPdf() {
       window.open("api/report-supplier-pdf");
     },
@@ -40,7 +73,7 @@ __webpack_require__.r(__webpack_exports__);
       window.open("api/report-supplier-excel");
     },
     detailSupp: function detailSupp(suplier_code) {
-      var _this = this;
+      var _this2 = this;
 
       this.displaySupp = true;
       this.axios.get('api/show-supp/' + suplier_code, {
@@ -48,32 +81,32 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.supps = response.data;
+        _this2.supps = response.data;
       });
     },
     getSupp: function getSupp() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/supp', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.supp = response.data;
-        _this2.loading = false;
+        _this3.supp = response.data;
+        _this3.loading = false;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this3.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -82,13 +115,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this3.$router.push('/login');
           }, 2000);
         }
       });
     },
     DeleteSupp: function DeleteSupp(suplier_code) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -98,20 +131,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this3.axios["delete"]('api/delete-supp/' + suplier_code, {
+          _this4.axios["delete"]('api/delete-supp/' + suplier_code, {
             headers: {
-              'Authorization': 'Bearer ' + _this3.token
+              'Authorization': 'Bearer ' + _this4.token
             }
           });
 
-          _this3.getSupp();
+          _this4.getSupp();
         },
         reject: function reject() {}
       });

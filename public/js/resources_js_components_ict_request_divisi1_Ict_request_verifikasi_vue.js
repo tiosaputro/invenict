@@ -31,16 +31,50 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       code: this.$route.params.code,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   mounted: function mounted() {
-    this.getIctDetail();
-    this.getNoreq();
+    this.cekUser();
   },
   methods: {
-    Approve: function Approve() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Approval Atasan") || _this.checkto.includes("/ict-request-divisi1")) {
+          _this.getIctDetail();
+
+          _this.getNoreq();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    Approve: function Approve() {
+      var _this2 = this;
 
       this.$confirm.require({
         message: "Approval Permohonan Dilanjutkan?",
@@ -50,27 +84,27 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Permohonan Dilanjutkan"
           });
 
-          _this.axios.get('/api/updateStatusPermohonan/' + _this.$route.params.code, {
+          _this2.axios.get('/api/updateStatusPermohonan/' + _this2.$route.params.code, {
             headers: {
-              'Authorization': 'Bearer ' + _this.token
+              'Authorization': 'Bearer ' + _this2.token
             }
           });
 
           setTimeout(function () {
-            return _this.$router.push('/ict-request-divisi1');
+            return _this2.$router.push('/ict-request-divisi1');
           }, 1000);
         },
         reject: function reject() {}
       });
     },
     updateReject: function updateReject() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.submitted = true;
 
@@ -80,16 +114,16 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this2.dialogReject = false;
+          _this3.dialogReject = false;
 
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Direject"
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/ict-request-divisi1');
+            return _this3.$router.push('/ict-request-divisi1');
           }, 1000);
         });
       }
@@ -100,28 +134,28 @@ __webpack_require__.r(__webpack_exports__);
       this.submitted = false;
     },
     getIctDetail: function getIctDetail() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/get-verif/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.verif = response.data;
-        _this3.loading = false;
+        _this4.verif = response.data;
+        _this4.loading = false;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this3.$router.push('/Dashboard');
+            return _this4.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -130,24 +164,24 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this3.$router.push('/login');
+            return _this4.$router.push('/login');
           }, 2000);
         }
       });
     },
     getNoreq: function getNoreq() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.get('/api/get-noreq/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.kode = response.data;
+        _this5.kode = response.data;
       });
     },
     DeleteIct: function DeleteIct(ireqd_id) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -157,20 +191,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this5.$toast.add({
+          _this6.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this5.axios["delete"]('/api/delete-ict-detail/' + ireqd_id, {
+          _this6.axios["delete"]('/api/delete-ict-detail/' + ireqd_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this5.token
+              'Authorization': 'Bearer ' + _this6.token
             }
           });
 
-          _this5.getIctDetail();
+          _this6.getIctDetail();
         },
         reject: function reject() {}
       });

@@ -71,14 +71,32 @@ export default {
     return {
         loading: true,
         token: localStorage.getItem('token'),
+        id : localStorage.getItem('id'),
+        checkname : [],
+        checkto : [],
         divisi: [],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
     };
   },
   created() {
-    this.getDivisi();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Divisi") || this.checkto.includes("/divisi-refs")){
+          this.getDivisi();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getDivisi(){
       this.axios.get('api/divisi', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.divisi = response.data;

@@ -178,12 +178,30 @@ export default {
         reject:[],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getSudahDikerjakan();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Closing Request") || this.checkto.includes("/ict-request-divisi4")){ 
+          this.getSudahDikerjakan();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     ClosingPerDetail(ireqd_id,ireq_no){
         this.$confirm.require({
           message: "Closing Permohonan Dilanjutkan?",
@@ -288,7 +306,16 @@ export default {
         this.sudahDikerjakan = response.data.ict;
         this.selesai = response.data.ict2;
         this.loading = false;
-      });
+      }).catch(error=>{
+        if (error.response.status == 401) {
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+            });
+            localStorage.clear();
+            localStorage.setItem('Expired','true')
+            setTimeout( () => this.$router.push('/login'),2000);
+           }
+        });
     },
     formatDate(date) {
       return moment(date).format("DD MMM YYYY")

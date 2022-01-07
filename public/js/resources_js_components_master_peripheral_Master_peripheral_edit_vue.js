@@ -27,15 +27,48 @@ __webpack_require__.r(__webpack_exports__);
       mask: {
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getMaster();
+    this.cekUser();
   },
   methods: {
-    Scan: function Scan() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Master Peripheral") || _this.checkto.includes("/master-peripheral")) {
+          _this.getMaster();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    Scan: function Scan() {
+      var _this2 = this;
 
       this.aktif = false;
       var routeData = this.$router.resolve({
@@ -43,7 +76,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       window.open(routeData.href, '_blank');
       setTimeout(function () {
-        return _this.getBarcode();
+        return _this2.getBarcode();
       }, 2000);
     },
     hapus: function hapus() {
@@ -51,77 +84,77 @@ __webpack_require__.r(__webpack_exports__);
       this.aktif = true;
     },
     getBarcode: function getBarcode() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.master.invent_barcode = localStorage.getItem("barcode");
 
       if (!this.master.invent_barcode) {
         setTimeout(function () {
-          return _this2.getBarcode();
+          return _this3.getBarcode();
         }, 3000);
       }
     },
     getBisnis: function getBisnis() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/get-bisnis', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.bisnis = response.data;
+        _this4.bisnis = response.data;
       });
     },
     getMerk: function getMerk() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.get('/api/getMerk', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.merks = response.data;
+        _this5.merks = response.data;
       });
     },
     getKondisi: function getKondisi() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.axios.get('/api/getKondisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this5.kondi = response.data;
+        _this6.kondi = response.data;
       });
     },
     getMaster: function getMaster() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.axios.get('/api/edit-mas/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this6.master = response.data;
+        _this7.master = response.data;
 
-        _this6.getMerk();
+        _this7.getMerk();
 
-        _this6.getBisnis();
+        _this7.getBisnis();
 
-        _this6.getKondisi();
+        _this7.getKondisi();
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this6.$toast.add({
+          _this7.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this6.$router.push('/Dashboard');
+            return _this7.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this6.$toast.add({
+          _this7.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -130,7 +163,7 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this6.$router.push('/login');
+            return _this7.$router.push('/login');
           }, 2000);
         }
       });
@@ -153,7 +186,7 @@ __webpack_require__.r(__webpack_exports__);
       reader.readAsDataURL(invent_photo);
     },
     UpdateMaster: function UpdateMaster() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.submitted = true;
 
@@ -165,10 +198,10 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           localStorage.removeItem("barcode");
           setTimeout(function () {
-            return _this7.$router.push('/master-peripheral');
+            return _this8.$router.push('/master-peripheral');
           }, 1000);
 
-          _this7.$toast.add({
+          _this8.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Update"
@@ -177,8 +210,8 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response.data);
         })["catch"](function (error) {
           if (error.response.status == 422) {
-            _this7.submitted = false;
-            _this7.errors = error.response.data.errors;
+            _this8.submitted = false;
+            _this8.errors = error.response.data.errors;
           }
         });
       }

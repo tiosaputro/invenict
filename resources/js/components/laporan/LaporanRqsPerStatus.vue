@@ -53,6 +53,9 @@ export default {
          loading: true,
          req: [],
          token: localStorage.getItem('token'),
+         checkname : [],
+         checkto : [],
+         id : localStorage.getItem('id'),
             items: [
                 {
                     label: 'Pdf',
@@ -72,9 +75,24 @@ export default {
     };
   },
   created() {
-    this.getReq();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Laporan Request Per Status") || this.checkto.includes("/report-per-status")){
+          this.getReq();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getReq(){
       this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.req = response.data.grafik3;

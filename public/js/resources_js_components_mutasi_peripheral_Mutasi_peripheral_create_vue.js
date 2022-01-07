@@ -28,15 +28,48 @@ __webpack_require__.r(__webpack_exports__);
       mask: {
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
-  created: function created() {
-    this.getKode();
+  mounted: function mounted() {
+    this.cekUser();
   },
   methods: {
-    getImage: function getImage() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Mutasi Peripheral") || _this.checkto.includes("/mutasi-peripheral")) {
+          _this.getKode();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getImage: function getImage() {
+      var _this2 = this;
 
       if (this.kode) {
         this.axios.get('api/getImage/' + this.kode, {
@@ -44,32 +77,32 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this.detail = response.data;
+          _this2.detail = response.data;
         });
       }
     },
     getKode: function getKode() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/get-kode', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.kodeperi = response.data;
+        _this3.kodeperi = response.data;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this3.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -78,13 +111,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this3.$router.push('/login');
           }, 2000);
         }
       });
     },
     CreateMutasi: function CreateMutasi() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.submitted = true;
 
@@ -102,17 +135,17 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function () {
           setTimeout(function () {
-            return _this3.$router.push('/mutasi-peripheral');
+            return _this4.$router.push('/mutasi-peripheral');
           }, 1000);
 
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Create"
           });
         })["catch"](function (error) {
-          _this3.errors = error.response.data.errors;
-          _this3.submitted = false;
+          _this4.errors = error.response.data.errors;
+          _this4.submitted = false;
         });
       }
     }

@@ -223,16 +223,34 @@ export default {
       ],
       token: localStorage.getItem('token'),
       roles: [],
-      divisi:[]
+      divisi:[],
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
-      this.getUser();
-      this.getRole();
-      this.getRoles();
-      this.getDivisi();
+      this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("User") || this.checkto.includes("/mng-user")){ 
+          this.getUser();
+          this.getRole();
+          this.getRoles();
+          this.getDivisi();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getRole(){
       this.axios.get('/api/edit-usr-role/'+this.$route.params.code,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.role.role = response.data;

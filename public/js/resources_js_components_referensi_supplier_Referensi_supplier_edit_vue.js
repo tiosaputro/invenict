@@ -16,35 +16,68 @@ __webpack_require__.r(__webpack_exports__);
     return {
       errors: [],
       supp: [],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
-    this.getSupp();
+    this.cekUser();
   },
   methods: {
-    getSupp: function getSupp() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/edit-supp/' + this.$route.params.code, {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.supp = response.data;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {
+          _this.getSupp();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
+        }
+      });
+    },
+    getSupp: function getSupp() {
+      var _this2 = this;
+
+      this.axios.get('/api/edit-supp/' + this.$route.params.code, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.supp = response.data;
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -53,13 +86,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     UpdateSupplier: function UpdateSupplier() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.errors = [];
       this.axios.put('/api/update-supp/' + this.$route.params.code, this.supp, {
@@ -67,17 +100,17 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this2.$toast.add({
+        _this3.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Update"
         });
 
         setTimeout(function () {
-          return _this2.$router.push('/referensi-supplier');
+          return _this3.$router.push('/referensi-supplier');
         }, 1000);
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     }
   }

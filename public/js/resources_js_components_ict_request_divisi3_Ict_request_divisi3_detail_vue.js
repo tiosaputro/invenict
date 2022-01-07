@@ -30,32 +30,63 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       token: localStorage.getItem('token'),
-      user: []
+      user: [],
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getUser();
+    this.cekUser();
   },
   methods: {
-    getUser: function getUser() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Status Change Request") || _this.checkto.includes("/ict-request-divisi3")) {
+          _this.getUser();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getUser: function getUser() {
+      var _this2 = this;
 
       this.axios.get('/api/user', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.user = response.data;
+        _this2.user = response.data;
 
-        _this.create();
+        _this2.getIctDetail();
+
+        _this2.getNoreq();
       });
     },
-    create: function create() {
-      this.getIctDetail();
-      this.getNoreq();
-    },
     edit: function edit(ireqd_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.dialogEdit = true;
       this.axios.get('/api/detail/' + ireqd_id, {
@@ -63,19 +94,19 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.editDetail = response.data;
+        _this3.editDetail = response.data;
       });
       this.getStatus();
     },
     getStatus: function getStatus() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/getStatusIct', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.status = response.data;
+        _this4.status = response.data;
       });
     },
     cancel: function cancel() {
@@ -85,7 +116,7 @@ __webpack_require__.r(__webpack_exports__);
       this.submitted = false;
     },
     submit: function submit() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.submitted = true;
 
@@ -95,42 +126,32 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this4.$toast.add({
+          _this5.$toast.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Status Berhasil Dirubah',
             life: 3000
           });
 
-          _this4.cancel();
+          _this5.cancel();
 
-          _this4.create();
+          _this5.create();
         });
       }
     },
     getIctDetail: function getIctDetail() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.axios.get('/api/get-detail-done/' + this.$route.params.code + '/' + this.user.usr_fullname, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this5.detail = response.data;
-        _this5.loading = false;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
-          _this5.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Cannot Access This Page'
-          });
+        _this6.detail = response.data;
+        _this6.loading = false;
 
-          setTimeout(function () {
-            return _this5.$router.push('/Dashboard');
-          }, 2000);
-        } else if (error.response.status == 401) {
-          _this5.$toast.add({
+        if (error.response.status == 401) {
+          _this6.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -139,20 +160,20 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this5.$router.push('/login');
+            return _this6.$router.push('/login');
           }, 2000);
         }
       });
     },
     getNoreq: function getNoreq() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.axios.get('/api/get-noreq/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this6.kode = response.data;
+        _this7.kode = response.data;
       });
     }
   }

@@ -213,10 +213,25 @@ export default {
     };
   },
   created(){
-      this.getModul();
-      this.getParent();
-  },
+      this.cekUser();
+    },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Menu") || this.checkto.includes("/mng-menu")){
+          this.getModul();
+          this.getParent();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
       getModul(){
           this.axios.get('api/get-module',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
               this.modul = response.data;

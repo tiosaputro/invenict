@@ -20,7 +20,10 @@ __webpack_require__.r(__webpack_exports__);
       token: localStorage.getItem('token'),
       PerStatusIct: {},
       ictPersonnel: null,
-      personnel: []
+      personnel: [],
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   watch: {
@@ -29,22 +32,53 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.getPersonnel();
+    this.cekUser();
   },
   methods: {
-    getPersonnel: function getPersonnel() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        console.log(_this.check);
+
+        if (_this.checkname.includes("Statistik Permintaan Per Status Per Personnel") || _this.checkto.includes("/req-per-status-per-personnel")) {
+          _this.getPersonnel();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getPersonnel: function getPersonnel() {
+      var _this2 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.personnel = response.data.personnell;
+        _this2.personnel = response.data.personnell;
       });
     },
     getPerStatusIct: function getPerStatusIct() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.ictPersonnel != null) {
         this.axios.get('api/count-per-status-ict/' + this.ictPersonnel, {
@@ -52,13 +86,13 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this2.PerStatusIct = {
+          _this3.PerStatusIct = {
             labels: response.data.map(function (x) {
               return x.status;
             }),
             datasets: [{
-              label: _this2.ictPersonnel,
-              backgroundColor: '#' + _this2.color,
+              label: _this3.ictPersonnel,
+              backgroundColor: '#' + _this3.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -68,12 +102,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     printPerStatusIct: function printPerStatusIct() {
-      var _this3 = this;
+      var _this4 = this;
 
       var bar = document.getElementById("PerStatusIct");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save('Statistik Request Per Status Per ICT-Personnel ' + _this3.ictPersonnel);
+        pdf.save('Statistik Request Per Status Per ICT-Personnel ' + _this4.ictPersonnel);
       });
     }
   }

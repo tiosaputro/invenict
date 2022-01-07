@@ -32,50 +32,85 @@ __webpack_require__.r(__webpack_exports__);
         nama: "Leaf",
         code: "L"
       }],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getModul();
-    this.getParent();
-    this.getMenu();
+    this.cekUser();
   },
   methods: {
-    getMenu: function getMenu() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Menu") || _this.checkto.includes("/mng-menu")) {
+          _this.getModul();
+
+          _this.getParent();
+
+          _this.getMenu();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getMenu: function getMenu() {
+      var _this2 = this;
 
       this.axios.get('/api/edit-menu/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.menu = response.data;
+        _this2.menu = response.data;
       });
     },
     getModul: function getModul() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/get-module', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.modul = response.data;
+        _this3.modul = response.data;
       });
     },
     getParent: function getParent() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/get-parent', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.parent = response.data;
+        _this4.parent = response.data;
       });
     },
     UpdateMenu: function UpdateMenu() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.errors = [];
       this.axios.put('/api/update-menu/' + this.$route.params.code, this.menu, {
@@ -83,18 +118,18 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this4.$toast.add({
+        _this5.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Update"
         });
 
         setTimeout(function () {
-          return _this4.$router.push('/mng-menu');
+          return _this5.$router.push('/mng-menu');
         }, 1000);
       })["catch"](function (error) {
         if (error.response.status == 422) {
-          _this4.errors = error.response.data.errors;
+          _this5.errors = error.response.data.errors;
         }
 
         ;

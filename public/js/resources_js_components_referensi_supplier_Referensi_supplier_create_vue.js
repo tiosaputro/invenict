@@ -26,7 +26,10 @@ __webpack_require__.r(__webpack_exports__);
       fax: '',
       notlp1: '',
       notlp2: '',
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   mounted: function mounted() {
@@ -34,29 +37,37 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     cekUser: function cekUser() {
-      this.axios.get('api/supp', {
+      var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
-      }).then(function () {// }).catch(error=>{
-        //     if (error.response.status == 403) {
-        //      this.$toast.add({
-        //       severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-        //     });
-        //     setTimeout( () => this.$router.push('/Dashboard'),2000);
-        //     }
-        //      if (error.response.status == 401){
-        //       this.$toast.add({
-        //       severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-        //     });
-        //     localStorage.clear();
-        //     localStorage.setItem("Expired","true")
-        //     setTimeout( () => this.$router.push('/login'),2000);
-        //      }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {
+          consolelog('sip');
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
       });
     },
     CreateSupplier: function CreateSupplier() {
-      var _this = this;
+      var _this2 = this;
 
       this.errors = [];
       var data = new FormData();
@@ -78,10 +89,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function () {
         setTimeout(function () {
-          return _this.$router.push('/referensi-supplier');
+          return _this2.$router.push('/referensi-supplier');
         }, 1000);
 
-        _this.$toast.add({
+        _this2.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Create"

@@ -11,7 +11,7 @@
               </div>
             </template>
           </Toolbar>
-            <form @submit.prevent="CreateCash">
+            <form @submit.prevent="CreateCash" v-if="this.ca">
               <div class="card"> <!-- card-->
               <div class="p-fluid p-formgrid p-grid">
                <div class="p-field p-grid p-col">
@@ -253,12 +253,30 @@ export default {
         input: 'DD MMM YYYY'
       },
       token: localStorage.getItem('token'),
+      id : localStorage.getItem('id'),
+      checkname : [],
+      checkto : []
     };
   },
-  created(){
-      this.getNoreq();
+  mounted(){
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Cash Advance") || this.checkto.includes("/cash-advance")){
+            this.getNoreq();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     get(noreq){
       if(this.noreq){
       this.axios.get('api/getNameBu/'+noreq,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {

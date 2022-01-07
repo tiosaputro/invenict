@@ -17,6 +17,9 @@ __webpack_require__.r(__webpack_exports__);
       loading: true,
       req: [],
       token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id'),
       items: [{
         label: 'Pdf',
         icon: 'bi bi-file-earmark-pdf text-danger',
@@ -33,19 +36,49 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getPersonnel();
+    this.cekUser();
   },
   methods: {
-    getPersonnel: function getPersonnel() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Laporan Request Per ICT-Personnel") || _this.checkto.includes("/report-div-req-per-status")) {
+          _this.getPersonnel();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getPersonnel: function getPersonnel() {
+      var _this2 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.req = response.data.personnel;
-        _this.loading = false;
+        _this2.req = response.data.personnel;
+        _this2.loading = false;
       });
     }
   }

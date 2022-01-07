@@ -196,12 +196,30 @@ export default {
         supps:[],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         displaySupp: false,
+        id : localStorage.getItem('id'),
+        checkname : [],
+        checkto : [],
     };
   },
   created() {
-    this.getSupp();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Suplier") || this.checkto.includes("/referensi-supplier")){
+          this.getSupp();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     CetakPdf(){
        window.open("api/report-supplier-pdf");
     },

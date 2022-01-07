@@ -253,13 +253,7 @@ export default {
       this.axios.get('/api/getNoreq',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.req = response.data;
       }).catch(error=>{
-          if (error.response.status == 403){
-            this.$toast.add({
-              severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-            });
-            setTimeout( () => this.$router.push('/Dashboard'),2000);
-
-          }else if (error.response.status == 401){
+        if (error.response.status == 401){
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
             });

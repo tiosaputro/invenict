@@ -20,6 +20,9 @@ export default {
             token: localStorage.getItem('token'),
             statusPerIctPersonnel:{},
             date: new Date(),
+            id : localStorage.getItem('id'),
+            checkname : [],
+            checkto : []
         };
     },
     watch : {
@@ -28,9 +31,25 @@ export default {
         }
     },
     created(){ 
-        this.getPersonnel(); 
+        this.cekUser(); 
     },
     methods: {
+        
+        cekUser(){
+        this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.checkname = response.data.map((x)=> x.name)
+            this.checkto = response.data.map((x)=> x.to)
+            if(this.checkname.includes("Statistik Permintaan Per Personnel") || this.checkto.includes("/req-per-personnel")){
+            this.getPersonnel();
+            }
+            else {
+            this.$toast.add({
+                severity:'error', summary: '403', detail:'Cannot Access This Page'
+            });
+            setTimeout( () => this.$router.push('/Dashboard'),2000);
+            }
+        });
+        },
         getPersonnel(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.statusPerIctPersonnel = {

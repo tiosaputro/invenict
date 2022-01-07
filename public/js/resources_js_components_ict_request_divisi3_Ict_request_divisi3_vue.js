@@ -32,32 +32,61 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_1__.FilterMatchMode.CONTAINS
         }
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   mounted: function mounted() {
-    this.getUser();
+    this.cekUser();
   },
   methods: {
-    getUser: function getUser() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      // if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Status Change Request") || _this.checkto.includes("/ict-request-divisi3")) {
+          _this.getUser();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getUser: function getUser() {
+      var _this2 = this;
+
       this.axios.get('api/user', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.user = response.data;
+        _this2.user = response.data;
 
-        _this.getData();
+        _this2.getData();
       });
     },
     submit: function submit(ireq_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Apakah Anda Yakin Ingin Mensubmit?",
@@ -67,20 +96,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Disubmit",
             life: 3000
           });
 
-          _this2.axios.get('/api/updateStatusPenugasan/' + ireq_id, {
+          _this3.axios.get('/api/updateStatusPenugasan/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getSedangDikerjakan();
+          _this3.getSedangDikerjakan();
         },
         reject: function reject() {}
       });
@@ -94,17 +123,17 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogAssign = false;
     },
     getData: function getData() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('api/get-sedang-dikerjakan/' + this.user.usr_fullname, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.sedangDikerjakan = response.data.ict;
-        _this3.sudahDikerjakan = response.data.ict1;
-        _this3.selesai = response.data.ict2;
-        _this3.loading = false;
+        _this4.sedangDikerjakan = response.data.ict;
+        _this4.sudahDikerjakan = response.data.ict1;
+        _this4.selesai = response.data.ict2;
+        _this4.loading = false;
       });
     },
     formatDate: function formatDate(date) {

@@ -5,10 +5,11 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import './assets/layout/layout.scss';
 import './assets/layout/flags/flags.css';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'jquery/dist/jquery.min'
-import 'popper.js/dist/popper.min'
-import 'bootstrap/dist/js/bootstrap.min'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'jquery/dist/jquery.min';
+import 'popper.js/dist/popper.min';
+import 'bootstrap/dist/js/bootstrap.min';
+import 'vue3-treeselect/dist/vue3-treeselect.css';
 
 import App from './components/App.vue';
 import axios from 'axios';
@@ -46,6 +47,7 @@ import Toolbar from 'primevue/toolbar';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import VueAxios from 'vue-axios';
+import Treeselect from 'vue3-treeselect';
 
 const app = createApp(App);
 app.config.globalProperties.$appState = reactive({ theme: 'saga-blue'});
@@ -61,7 +63,7 @@ app.use(router);
 router.beforeEach(function(to,from,next) {
     window.scrollTo(0,0);
     next();
-})
+});
 app.component('Button',Button);
 app.component('Calendar',Calendar);
 app.component('Chart',Chart);
@@ -89,5 +91,6 @@ app.component('TreeSelect',TreeSelect);
 app.component('Toast', Toast);
 app.component('Toolbar',Toolbar);
 app.component('StreamBarcodeReader', StreamBarcodeReader);
+app.component('Treeselect',Treeselect);
 
 app.mount('#app');

@@ -150,14 +150,33 @@ export default {
       sat:[],
       kodeperi:[],
       detail:[],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname : [],
+      checkto : [],
+      divisi: [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
-      this.getValutaCode();
-      this.getDetail();
+    this.cekUser();
   },
   methods:{
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Divisi") || this.checkto.includes("/divisi-refs")){
+          this.getValutaCode();
+          this.getDetail();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getTotal(){
       this.detail.dpurchase_prc = this.detail.dpurchase_qty * this.detail.dpurchase_prc_sat
     },

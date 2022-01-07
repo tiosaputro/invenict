@@ -58,6 +58,9 @@ export default {
          loading: false,
          req: [],
          token: localStorage.getItem('token'),
+         checkname : [],
+         checkto : [],
+         id : localStorage.getItem('id'),
             items: [
                 {
                     label: 'Pdf',
@@ -77,9 +80,24 @@ export default {
     };
   },
   created() {
-    this.getTahun();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Laporan Request Divisi Requestor Per Tahun") || this.checkto.includes("/report-div-req-per-tahun")){
+          this.getTahun();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
         getPerDivisiRequestorTahun(){
             if(this.tahunRequestor != null){
               this.loading = true;

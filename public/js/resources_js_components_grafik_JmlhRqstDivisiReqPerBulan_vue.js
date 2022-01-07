@@ -25,7 +25,10 @@ __webpack_require__.r(__webpack_exports__);
       nameBulanUser: null,
       tahunn: [],
       tahunnnn: [],
-      bulan: []
+      bulan: [],
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   watch: {
@@ -34,11 +37,42 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.getBulan();
+    this.cekUser();
   },
   methods: {
-    getTahunRequestor: function getTahunRequestor() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        console.log(_this.check);
+
+        if (_this.checkname.includes("Statistik Permintaan Divisi Requestor Per Bulan") || _this.checkto.includes("/req-per-divisi-req-per-bulan")) {
+          _this.getBulan();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getTahunRequestor: function getTahunRequestor() {
+      var _this2 = this;
 
       this.tahunnRequestor = null;
 
@@ -48,23 +82,23 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this.tahunnnn = response.data;
+          _this2.tahunnnn = response.data;
         });
       }
     },
     getBulan: function getBulan() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.bulan = response.data.grafik2;
+        _this3.bulan = response.data.grafik2;
       });
     },
     getPerDivisiRequestorBulan: function getPerDivisiRequestorBulan() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.tahunnRequestor != null && this.bulanRequestor != null) {
         this.axios.get('api/count-per-divreq-bulan/' + this.tahunnRequestor + '/' + this.bulanRequestor, {
@@ -72,14 +106,14 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this3.nameBulanRequestor = response.data[0].bulan + _this3.tahunnRequestor;
-          _this3.perDivisiRequestorBulan = {
+          _this4.nameBulanRequestor = response.data[0].bulan + _this4.tahunnRequestor;
+          _this4.perDivisiRequestorBulan = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: response.data[0].bulan + _this3.tahunnRequestor,
-              backgroundColor: '#' + _this3.color,
+              label: response.data[0].bulan + _this4.tahunnRequestor,
+              backgroundColor: '#' + _this4.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -91,12 +125,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     printperDivisiRequestorBulan: function printperDivisiRequestorBulan() {
-      var _this4 = this;
+      var _this5 = this;
 
       var bar = document.getElementById("perDivisiRequestorBulan");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save('Statistik Request Divisi Requestor Bulan ' + _this4.nameBulanRequestor);
+        pdf.save('Statistik Request Divisi Requestor Bulan ' + _this5.nameBulanRequestor);
       });
     }
   }

@@ -22,6 +22,9 @@ export default {
             statusRequestor: null,
             status: [],
             nameStatusRequestor:null,
+            id : localStorage.getItem('id'),
+            checkname : [],
+            checkto : []
         };
     },
     watch : {
@@ -30,9 +33,25 @@ export default {
         }
     },
     created(){ 
-        this.getStatus();  
+        this.cekUser();  
     },
     methods: {
+        cekUser(){
+        this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.checkname = response.data.map((x)=> x.name)
+            this.checkto = response.data.map((x)=> x.to)
+            console.log(this.check)
+            if(this.checkname.includes("Statistik Permintaan Divisi Requestor Per Status") || this.checkto.includes("/req-per-divisi-req-per-status")){
+            this.getStatus();
+            }
+            else {
+            this.$toast.add({
+                severity:'error', summary: '403', detail:'Cannot Access This Page'
+            });
+            setTimeout( () => this.$router.push('/Dashboard'),2000);
+            }
+        });
+        },
         getStatus(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.status = response.data.grafik1;

@@ -21,7 +21,10 @@ __webpack_require__.r(__webpack_exports__);
       color: '1976D2',
       token: localStorage.getItem('token'),
       statusPerDivisiUser: {},
-      nameStatusUser: null
+      nameStatusUser: null,
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   watch: {
@@ -30,11 +33,42 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.getStatus();
+    this.cekUser();
   },
   methods: {
-    getStatusDivisiUser: function getStatusDivisiUser() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        console.log(_this.check);
+
+        if (_this.checkname.includes("Statistik Permintaan Divisi User Per Status") || _this.checkto.includes("/req-per-divisi-per-status")) {
+          _this.getStatus();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getStatusDivisiUser: function getStatusDivisiUser() {
+      var _this2 = this;
 
       if (this.statusUser != null) {
         this.axios.get('api/count-per-divuser-status/' + this.statusUser, {
@@ -42,14 +76,14 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this.nameStatusUser = response.data[0].name;
-          _this.statusPerDivisiUser = {
+          _this2.nameStatusUser = response.data[0].name;
+          _this2.statusPerDivisiUser = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
               label: response.data[0].name,
-              backgroundColor: '#' + _this.color,
+              backgroundColor: '#' + _this2.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -59,23 +93,23 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     printstatusPerDivisiUser: function printstatusPerDivisiUser() {
-      var _this2 = this;
+      var _this3 = this;
 
       var bar = document.getElementById("statusPerDivisiUser");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save('Statistik Request Divisi User Per Status  ' + _this2.nameStatusUser);
+        pdf.save('Statistik Request Divisi User Per Status  ' + _this3.nameStatusUser);
       });
     },
     getStatus: function getStatus() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.status = response.data.grafik1;
+        _this4.status = response.data.grafik1;
       });
     }
   }

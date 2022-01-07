@@ -484,40 +484,39 @@ export default {
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
         usr_name: localStorage.getItem('usr_name'),
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getIct();
+    this.cekUser();
   },
   methods: {
-    getIct(){
-      // if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
-      this.axios.get('api/get-ict/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.ict = response.data.ict;
-        this.loading = false;
-        this.verif = response.data.ict1;
-        this.reject = response.data.ict2
-        this.sedangDikerjakan = response.data.ict3
-        this.sudahDikerjakan = response.data.ict4
-        this.selesai = response.data.ict5
-      }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Request") || this.checkto.includes("/ict-request")){ 
+          this.getIct();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
           setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
-            this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-            });
-            localStorage.clear();
-            localStorage.setItem('Expired','true')
-            setTimeout( () => this.$router.push('/login'),2000);
-           }
+        }
+      });
+    },
+    getIct(){
+      this.axios.get('api/get-ict/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
+          this.ict = response.data.ict;
+          this.loading = false;
+          this.verif = response.data.ict1;
+          this.reject = response.data.ict2
+          this.sedangDikerjakan = response.data.ict3
+          this.sudahDikerjakan = response.data.ict4
+          this.selesai = response.data.ict5
         });
     },  
     formatDate(date) {

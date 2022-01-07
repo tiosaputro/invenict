@@ -57,6 +57,9 @@ export default {
          loading: false,
          req: [],
          token: localStorage.getItem('token'),
+         checkname : [],
+         checkto : [],
+         id : localStorage.getItem('id'),
             items: [
                 {
                     label: 'Pdf',
@@ -76,9 +79,24 @@ export default {
     };
   },
   created() {
-    this.getPersonnel();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Laporan Request Divisi Requestor Per Status") || this.checkto.includes("/report-per-status-per-personnel")){
+          this.getPersonnel();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
         getPerStatusIct(){
             if(this.ictPersonnel !=null){
                 this.loading = true;

@@ -24,51 +24,60 @@ __webpack_require__.r(__webpack_exports__);
           value: null,
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_0__.FilterMatchMode.CONTAINS
         }
-      }
+      },
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getMenu();
+    this.cekUser();
   },
   methods: {
-    getMenu: function getMenu() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('api/menu', {
+      this.axios.get('api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.menu = response.data;
-        _this.loading = false;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Menu") || _this.checkto.includes("/mng-menu")) {
+          _this.getMenu();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Sesi Login Expired'
-          });
-
-          localStorage.clear();
-          localStorage.setItem("Expired", "true");
-          setTimeout(function () {
-            return _this.$router.push('/login');
-          }, 2000);
         }
       });
     },
-    DeleteMenu: function DeleteMenu(menu_id) {
+    getMenu: function getMenu() {
       var _this2 = this;
+
+      this.axios.get('api/menu', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.menu = response.data;
+        _this2.loading = false;
+      });
+    },
+    DeleteMenu: function DeleteMenu(menu_id) {
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -78,20 +87,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this2.axios["delete"]('api/delete-menu/' + menu_id, {
+          _this3.axios["delete"]('api/delete-menu/' + menu_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getMenu();
+          _this3.getMenu();
         },
         reject: function reject() {}
       });

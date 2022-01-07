@@ -21,43 +21,78 @@ __webpack_require__.r(__webpack_exports__);
       sat: [],
       kodeperi: [],
       detail: [],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      divisi: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getValutaCode();
-    this.getDetail();
+    this.cekUser();
   },
   methods: {
-    getTotal: function getTotal() {
-      this.detail.dpurchase_prc = this.detail.dpurchase_qty * this.detail.dpurchase_prc_sat;
-    },
-    getDetail: function getDetail() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/edit-detail-pem/' + this.$route.params.purchase, {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.detail = response.data;
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
 
-        _this.getKode();
+        if (_this.checkname.includes("Divisi") || _this.checkto.includes("/divisi-refs")) {
+          _this.getValutaCode();
 
-        _this.getSatuan();
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+          _this.getDetail();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
+        }
+      });
+    },
+    getTotal: function getTotal() {
+      this.detail.dpurchase_prc = this.detail.dpurchase_qty * this.detail.dpurchase_prc_sat;
+    },
+    getDetail: function getDetail() {
+      var _this2 = this;
+
+      this.axios.get('/api/edit-detail-pem/' + this.$route.params.purchase, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.detail = response.data;
+
+        _this2.getKode();
+
+        _this2.getSatuan();
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -66,61 +101,61 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     getKode: function getKode() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/get-kode', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.kodeperi = response.data;
+        _this3.kodeperi = response.data;
       });
     },
     getSatuan: function getSatuan() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/getSatuan', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.sat = response.data;
+        _this4.sat = response.data;
       });
     },
     getValutaCode: function getValutaCode() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.get('/api/getValuta/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.valuta = response.data;
+        _this5.valuta = response.data;
 
-        if (_this4.valuta.valuta_code == '$') {
-          _this4.locale = 'en-US';
-          _this4.currency = 'USD';
+        if (_this5.valuta.valuta_code == '$') {
+          _this5.locale = 'en-US';
+          _this5.currency = 'USD';
         }
 
-        if (_this4.valuta.valuta_code == 'Rp') {
-          _this4.locale = 'id-ID';
-          _this4.currency = 'IDR';
+        if (_this5.valuta.valuta_code == 'Rp') {
+          _this5.locale = 'id-ID';
+          _this5.currency = 'IDR';
         }
 
-        if (_this4.valuta.valuta_code == '¥') {
-          _this4.locale = 'zh-CN';
-          _this4.currency = 'CNY';
+        if (_this5.valuta.valuta_code == '¥') {
+          _this5.locale = 'zh-CN';
+          _this5.currency = 'CNY';
         }
       });
     },
     UpdateDetail: function UpdateDetail() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.submitted = true;
 
@@ -131,17 +166,17 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function (response) {
           setTimeout(function () {
-            return _this5.$router.push('/pembelian-peripheral-detail/' + _this5.$route.params.code);
+            return _this6.$router.push('/pembelian-peripheral-detail/' + _this6.$route.params.code);
           }, 1000);
 
-          _this5.$toast.add({
+          _this6.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Update"
           });
         })["catch"](function (error) {
-          _this5.errors = error.response.data.errors;
-          _this5.submitted = false;
+          _this6.errors = error.response.data.errors;
+          _this6.submitted = false;
         });
       }
     }

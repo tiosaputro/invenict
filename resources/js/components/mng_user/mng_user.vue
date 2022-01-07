@@ -84,31 +84,34 @@ export default {
         token: localStorage.getItem('token'),
         user: [],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getUser();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("User") || this.checkto.includes("/mng-user")){
+          this.getUser();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getUser(){
       this.axios.get('api/get-user', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.user = response.data;
         this.loading = false;
-      }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401){
-            this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-          });
-          localStorage.clear();
-          localStorage.setItem("Expired","true")
-          setTimeout( () => this.$router.push('/login'),2000);
-           }
       });
     },
     DeleteUser(usr_id){

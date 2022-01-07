@@ -71,14 +71,22 @@
                 <label for="Status" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:120px">Menu</label>
                  <div class="p-col-3 p-md-6">
                     <MultiSelect 
-                      v-model="role.menu" 
-                      :options="menus" 
-                      optionValue="code"
-                      optionLabel="name" 
-                      display="chip"
-                      placeholder="Select Menu" 
-                      :class="{ 'p-invalid': errors.menu }"
+                        v-model="role.menu" 
+                        :options="menus" 
+                        optionValue="code"
+                        optionLabel="name" 
+                        placeholder="Select Cities" 
+                        display="chip" 
                     />
+                   <!-- <TreeSelect 
+                      v-model="menu" 
+                      :options="menus"
+                      display="chip"
+                      selectionMode="checkbox" 
+                      :metaKeySelection="false"
+                      selectable="key"
+                      placeholder="Select Items"
+                    />{{ menu }} -->
                     <small v-if="errors.menu" class="p-error">
                       {{ errors.menu[0] }}
                     </small>
@@ -110,7 +118,6 @@
 export default {
   data() {
     return {
-      selectedNodes1: null,
       errors: [],
       role : {
         rol_name:'',
@@ -123,15 +130,36 @@ export default {
         { nama: "Aktif", code: "T" },
         { nama: "Tidak Aktif", code: "F" },
       ],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
-    this.axios.get('api/get-menu',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-      this.menus = response.data
-    })
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Role Menu") || this.checkto.includes("/mng-role")){
+          this.getMenu();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
+    getMenu(){
+      this.axios.get('api/get-menu',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+      this.menus = response.data
+    });
+    },
     CreateRole() {
         this.errors = [];
         this.axios.post('api/save-role',this.role,{headers: {'Authorization': 'Bearer '+this.token}}).then(()=>{

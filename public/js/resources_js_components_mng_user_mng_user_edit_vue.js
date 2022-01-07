@@ -30,71 +30,107 @@ __webpack_require__.r(__webpack_exports__);
       }],
       token: localStorage.getItem('token'),
       roles: [],
-      divisi: []
+      divisi: [],
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getUser();
-    this.getRole();
-    this.getRoles();
-    this.getDivisi();
+    this.cekUser();
   },
   methods: {
-    getRole: function getRole() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("User") || _this.checkto.includes("/mng-user")) {
+          _this.getUser();
+
+          _this.getRole();
+
+          _this.getRoles();
+
+          _this.getDivisi();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getRole: function getRole() {
+      var _this2 = this;
 
       this.axios.get('/api/edit-usr-role/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.role.role = response.data;
+        _this2.role.role = response.data;
       });
     },
     getDivisi: function getDivisi() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/get-divisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.divisi = response.data;
+        _this3.divisi = response.data;
       });
     },
     getUser: function getUser() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/edit-user/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.user = response.data;
+        _this4.user = response.data;
       });
     },
     getRoles: function getRoles() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.get('/api/get-role', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.roles = response.data;
+        _this5.roles = response.data;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this4.$toast.add({
+          _this5.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this4.$router.push('/Dashboard');
+            return _this5.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this4.$toast.add({
+          _this5.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -103,7 +139,7 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this4.$router.push('/login');
+            return _this5.$router.push('/login');
           }, 2000);
         }
       });
@@ -126,7 +162,7 @@ __webpack_require__.r(__webpack_exports__);
       reader.readAsDataURL(foto);
     },
     UpdateUser: function UpdateUser() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.errors = [];
       this.axios.put('/api/update-user/' + this.$route.params.code, this.user, {
@@ -134,23 +170,23 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this5.axios.put('/api/update-usr-role/' + _this5.$route.params.code, _this5.role, {
+        _this6.axios.put('/api/update-usr-role/' + _this6.$route.params.code, _this6.role, {
           headers: {
-            'Authorization': 'Bearer ' + _this5.token
+            'Authorization': 'Bearer ' + _this6.token
           }
         });
 
-        _this5.$toast.add({
+        _this6.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Update"
         });
 
         setTimeout(function () {
-          return _this5.$router.push('/mng-user');
+          return _this6.$router.push('/mng-user');
         }, 1000);
       })["catch"](function (error) {
-        _this5.errors = error.response.data.errors;
+        _this6.errors = error.response.data.errors;
       });
     }
   }

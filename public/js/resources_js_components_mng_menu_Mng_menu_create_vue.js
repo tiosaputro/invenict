@@ -44,34 +44,65 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getModul();
-    this.getParent();
+    this.cekUser();
   },
   methods: {
-    getModul: function getModul() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Menu") || _this.checkto.includes("/mng-menu")) {
+          _this.getModul();
+
+          _this.getParent();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getModul: function getModul() {
+      var _this2 = this;
 
       this.axios.get('api/get-module', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.modul = response.data;
+        _this2.modul = response.data;
       });
     },
     getParent: function getParent() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/get-parent', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.parent = response.data;
+        _this3.parent = response.data;
       });
     },
     CreateMenu: function CreateMenu() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.errors = [];
       var data = new FormData();
@@ -89,17 +120,17 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this3.$toast.add({
+        _this4.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Create"
         });
 
         setTimeout(function () {
-          return _this3.$router.push('/mng-menu');
+          return _this4.$router.push('/mng-menu');
         }, 1000);
       })["catch"](function (error) {
-        _this3.errors = error.response.data.errors;
+        _this4.errors = error.response.data.errors;
       });
     }
   }

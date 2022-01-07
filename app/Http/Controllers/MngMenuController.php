@@ -29,7 +29,7 @@ class MngMenuController extends Controller
     Public function getMenu()
     {
         $module = Mng_menu::select('menu_id as code','menu_name as name')
-        ->where('menu_type','L')
+        ->orderBy('menu_name','ASC')
         ->get();
         return response()->json($module);
     }

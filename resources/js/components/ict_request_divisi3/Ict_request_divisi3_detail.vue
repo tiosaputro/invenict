@@ -141,22 +141,37 @@ export default {
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
         user:[],
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getUser();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Status Change Request") || this.checkto.includes("/ict-request-divisi3")){ 
+          this.getUser();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getUser(){
         this.axios.get('/api/user',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.user = response.data;
-        this.create();
+        this.getIctDetail();
+        this.getNoreq();
         });
       },
-    create(){
-      this.getIctDetail();
-      this.getNoreq();
-    },
     edit(ireqd_id){
       this.dialogEdit = true;
       this.axios.get('/api/detail/'+ ireqd_id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
@@ -192,14 +207,7 @@ export default {
       this.axios.get('/api/get-detail-done/' + this.$route.params.code + '/' + this.user.usr_fullname, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.detail = response.data;
         this.loading = false;
-      }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
+      if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
           });

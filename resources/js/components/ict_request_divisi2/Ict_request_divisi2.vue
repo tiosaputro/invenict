@@ -291,12 +291,30 @@ export default {
         reject:[],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         token: localStorage.getItem('token'),
+        checkname : [],
+        checkto : [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getPermohonan();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Assign Request Ke ICT Personnel") || this.checkto.includes("/ict-request-divisi2")){ 
+          this.getPermohonan();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
       submit(ireq_id){
         this.$confirm.require({
         message: "Apakah Anda Yakin Ingin Mensubmit?",
@@ -356,10 +374,6 @@ export default {
           this.submitted = false;
       },
      getPermohonan(){
-      //  if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
       this.axios.get('api/get-permohonan-divisi',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.permohonan = response.data.ict;
         this.sedangDikerjakan = response.data.ict1;
@@ -367,13 +381,7 @@ export default {
         this.selesai = response.data.ict3;
         this.loading = false;
       }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
+        if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
             });

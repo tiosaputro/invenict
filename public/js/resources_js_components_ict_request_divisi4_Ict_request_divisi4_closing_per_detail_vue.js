@@ -28,39 +28,62 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       code: this.$route.params.code,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   mounted: function mounted() {
     this.getIctDetail();
   },
   methods: {
-    getIctDetail: function getIctDetail() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/ict-detail/' + this.$route.params.code, {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.detail = response.data;
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
 
-        _this.getNoreq();
-
-        _this.loading = false;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        if (_this.checkname.includes("Closing Request") || _this.checkto.includes("/ict-request-divisi4")) {
+          _this.getIctDetail();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
+        }
+      });
+    },
+    getIctDetail: function getIctDetail() {
+      var _this2 = this;
+
+      this.axios.get('/api/ict-detail/' + this.$route.params.code, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.detail = response.data;
+
+        _this2.getNoreq();
+
+        _this2.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -69,13 +92,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     ClosingPerDetail: function ClosingPerDetail(ireqd_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Closing Permohonan Dilanjutkan?",
@@ -85,33 +108,33 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Diclosing",
             life: 3000
           });
 
-          _this2.axios.get('/api/updateStatusClosingDetail/' + ireqd_id + '/' + _this2.$route.params.code, {
+          _this3.axios.get('/api/updateStatusClosingDetail/' + ireqd_id + '/' + _this3.$route.params.code, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getIctDetail();
+          _this3.getIctDetail();
         },
         reject: function reject() {}
       });
     },
     getNoreq: function getNoreq() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/get-noreq/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.kode = response.data;
+        _this4.kode = response.data;
       });
     }
   }

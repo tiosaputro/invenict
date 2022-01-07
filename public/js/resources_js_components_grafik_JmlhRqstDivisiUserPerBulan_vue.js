@@ -24,7 +24,10 @@ __webpack_require__.r(__webpack_exports__);
       tahun: null,
       nameBulanUser: null,
       tahunn: [],
-      bulan: []
+      bulan: [],
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   watch: {
@@ -33,22 +36,52 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.getBulan();
+    this.cekUser();
   },
   methods: {
-    getBulan: function getBulan() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+
+        if (_this.checkname.includes("Statistik Permintaan Divisi User Per Bulan") || _this.checkto.includes("/req-per-divisi-user-per-bulan")) {
+          _this.getBulan();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getBulan: function getBulan() {
+      var _this2 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.bulan = response.data.grafik2;
+        _this2.bulan = response.data.grafik2;
       });
     },
     getTahunUser: function getTahunUser() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.tahunnUser = null;
 
@@ -58,12 +91,12 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this2.tahunn = response.data;
+          _this3.tahunn = response.data;
         });
       }
     },
     getPerDivisiUserBulan: function getPerDivisiUserBulan() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.tahunnUser != null && this.bulanUser != null) {
         this.axios.get('api/count-per-divuser-bulan/' + this.tahunnUser + '/' + this.bulanUser, {
@@ -71,14 +104,14 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this3.nameBulanUser = response.data[0].bulan + _this3.tahunnUser;
-          _this3.perDivisiUserBulan = {
+          _this4.nameBulanUser = response.data[0].bulan + _this4.tahunnUser;
+          _this4.perDivisiUserBulan = {
             labels: response.data.map(function (x) {
               return x.div_name;
             }),
             datasets: [{
-              label: _this3.nameBulanUser,
-              backgroundColor: '#' + _this3.color,
+              label: _this4.nameBulanUser,
+              backgroundColor: '#' + _this4.color,
               data: response.data.map(function (x) {
                 return x.jumlah;
               })
@@ -90,12 +123,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     printPerDivisiUserTahun: function printPerDivisiUserTahun() {
-      var _this4 = this;
+      var _this5 = this;
 
       var bar = document.getElementById("perDivisiUserTahun");
       var exp = new vue_chartjs_exporter__WEBPACK_IMPORTED_MODULE_0__["default"]([bar]);
       exp.export_pdf().then(function (pdf) {
-        pdf.save('Statistik Request Divisi User Tahun ' + _this4.tahunUser);
+        pdf.save('Statistik Request Divisi User Tahun ' + _this5.tahunUser);
       });
     }
   }

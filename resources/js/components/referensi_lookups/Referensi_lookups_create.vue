@@ -115,7 +115,10 @@ export default {
         { nama: "Aktif", code: "T" },
         { nama: "Tidak Aktif", code: "F" },
       ],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id : localStorage.getItem('id'),
+      checkname : [],
+      checkto : [],
     };
   },
   created(){
@@ -123,23 +126,19 @@ export default {
   },
   methods: {
     cekUser(){
-     this.axios.get('api/ref', {headers: {'Authorization': 'Bearer '+this.token}}).then(()=> {
-      }).catch(error=>{
-           if ((error.response.status == 403)) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Lookups") || this.checkto.includes("/referensi-lookups")){
+          console.log('sip')
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
           setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if ((error.response.status == 401)){
-            this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-          });
-          localStorage.clear();
-          localStorage.setItem("Expired","true")
-          setTimeout( () => this.$router.push('/login'),2000);
-           }
-         });
+        }
+      });
     },
     CreateLookup() {
         this.errors = [];

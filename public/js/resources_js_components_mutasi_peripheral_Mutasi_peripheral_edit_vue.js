@@ -19,35 +19,68 @@ __webpack_require__.r(__webpack_exports__);
       mask: {
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getMutasi();
+    this.cekUser();
   },
   methods: {
-    getMutasi: function getMutasi() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/edit-mut/' + this.$route.params.code, {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.mutasi = response.data;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Mutasi Peripheral") || _this.checkto.includes("/mutasi-peripheral")) {
+          _this.getMutasi();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
+        }
+      });
+    },
+    getMutasi: function getMutasi() {
+      var _this2 = this;
+
+      this.axios.get('/api/edit-mut/' + this.$route.params.code, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.mutasi = response.data;
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -56,13 +89,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     UpdateMutasi: function UpdateMutasi() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.submitted = true;
       this.errors = [];
@@ -74,17 +107,17 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function () {
           setTimeout(function () {
-            return _this2.$router.push('/mutasi-peripheral');
+            return _this3.$router.push('/mutasi-peripheral');
           }, 1000);
 
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Update"
           });
         })["catch"](function (error) {
-          _this2.errors = error.response.data.errors;
-          _this2.submitted = false;
+          _this3.errors = error.response.data.errors;
+          _this3.submitted = false;
         });
       }
     }

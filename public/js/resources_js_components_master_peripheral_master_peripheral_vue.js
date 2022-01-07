@@ -29,13 +29,46 @@ __webpack_require__.r(__webpack_exports__);
           value: null,
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_0__.FilterMatchMode.CONTAINS
         }
-      }
+      },
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getMaster();
+    this.cekUser();
   },
   methods: {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Master Peripheral") || _this.checkto.includes("/master-peripheral")) {
+          _this.getMaster();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
     downloadBarcodePdf: function downloadBarcodePdf() {
       var doc = new jspdf__WEBPACK_IMPORTED_MODULE_1__["default"]();
       var contentHtml = this.$refs.qr.$el;
@@ -45,41 +78,41 @@ __webpack_require__.r(__webpack_exports__);
       this.displayBarcode = false;
     },
     previewBarcode: function previewBarcode(invent_code) {
-      var _this = this;
+      var _this2 = this;
 
       this.axios.get('api/getBarcode/' + invent_code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.mas = response.data;
-        _this.barcode = _this.mas.invent_barcode;
-        _this.displayBarcode = true;
+        _this2.mas = response.data;
+        _this2.barcode = _this2.mas.invent_barcode;
+        _this2.displayBarcode = true;
       });
     },
     getMaster: function getMaster() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/mas', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.master = response.data;
-        _this2.loading = false;
+        _this3.master = response.data;
+        _this3.loading = false;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this3.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -88,13 +121,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this3.$router.push('/login');
           }, 2000);
         }
       });
     },
     DeleteMas: function DeleteMas(invent_code) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -104,20 +137,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this3.axios["delete"]('api/delete-mas/' + invent_code, {
+          _this4.axios["delete"]('api/delete-mas/' + invent_code, {
             headers: {
-              'Authorization': 'Bearer ' + _this3.token
+              'Authorization': 'Bearer ' + _this4.token
             }
           });
 
-          _this3.getMaster();
+          _this4.getMaster();
         },
         reject: function reject() {}
       });

@@ -11,9 +11,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id'),
       errors: [],
       suplier: [],
       code_money: [],
@@ -38,36 +45,67 @@ __webpack_require__.r(__webpack_exports__);
         input: 'DD MMM YYYY'
       },
       token: localStorage.getItem('token')
-    };
+    }, _defineProperty(_ref, "checkname", []), _defineProperty(_ref, "ceckto", []), _defineProperty(_ref, "id", localStorage.getItem('id')), _ref;
   },
   mounted: function mounted() {
+    this.cekUser();
     this.getSupplier();
     this.getCodeMoney();
     this.getMethodePurchase();
   },
   methods: {
-    getCodeMoney: function getCodeMoney() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Pembelian Peripheral") || _this.checkto.includes("/pembelian-peripheral")) {
+          _this.getPurchase();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getCodeMoney: function getCodeMoney() {
+      var _this2 = this;
 
       this.axios.get('api/getMataUang', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.code_money = response.data;
+        _this2.code_money = response.data;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this.$router.go(-1);
+            return _this2.$router.go(-1);
           }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -76,35 +114,35 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     getSupplier: function getSupplier() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/get-supp', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.suplier = response.data;
+        _this3.suplier = response.data;
       });
     },
     getMethodePurchase: function getMethodePurchase() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('api/getMethodePurch', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.methode_pay = response.data;
+        _this4.methode_pay = response.data;
       });
     },
     CreatePurch: function CreatePurch() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.submitted = true;
 
@@ -124,17 +162,17 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function (response) {
           setTimeout(function () {
-            return _this4.$router.push('/pembelian-peripheral');
+            return _this5.$router.push('/pembelian-peripheral');
           }, 1000);
 
-          _this4.$toast.add({
+          _this5.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Create"
           });
         })["catch"](function (error) {
-          _this4.submitted = false;
-          _this4.errors = error.response.data.errors;
+          _this5.submitted = false;
+          _this5.errors = error.response.data.errors;
         });
       }
     }

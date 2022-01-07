@@ -232,6 +232,9 @@ export default {
       token: localStorage.getItem('token'),
       roles: [],
       divisi: [],
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
@@ -239,6 +242,22 @@ export default {
       this.getDivisi();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("User") || this.checkto.includes("/mng-user")){ 
+          this.getRoles();
+          this.getDivisi();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     fileImage(event) {
       this.foto = event.target.files[0];
       this.displayImage = true;

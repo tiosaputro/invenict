@@ -193,6 +193,9 @@
 export default {
   data() {
     return {
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
       errors: [],
       suplier:[],
       code_money:[],
@@ -213,15 +216,34 @@ export default {
       mask:{
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname : [],
+      ceckto : [],
+      id : localStorage.getItem('id'),
     };
   },
   mounted(){
+      this.cekUser();
       this.getSupplier();
       this.getCodeMoney();
       this.getMethodePurchase();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Pembelian Peripheral") || this.checkto.includes("/pembelian-peripheral")){
+          this.getPurchase();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getCodeMoney(){
         this.axios.get('api/getMataUang',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
             this.code_money = response.data;

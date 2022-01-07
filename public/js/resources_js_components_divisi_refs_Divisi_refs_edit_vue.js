@@ -17,39 +17,72 @@ __webpack_require__.r(__webpack_exports__);
       errors: [],
       div: [],
       verif: [],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
-    this.getDivisi();
+    this.cekUser();
   },
   methods: {
-    getDivisi: function getDivisi() {
+    cekUser: function cekUser() {
       var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Divisi") || _this.checkto.includes("/divisi-refs")) {
+          _this.getDivisi();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getDivisi: function getDivisi() {
+      var _this2 = this;
 
       this.axios.get('/api/edit-divisi/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.div = response.data;
+        _this2.div = response.data;
 
-        _this.getVerificator();
+        _this2.getVerificator();
       });
     },
     getVerificator: function getVerificator() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/get-verificator/' + this.div.div_id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.verif = response.data;
+        _this3.verif = response.data;
       });
     },
     UpdateDivisi: function UpdateDivisi() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.errors = [];
       this.axios.put('/api/update-divisi/' + this.$route.params.code, this.div, {
@@ -57,17 +90,17 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this3.$toast.add({
+        _this4.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Update"
         });
 
         setTimeout(function () {
-          return _this3.$router.push('/divisi-refs');
+          return _this4.$router.push('/divisi-refs');
         }, 1000);
       })["catch"](function (error) {
-        _this3.errors = error.response.data.errors;
+        _this4.errors = error.response.data.errors;
       });
     }
   }
@@ -223,7 +256,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [this.div ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
+    key: 0,
     onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.UpdateDivisi && $options.UpdateDivisi.apply($options, arguments);
     }, ["prevent"]))
@@ -293,7 +327,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   })])], 32
   /* HYDRATE_EVENTS */
-  )])])])]);
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]);
 }
 
 /***/ }),

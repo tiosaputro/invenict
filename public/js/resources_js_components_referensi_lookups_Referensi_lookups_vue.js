@@ -24,36 +24,69 @@ __webpack_require__.r(__webpack_exports__);
           value: null,
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_0__.FilterMatchMode.CONTAINS
         }
-      }
+      },
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
-    this.getRef();
+    this.cekUser();
   },
   methods: {
-    getRef: function getRef() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('api/ref', {
+      this.axios.get('api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.ref = response.data;
-        _this.loading = false;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Lookups") || _this.checkto.includes("/referensi-lookups")) {
+          _this.getRef();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
+        }
+      });
+    },
+    getRef: function getRef() {
+      var _this2 = this;
+
+      this.axios.get('api/ref', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.ref = response.data;
+        _this2.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -62,13 +95,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     DeleteRef: function DeleteRef(lookup_code, lookup_type) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -78,20 +111,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this2.axios["delete"]('api/delete-ref/' + lookup_code + "/" + lookup_type, {
+          _this3.axios["delete"]('api/delete-ref/' + lookup_code + "/" + lookup_type, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getRef();
+          _this3.getRef();
         },
         reject: function reject() {}
       });

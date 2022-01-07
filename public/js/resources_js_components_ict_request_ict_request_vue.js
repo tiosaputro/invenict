@@ -34,63 +34,68 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       token: localStorage.getItem('token'),
-      usr_name: localStorage.getItem('usr_name')
+      usr_name: localStorage.getItem('usr_name'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getIct();
+    this.cekUser();
   },
   methods: {
-    getIct: function getIct() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      // if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
-      this.axios.get('api/get-ict/' + this.usr_name, {
+      this.axios.get('api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.ict = response.data.ict;
-        _this.loading = false;
-        _this.verif = response.data.ict1;
-        _this.reject = response.data.ict2;
-        _this.sedangDikerjakan = response.data.ict3;
-        _this.sudahDikerjakan = response.data.ict4;
-        _this.selesai = response.data.ict5;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Request") || _this.checkto.includes("/ict-request")) {
+          _this.getIct();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Sesi Login Expired'
-          });
-
-          localStorage.clear();
-          localStorage.setItem('Expired', 'true');
-          setTimeout(function () {
-            return _this.$router.push('/login');
-          }, 2000);
         }
+      });
+    },
+    getIct: function getIct() {
+      var _this2 = this;
+
+      this.axios.get('api/get-ict/' + this.usr_name, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.ict = response.data.ict;
+        _this2.loading = false;
+        _this2.verif = response.data.ict1;
+        _this2.reject = response.data.ict2;
+        _this2.sedangDikerjakan = response.data.ict3;
+        _this2.sudahDikerjakan = response.data.ict4;
+        _this2.selesai = response.data.ict5;
       });
     },
     formatDate: function formatDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("DD MMM YYYY");
     },
     SubmitIct: function SubmitIct(ireq_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Apakah Anda Yakin Mensubmit?",
@@ -100,26 +105,26 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Submit",
             life: 3000
           });
 
-          _this2.axios.get('api/updateStatusSubmit/' + ireq_id, {
+          _this3.axios.get('api/updateStatusSubmit/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getIct();
+          _this3.getIct();
         },
         reject: function reject() {}
       });
     },
     DeleteIct: function DeleteIct(ireq_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -129,20 +134,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this3.axios["delete"]('api/delete-ict/' + ireq_id, {
+          _this4.axios["delete"]('api/delete-ict/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this3.token
+              'Authorization': 'Bearer ' + _this4.token
             }
           });
 
-          _this3.getIct();
+          _this4.getIct();
         },
         reject: function reject() {}
       });

@@ -22,6 +22,9 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       req: [],
       token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id'),
       items: [{
         label: 'Pdf',
         icon: 'bi bi-file-earmark-pdf text-danger',
@@ -38,11 +41,41 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getTahun();
+    this.cekUser();
   },
   methods: {
-    getPerDivisiRequestorTahun: function getPerDivisiRequestorTahun() {
+    cekUser: function cekUser() {
       var _this2 = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this2.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this2.checkname.includes("Laporan Request Divisi Requestor Per Tahun") || _this2.checkto.includes("/report-div-req-per-tahun")) {
+          _this2.getTahun();
+        } else {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getPerDivisiRequestorTahun: function getPerDivisiRequestorTahun() {
+      var _this3 = this;
 
       if (this.tahunRequestor != null) {
         this.loading = true;
@@ -51,20 +84,20 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this2.req = response.data;
-          _this2.loading = false;
+          _this3.req = response.data;
+          _this3.loading = false;
         });
       }
     },
     getTahun: function getTahun() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.tahunn = response.data.grafik;
+        _this4.tahunn = response.data.grafik;
       });
     }
   }

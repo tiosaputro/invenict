@@ -30,14 +30,49 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_1__.FilterMatchMode.CONTAINS
         }
       },
-      code: this.$route.params.code
+      code: this.$route.params.code,
+      checkname: [],
+      checkto: [],
+      divisi: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getPembelianDetail();
-    this.getDetails();
+    this.cekUser();
   },
   methods: {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Divisi") || _this.checkto.includes("/divisi-refs")) {
+          _this.getPembelianDetail();
+
+          _this.getDetails();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
     formatDate: function formatDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("DD MMM YYYY");
     },
@@ -46,39 +81,39 @@ __webpack_require__.r(__webpack_exports__);
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
     getPembelianDetail: function getPembelianDetail() {
-      var _this = this;
+      var _this2 = this;
 
       this.axios.get('/api/detail-pem/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.detail = response.data;
+        _this2.detail = response.data;
       });
     },
     getDetails: function getDetails() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/getSuppDate/' + this.$route.params.code, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.details = response.data;
-        _this2.loading = false;
+        _this3.details = response.data;
+        _this3.loading = false;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this3.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -87,13 +122,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this3.$router.push('/login');
           }, 2000);
         }
       });
     },
     DeleteDetail: function DeleteDetail(dpurchase_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -103,20 +138,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this3.axios["delete"]('/api/delete-detail-pem/' + _this3.$route.params.code + '/' + dpurchase_id, {
+          _this4.axios["delete"]('/api/delete-detail-pem/' + _this4.$route.params.code + '/' + dpurchase_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this3.token
+              'Authorization': 'Bearer ' + _this4.token
             }
           });
 
-          _this3.getPembelianDetail();
+          _this4.getPembelianDetail();
         },
         reject: function reject() {}
       });

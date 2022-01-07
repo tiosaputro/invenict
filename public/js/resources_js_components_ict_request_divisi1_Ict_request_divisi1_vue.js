@@ -34,45 +34,64 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_1__.FilterMatchMode.CONTAINS
         }
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
-    this.getPermohonan();
+    this.cekUser();
   },
   methods: {
-    getPermohonan: function getPermohonan() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      //  if(localStorage.getItem('active')){
-      //   this.active1 = parseFloat(localStorage.getItem('active'));
-      //   localStorage.removeItem('active');
-      // }
-      this.axios.get('/api/get-permohonan/' + this.usr_name, {
+      this.axios.get('api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.permohonan = response.data.ict;
-        _this.verif = response.data.ict1;
-        _this.reject = response.data.ict2;
-        _this.sedangDikerjakan = response.data.ict3;
-        _this.sudahDikerjakan = response.data.ict4;
-        _this.selesai = response.data.ict5;
-        _this.loading = false;
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Approval Atasan") || _this.checkto.includes("/ict-request-divisi1")) {
+          _this.getPermohonan();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
+        }
+      });
+    },
+    getPermohonan: function getPermohonan() {
+      var _this2 = this;
+
+      this.axios.get('/api/get-permohonan/' + this.usr_name, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.permohonan = response.data.ict;
+        _this2.verif = response.data.ict1;
+        _this2.reject = response.data.ict2;
+        _this2.sedangDikerjakan = response.data.ict3;
+        _this2.sudahDikerjakan = response.data.ict4;
+        _this2.selesai = response.data.ict5;
+        _this2.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -81,7 +100,7 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });

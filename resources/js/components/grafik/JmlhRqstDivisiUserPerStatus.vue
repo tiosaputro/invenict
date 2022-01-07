@@ -22,6 +22,9 @@ export default {
             token: localStorage.getItem('token'),
             statusPerDivisiUser:{},
             nameStatusUser : null,
+            id : localStorage.getItem('id'),
+            checkname : [],
+            checkto : []
         };
     },
     watch : {
@@ -30,9 +33,25 @@ export default {
         }
     },
     created(){ 
-        this.getStatus();  
+        this.cekUser();  
     },
     methods: {
+        cekUser(){
+        this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.checkname = response.data.map((x)=> x.name)
+            this.checkto = response.data.map((x)=> x.to)
+            console.log(this.check)
+            if(this.checkname.includes("Statistik Permintaan Divisi User Per Status") || this.checkto.includes("/req-per-divisi-per-status")){
+            this.getStatus();
+            }
+            else {
+            this.$toast.add({
+                severity:'error', summary: '403', detail:'Cannot Access This Page'
+            });
+            setTimeout( () => this.$router.push('/Dashboard'),2000);
+            }
+        });
+        },
         getStatusDivisiUser(){
             if(this.statusUser != null){
                 this.axios.get('api/count-per-divuser-status/'+this.statusUser, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

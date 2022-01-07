@@ -27,13 +27,47 @@ __webpack_require__.r(__webpack_exports__);
           matchMode: primevue_api__WEBPACK_IMPORTED_MODULE_1__.FilterMatchMode.CONTAINS
         }
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
-    this.getCash();
+    this.cekUser();
   },
   methods: {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        console.log(_this.check);
+
+        if (_this.checkname.includes("Cash Advance") || _this.checkto.includes("/cash-advance")) {
+          _this.getCash();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
     formatDate: function formatDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("DD MMM YYYY");
     },
@@ -46,28 +80,18 @@ __webpack_require__.r(__webpack_exports__);
       return formatter.format(value);
     },
     getCash: function getCash() {
-      var _this = this;
+      var _this2 = this;
 
       this.axios.get('api/cash', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.cash = response.data;
-        _this.loading = false;
+        _this2.cash = response.data;
+        _this2.loading = false;
       })["catch"](function (error) {
-        if (error.response.status == 403) {
-          _this.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Cannot Access This Page'
-          });
-
-          setTimeout(function () {
-            return _this.$router.push('/Dashboard');
-          }, 2000);
-        } else if (error.response.status == 401) {
-          _this.$toast.add({
+        if (error.response.status == 401) {
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -76,13 +100,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     DeleteCash: function DeleteCash(ca_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$confirm.require({
         message: "Data ini benar-benar akan dihapus?",
@@ -92,20 +116,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Record deleted",
             life: 3000
           });
 
-          _this2.axios["delete"]('api/delete-cash/' + ca_id, {
+          _this3.axios["delete"]('api/delete-cash/' + ca_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this2.token
+              'Authorization': 'Bearer ' + _this3.token
             }
           });
 
-          _this2.getCash();
+          _this3.getCash();
         },
         reject: function reject() {}
       });

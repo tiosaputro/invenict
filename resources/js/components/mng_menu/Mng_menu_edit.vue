@@ -212,15 +212,33 @@ export default {
         { nama: "Node", code: "N" },
         { nama: "Leaf", code: "L"}
       ],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
-      this.getModul();
-      this.getParent();
-      this.getMenu();
+      this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Menu") || this.checkto.includes("/mng-menu")){
+          this.getModul();
+          this.getParent();
+          this.getMenu();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
       getMenu(){
           this.axios.get('/api/edit-menu/'+ this.$route.params.code,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
               this.menu = response.data;

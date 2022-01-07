@@ -13,7 +13,7 @@
         </Toolbar>
              <div class="row">
                 <div class="col-sm-6">
-             <form @submit.prevent="UpdateDivisi">
+             <form @submit.prevent="UpdateDivisi" v-if="this.div">
                  <div class="card-body">
                 <div class="p-fluid">
                 <div class="p-field p-grid">
@@ -104,13 +104,32 @@ export default {
       errors: [],
       div:[],
       verif:[],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id : localStorage.getItem('id'),
+      checkname : [],
+      checkto : [],
     };
   },
   created(){
-      this.getDivisi();
+    this.cekUser();
   },
   methods: {
+    
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Divisi") || this.checkto.includes("/divisi-refs")){
+          this.getDivisi();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     getDivisi(){
         this.axios.get('/api/edit-divisi/'+ this.$route.params.code,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           this.div = response.data;

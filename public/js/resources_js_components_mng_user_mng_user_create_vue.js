@@ -37,7 +37,10 @@ __webpack_require__.r(__webpack_exports__);
       }],
       token: localStorage.getItem('token'),
       roles: [],
-      divisi: []
+      divisi: [],
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
@@ -45,6 +48,38 @@ __webpack_require__.r(__webpack_exports__);
     this.getDivisi();
   },
   methods: {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("User") || _this.checkto.includes("/mng-user")) {
+          _this.getRoles();
+
+          _this.getDivisi();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
     fileImage: function fileImage(event) {
       this.foto = event.target.files[0];
       this.displayImage = true;
@@ -63,38 +98,38 @@ __webpack_require__.r(__webpack_exports__);
       reader.readAsDataURL(foto);
     },
     getDivisi: function getDivisi() {
-      var _this = this;
+      var _this2 = this;
 
       this.axios.get('api/get-divisi', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.divisi = response.data;
+        _this2.divisi = response.data;
       });
     },
     getRoles: function getRoles() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('api/get-role', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.roles = response.data;
+        _this3.roles = response.data;
       })["catch"](function (error) {
         if (error.response.status == 403) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
-            return _this2.$router.push('/Dashboard');
+            return _this3.$router.push('/Dashboard');
           }, 2000);
         } else if (error.response.status == 401) {
-          _this2.$toast.add({
+          _this3.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -103,13 +138,13 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem("Expired", "true");
           setTimeout(function () {
-            return _this2.$router.push('/login');
+            return _this3.$router.push('/login');
           }, 2000);
         }
       });
     },
     CreateUser: function CreateUser() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.submitted = true;
 
@@ -120,23 +155,23 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this3.axios.post('api/save-usr-role', _this3.user, {
+          _this4.axios.post('api/save-usr-role', _this4.user, {
             headers: {
-              'Authorization': 'Bearer ' + _this3.token
+              'Authorization': 'Bearer ' + _this4.token
             }
           });
 
-          _this3.$toast.add({
+          _this4.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Create"
           });
 
           setTimeout(function () {
-            return _this3.$router.push('/mng-user');
+            return _this4.$router.push('/mng-user');
           }, 1000);
         })["catch"](function (error) {
-          _this3.errors = error.response.data.errors;
+          _this4.errors = error.response.data.errors;
         });
       }
     }

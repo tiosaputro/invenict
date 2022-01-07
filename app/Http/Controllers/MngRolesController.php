@@ -14,7 +14,7 @@ class MngRolesController extends Controller
        $roles = DB::table('mng_roles as mr')
        ->select('mr.rol_id','mr.rol_name','mr.rol_desc',
          DB::raw("CASE WHEN mr.rol_stat = 'T' Then 'Aktif' WHEN mr.rol_stat = 'F' Then 'Tidak Aktif' end as rol_stat"))
-       ->orderBy('mr.rol_id','ASC')
+       ->orderBy('mr.rol_name','ASC')
        ->get();
        return response()->json($roles);
     }
@@ -38,23 +38,24 @@ class MngRolesController extends Controller
 
         $date = Carbon::now();
         $newCreation = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
-        $role = Mng_roles::create([
-            'rol_name'=>$request->rol_name,
-            'rol_desc'=>$request->rol_desc,
-            'rol_stat'=>$request->rol_stat,
-            'created_by'=> Auth::user()->usr_name,
-            'creation_date'=>$newCreation,
-            'program_name'=>'MngRoles_SAVE'
-        ]);
+            $role = Mng_roles::create([
+                'rol_name'=>$request->rol_name,
+                'rol_desc'=>$request->rol_desc,
+                'rol_stat'=>$request->rol_stat,
+                'created_by'=> Auth::user()->usr_name,
+                'creation_date'=>$newCreation,
+                'program_name'=>'MngRoles_SAVE'
+            ]);
     }
     public function edit($code)
         {
-            $role = Mng_roles::select('rol_id','rol_name','rol_desc','rol_stat')->where('rol_id',$code)->first();
+            $role = Mng_roles::select('rol_id','rol_name','rol_desc','rol_stat')
+                ->where('rol_id',$code)
+                ->first();
             return response()->json($role);
         }
     public function update(Request $request, $code)
     {
-        
         $message = [
             'rol_name.required'=>'Role Name Wajib Diisi',
             'rol_desc.required'=>'Role Description Wajib Diisi',
@@ -67,6 +68,7 @@ class MngRolesController extends Controller
         ],$message);
         $date = Carbon::now();
         $newUpdate = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
+        
         $role = Mng_roles::find($code);
         $role->rol_name = $request->rol_name;
         $role->rol_desc = $request->rol_desc;

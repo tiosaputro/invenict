@@ -29,23 +29,59 @@ __webpack_require__.r(__webpack_exports__);
         nama: "Tidak Aktif",
         code: "F"
       }],
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      id: localStorage.getItem('id'),
+      checkname: [],
+      checkto: []
     };
   },
   created: function created() {
-    var _this = this;
-
-    this.axios.get('api/get-menu', {
-      headers: {
-        'Authorization': 'Bearer ' + this.token
-      }
-    }).then(function (response) {
-      _this.menus = response.data;
-    });
+    this.cekUser();
   },
   methods: {
-    CreateRole: function CreateRole() {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Divisi") || _this.checkto.includes("/divisi-refs")) {
+          _this.getDivisi();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getMenu: function getMenu() {
       var _this2 = this;
+
+      this.axios.get('api/get-menu', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.menus = response.data;
+      });
+    },
+    CreateRole: function CreateRole() {
+      var _this3 = this;
 
       this.errors = [];
       this.axios.post('api/save-role', this.role, {
@@ -53,23 +89,23 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this2.axios.post('api/save-role-menu', _this2.role, {
+        _this3.axios.post('api/save-role-menu', _this3.role, {
           headers: {
-            'Authorization': 'Bearer ' + _this2.token
+            'Authorization': 'Bearer ' + _this3.token
           }
         });
 
-        _this2.$toast.add({
+        _this3.$toast.add({
           severity: "success",
           summary: "Success Message",
           detail: "Success Create"
         });
 
         setTimeout(function () {
-          return _this2.$router.push('/mng-role');
+          return _this3.$router.push('/mng-role');
         }, 1000);
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     }
   }

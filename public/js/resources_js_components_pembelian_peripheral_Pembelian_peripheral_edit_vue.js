@@ -20,6 +20,9 @@ __webpack_require__.r(__webpack_exports__);
       methode_pay: [],
       errors: [],
       submitted: false,
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id'),
       stat: [{
         nama: "Aktif",
         code: "T"
@@ -34,37 +37,68 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.cekUser();
     this.getPurch();
   },
   methods: {
-    getPurch: function getPurch() {
+    cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/edit-pem/' + this.$route.params.code, {
+      this.axios.get('/api/cek-user/' + this.id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.purch = response.data;
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
 
-        _this.getSupplier();
-
-        _this.getCodeMoney();
-
-        _this.getMethodePurchase();
-      })["catch"](function (error) {
-        if (error.response.status == 403) {
+        if (_this.checkname.includes("Pembelian Peripheral") || _this.checkto.includes("/pembelian-peripheral")) {
+          _this.getPurch();
+        } else {
           _this.$toast.add({
             severity: 'error',
-            summary: 'Error',
+            summary: '403',
             detail: 'Cannot Access This Page'
           });
 
           setTimeout(function () {
             return _this.$router.push('/Dashboard');
           }, 2000);
+        }
+      });
+    },
+    getPurch: function getPurch() {
+      var _this2 = this;
+
+      this.axios.get('/api/edit-pem/' + this.$route.params.code, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.purch = response.data;
+
+        _this2.getSupplier();
+
+        _this2.getCodeMoney();
+
+        _this2.getMethodePurchase();
+      })["catch"](function (error) {
+        if (error.response.status == 403) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
         } else if (error.response.status == 401) {
-          _this.$toast.add({
+          _this2.$toast.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Sesi Login Expired'
@@ -73,46 +107,46 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.clear();
           localStorage.setItem('Expired', 'true');
           setTimeout(function () {
-            return _this.$router.push('/login');
+            return _this2.$router.push('/login');
           }, 2000);
         }
       });
     },
     getCodeMoney: function getCodeMoney() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.axios.get('/api/getMataUang', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.code_money = response.data;
+        _this3.code_money = response.data;
       });
     },
     getSupplier: function getSupplier() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.axios.get('/api/get-supp', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this3.suplier = response.data;
+        _this4.suplier = response.data;
       });
     },
     getMethodePurchase: function getMethodePurchase() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.get('/api/getMethodePurch', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this4.methode_pay = response.data;
+        _this5.methode_pay = response.data;
       });
     },
     CreatePurch: function CreatePurch() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.submitted = true;
 
@@ -124,17 +158,17 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function (response) {
           setTimeout(function () {
-            return _this5.$router.push('/pembelian-peripheral');
+            return _this6.$router.push('/pembelian-peripheral');
           }, 1000);
 
-          _this5.$toast.add({
+          _this6.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Update"
           });
         })["catch"](function (error) {
-          _this5.errors = error.response.data.errors;
-          _this5.submitted = false;
+          _this6.errors = error.response.data.errors;
+          _this6.submitted = false;
         });
       }
     }

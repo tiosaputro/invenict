@@ -139,13 +139,32 @@ export default {
         details:[],
         filters: { 'global': {value: null, matchMode: FilterMatchMode.CONTAINS} },
         code : this.$route.params.code,
+        checkname : [],
+        checkto : [],
+        divisi: [],
+        id : localStorage.getItem('id'),
     };
   },
   created() {
-    this.getPembelianDetail();
-    this.getDetails();
+    this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Divisi") || this.checkto.includes("/divisi-refs")){
+          this.getPembelianDetail();
+          this.getDetails();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     formatDate(date) {
       return moment(date).format("DD MMM YYYY")
     },

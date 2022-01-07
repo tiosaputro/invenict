@@ -34,35 +34,69 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       },
       code: this.$route.params.code,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   mounted: function mounted() {
-    this.getIctDetail();
-    this.getNoreq();
+    this.cekUser();
   },
   methods: (_methods = {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this.checkname.includes("Assign Request Ke ICT Personnel") || _this.checkto.includes("/ict-request-divisi2")) {
+          _this.getIctDetail();
+
+          _this.getNoreq();
+        } else {
+          _this.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
     cancelAssign: function cancelAssign() {
       this.assign = [];
       this.petugas = [];
       this.dialogAssign = false;
     },
     AssignPerDetail: function AssignPerDetail(ireqd_id) {
-      var _this = this;
+      var _this2 = this;
 
       this.axios.get('/api/detail/' + ireqd_id, {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.assign = response.data;
+        _this2.assign = response.data;
       });
       this.axios.get('/api/get-pekerja', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this.petugas = response.data;
+        _this2.petugas = response.data;
       });
       this.dialogAssign = true;
     }
@@ -71,7 +105,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.assign = [];
     this.dialogAssign = false;
   }), _defineProperty(_methods, "updateAssign", function updateAssign() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.submitted = true;
 
@@ -81,43 +115,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function () {
-        _this2.assign = [];
-        _this2.dialogAssign = false;
-        _this2.submitted = false;
+        _this3.assign = [];
+        _this3.dialogAssign = false;
+        _this3.submitted = false;
 
-        _this2.$toast.add({
+        _this3.$toast.add({
           severity: "info",
           summary: "Confirmed",
           detail: "Berhasil Assign",
           life: 3000
         });
 
-        _this2.getIctDetail();
+        _this3.getIctDetail();
       });
     }
   }), _defineProperty(_methods, "getIctDetail", function getIctDetail() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.axios.get('/api/ict-detail/' + this.$route.params.code, {
       headers: {
         'Authorization': 'Bearer ' + this.token
       }
     }).then(function (response) {
-      _this3.detail = response.data;
-      _this3.loading = false;
+      _this4.detail = response.data;
+      _this4.loading = false;
     })["catch"](function (error) {
-      if (error.response.status == 403) {
-        _this3.$toast.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Cannot Access This Page'
-        });
-
-        setTimeout(function () {
-          return _this3.$router.push('/Dashboard');
-        }, 2000);
-      } else if (error.response.status == 401) {
-        _this3.$toast.add({
+      if (error.response.status == 401) {
+        _this4.$toast.add({
           severity: 'error',
           summary: 'Error',
           detail: 'Sesi Login Expired'
@@ -126,19 +150,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         localStorage.clear();
         localStorage.setItem('Expired', 'true');
         setTimeout(function () {
-          return _this3.$router.push('/login');
+          return _this4.$router.push('/login');
         }, 2000);
       }
     });
   }), _defineProperty(_methods, "getNoreq", function getNoreq() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.axios.get('/api/get-noreq/' + this.$route.params.code, {
       headers: {
         'Authorization': 'Bearer ' + this.token
       }
     }).then(function (response) {
-      _this4.kode = response.data;
+      _this5.kode = response.data;
     });
   }), _methods)
 });

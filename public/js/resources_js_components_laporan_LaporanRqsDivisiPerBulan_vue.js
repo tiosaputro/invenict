@@ -23,6 +23,9 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       req: [],
       token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id'),
       items: [{
         label: 'Pdf',
         icon: 'bi bi-file-earmark-pdf text-danger',
@@ -39,22 +42,52 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getBulan();
+    this.cekUser();
   },
   methods: {
-    getBulan: function getBulan() {
+    cekUser: function cekUser() {
       var _this2 = this;
+
+      this.axios.get('api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this2.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this2.checkname.includes("Menu") || _this2.checkto.includes("/report-div-req-per-bulan")) {
+          _this2.getBulan();
+        } else {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/Dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getBulan: function getBulan() {
+      var _this3 = this;
 
       this.axios.get('api/get-tahun', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.bulan = response.data.grafik2;
+        _this3.bulan = response.data.grafik2;
       });
     },
     getTahunRequestor: function getTahunRequestor() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.tahunnRequestor = null;
 
@@ -64,12 +97,12 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this3.tahun = response.data;
+          _this4.tahun = response.data;
         });
       }
     },
     getPerDivisiRequestorBulan: function getPerDivisiRequestorBulan() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.tahunnRequestor != null && this.bulanRequestor != null) {
         this.loading = true;
@@ -78,8 +111,8 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function (response) {
-          _this4.req = response.data;
-          _this4.loading = false;
+          _this5.req = response.data;
+          _this5.loading = false;
         });
       }
     }
