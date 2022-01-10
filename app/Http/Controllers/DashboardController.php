@@ -65,6 +65,14 @@ class DashboardController extends Controller
         ->first();
         return response()->json($grafik);
     }
+    function countDivisi4()
+    {  
+        $grafik = DB::table('ireq_dtl as im')
+        ->select(DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'D') as sudahdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'C') as sudahselesai"))
+        ->first();
+        return response()->json($grafik);
+    }
     public function getTahun()
     {
         $grafik = DB::table('VREQ_MST_TAHUN')->get();

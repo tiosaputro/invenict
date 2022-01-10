@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 const routes = [
     {
+        name: 'Dashboard',
+        path: '/dashboard',
+        component: () => import('./components/Dashboard.vue'),
+    },
+    {
         name: 'Login',
         path: '/login',
         component: () => import('./components/Login.vue'),
@@ -32,11 +37,6 @@ const routes = [
         path: '/ict-request-desc',
         component: () => import('./components/ict_request_desc/ict_request_desc.vue'),
 
-    },
-    {
-        name: 'Dashboard',
-        path: '/dashboard',
-        component: () => import('./components/Dashboard.vue'),
     },
 
     //lookup

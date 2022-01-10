@@ -26,6 +26,9 @@ __webpack_require__.r(__webpack_exports__);
       parent_id: '',
       modul: [],
       parent: [],
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id'),
       stat: [{
         nama: "Aktif",
         code: "T"
@@ -74,7 +77,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -88,6 +91,20 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this2.modul = response.data;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this2.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     getParent: function getParent() {

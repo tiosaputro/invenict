@@ -94,7 +94,7 @@ export default {
           this.$toast.add({
             severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
     },

@@ -49,7 +49,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.checkto = response.data.map(function (x) {
           return x.to;
         });
-        console.log(_this.check);
 
         if (_this.checkname.includes("Statistik Permintaan Divisi User Per Tahun") || _this.checkto.includes("/req-per-divisi-user-per-tahun")) {
           _this.getTahun();
@@ -61,7 +60,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -75,6 +74,20 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this2.tahunn = response.data.grafik;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this2.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     getPerDivisiUserTahun: function getPerDivisiUserTahun() {
@@ -149,6 +162,8 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_Toast = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toast");
+
   var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
 
   var _component_ColorPicker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ColorPicker");
@@ -157,7 +172,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_Chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Chart");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [this.tahunUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [this.tahunUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
     key: 0,
     "class": "p-button-lg p-button-rounded p-button-danger",
     onClick: _cache[0] || (_cache[0] = function ($event) {
@@ -194,7 +209,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     data: $data.perDivisiUserTahun
   }, null, 8
   /* PROPS */
-  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
+  , ["data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),

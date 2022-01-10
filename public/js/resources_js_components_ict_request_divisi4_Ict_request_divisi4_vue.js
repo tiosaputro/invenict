@@ -73,7 +73,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });

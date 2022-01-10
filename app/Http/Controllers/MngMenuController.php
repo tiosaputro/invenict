@@ -28,9 +28,7 @@ class MngMenuController extends Controller
     }
     Public function getMenu()
     {
-        $module = Mng_menu::select('menu_id as code','menu_name as name')
-        ->orderBy('menu_name','ASC')
-        ->get();
+        $module = DB::table('V_MENU')->get();
         return response()->json($module);
     }
     Public function save(Request $request)

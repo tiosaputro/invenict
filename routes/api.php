@@ -124,6 +124,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/save-usr-role','MngUsrRoleController@save');
     Route::get('/edit-usr-role/{code}','MngUsrRoleController@edit');
     Route::put('/update-usr-role/{code}','MngUsrRoleController@update');
+    Route::get('cek-role/{id}','MngUsrRoleController@cekRole');
 
     //Mng_role_menu
     Route::post('/save-role-menu','MngRoleMenuController@save');
@@ -154,6 +155,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/getCountDivisi1/{usr_name}','DashboardController@countDivisi1');
     Route::get('/getCountDivisi2','DashboardController@countDivisi2');
     Route::get('/getCountDivisi3/{full_name}','DashboardController@countDivisi3');
+    Route::get('/getCountDivisi4','DashboardController@countDivisi4');
     Route::get('/status-per-divisi','DashboardController@countPerStatusPerDivisi');
     Route::get('/count-per-status','DashboardController@countPerStatus');
     Route::get('/get-tahun','DashboardController@getTahun');
@@ -191,7 +193,6 @@ Route::middleware('auth:sanctum')->group(function(){
     //end divisi 3
 
     //divisi 4
-    Route::get('/get-ictDivisi4','IctController@ictDivisi4');
     //end
 
     Route::post('/updateAssign','IctController@updateAssign');

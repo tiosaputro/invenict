@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -96,6 +96,20 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this3.modul = response.data;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this3.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this3.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     getParent: function getParent() {

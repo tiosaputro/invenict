@@ -96,14 +96,23 @@ export default {
           this.$toast.add({
             severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
     },
         getBulan(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.bulan = response.data.grafik2;
-            });
+            }).catch(error=>{
+          if (error.response.status == 401){
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+          });
+          localStorage.clear();
+          localStorage.setItem("Expired","true")
+          setTimeout( () => this.$router.push('/login'),2000);
+           }
+        });
         },
         getTahunUser(){
             this.tahunnUser = null;

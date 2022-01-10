@@ -7,6 +7,7 @@ use App\Mng_usr_roles;
 use App\Mng_role_menu;
 use App\Mng_User;
 use App\Mng_menu;
+use App\Mng_roles;
 use Auth;
 use DB;
 use carbon\Carbon;
@@ -23,24 +24,19 @@ class MngUsrRoleController extends Controller
                 ->whereIn('menu_id',$rolemenu)
                 ->orderBy('menu_display','ASC')
                 ->get();
-                // print_r($role);
         $tree = $this->parseTree($query);
-        echo json_encode($tree);
+        return response()->json($tree);
     }
      
     public function parseTree($tree, $root = 0) {
         $return = array();
-        # Lintasi tree dan cari children/submenu langsung dari array query
         foreach($tree as $child => $parent) {
-            # children ditemukan
             if($parent->parent_id == $root) {
-            # Hapus item dari tree (kita tidak perlu melewati ini lagi)
             unset($tree[$child]);
-            # Tambahkan children/submenu ke dalam array hasil dan parsing sub sub nya
                 $return[] = array(
                     'label'     => $parent->menu_display,
                     'to'        => $parent->controller,
-                    'items'     => $this->parseTree($tree, $parent->menu_id) // rekursif 
+                    'items'     => $this->parseTree($tree, $parent->menu_id)
                 );
             }
         }
@@ -88,5 +84,11 @@ class MngUsrRoleController extends Controller
                 'program_name'=>'MngUsrRoleController_UPDATE'
             ]);
         }
+    }
+    public function cekRole($id)
+    {
+        $getRole = Mng_usr_roles::select('rol_id')->where('usr_id',$id)->pluck('rol_id');
+        $cek = Mng_roles::select('rol_id','rol_name')->whereIn('rol_id',$getRole)->get();
+        return response()->json($cek);
     }
 }

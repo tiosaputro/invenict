@@ -344,7 +344,10 @@ export default {
       mask:{
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
@@ -362,7 +365,7 @@ export default {
           this.$toast.add({
             severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
     },
@@ -371,6 +374,15 @@ export default {
             this.merks = response.data;
             this.getKondisi();
             this.getBisnis();
+        }).catch(error=>{
+          if (error.response.status == 401){
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+          });
+          localStorage.clear();
+          localStorage.setItem("Expired","true")
+          setTimeout( () => this.$router.push('/login'),2000);
+           }
         });
       },
       getKondisi(){

@@ -89,7 +89,7 @@ export default {
           this.$toast.add({
             severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
     },
@@ -98,13 +98,7 @@ export default {
         this.req = response.data.grafik3;
         this.loading = false;
       }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
+          if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'
           });

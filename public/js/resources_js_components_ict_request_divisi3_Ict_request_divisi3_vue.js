@@ -67,7 +67,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -134,6 +134,20 @@ __webpack_require__.r(__webpack_exports__);
         _this4.sudahDikerjakan = response.data.ict1;
         _this4.selesai = response.data.ict2;
         _this4.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this4.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this4.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     formatDate: function formatDate(date) {
@@ -374,18 +388,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   /* PROPS */
                   , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
                     "class": "p-button-raised p-button-text p-mr-2 p-mb-2",
-                    label: "PR",
-                    onClick: function onClick($event) {
-                      return _ctx.$router.push({
-                        name: 'Ict Request Divisi 2 Assign Per-Detail',
-                        params: {
-                          code: slotProps.data.ireq_id
-                        }
-                      });
-                    }
-                  }, null, 8
-                  /* PROPS */
-                  , ["onClick"])];
+                    label: "PR"
+                  })];
                 }),
                 _: 1
                 /* STABLE */

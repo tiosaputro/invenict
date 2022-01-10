@@ -1,4 +1,5 @@
 <template>
+<Toast/>
     <div class="card">
         <div class="table-header p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
             <Button class="p-button-lg p-button-rounded p-button-danger" v-if="this.statusUser" @click="printstatusPerDivisiUser()" icon="pi pi-file-pdf" label="PDF"/>
@@ -40,7 +41,6 @@ export default {
         this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
             this.checkname = response.data.map((x)=> x.name)
             this.checkto = response.data.map((x)=> x.to)
-            console.log(this.check)
             if(this.checkname.includes("Statistik Permintaan Divisi User Per Status") || this.checkto.includes("/req-per-divisi-per-status")){
             this.getStatus();
             }
@@ -48,7 +48,7 @@ export default {
             this.$toast.add({
                 severity:'error', summary: '403', detail:'Cannot Access This Page'
             });
-            setTimeout( () => this.$router.push('/Dashboard'),2000);
+            setTimeout( () => this.$router.push('/dashboard'),2000);
             }
         });
         },
@@ -80,7 +80,16 @@ export default {
         getStatus(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.status = response.data.grafik1;
-            });
+            }).catch(error=>{
+          if (error.response.status == 401){
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+          });
+          localStorage.clear();
+          localStorage.setItem("Expired","true")
+          setTimeout( () => this.$router.push('/login'),2000);
+           }
+        });
         },
     }
 }

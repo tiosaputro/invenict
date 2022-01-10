@@ -40,7 +40,10 @@ __webpack_require__.r(__webpack_exports__);
       mask: {
         input: 'DD MMM YYYY'
       },
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
   created: function created() {
@@ -72,7 +75,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -90,6 +93,20 @@ __webpack_require__.r(__webpack_exports__);
         _this2.getKondisi();
 
         _this2.getBisnis();
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this2.$router.push('/login');
+          }, 2000);
+        }
       });
     },
     getKondisi: function getKondisi() {

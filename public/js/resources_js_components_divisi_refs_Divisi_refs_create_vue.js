@@ -55,7 +55,7 @@ __webpack_require__.r(__webpack_exports__);
         });
 
         if (_this.checkname.includes("Divisi") || _this.checkto.includes("/divisi-refs")) {
-          _this.getDivisi();
+          _this.getMenu();
         } else {
           _this.$toast.add({
             severity: 'error',
@@ -64,7 +64,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });

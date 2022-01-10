@@ -51,9 +51,7 @@ __webpack_require__.r(__webpack_exports__);
           return x.name;
         });
 
-        if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {
-          consolelog('sip');
-        } else {
+        if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {} else {
           _this.$toast.add({
             severity: 'error',
             summary: '403',
@@ -61,7 +59,21 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
+          }, 2000);
+        }
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem("Expired", "true");
+          setTimeout(function () {
+            return _this.$router.push('/login');
           }, 2000);
         }
       });

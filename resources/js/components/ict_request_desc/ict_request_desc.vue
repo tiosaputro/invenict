@@ -532,7 +532,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-1'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -606,7 +606,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-1'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -681,7 +681,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-1'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -755,7 +755,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-1'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -829,7 +829,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-1'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -903,7 +903,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-1'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -996,7 +996,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-2'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -1070,7 +1070,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-2'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -1144,7 +1144,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-2'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -1218,7 +1218,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-2'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -1293,7 +1293,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-3'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -1369,7 +1369,7 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-3'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
@@ -1445,13 +1445,89 @@
                     class="p-button-raised p-button p-mr-2 p-mb-2"
                     icon="bi bi-skip-backward-fill"
                     @click="$router.push({
-                    name: 'Dashboard-3'})"
+                    name: 'Dashboard'})"
                   />
                 </div>
 			      </div>
           </div>
         </template>
         </DataTable>     
+        <Toolbar class="p-mb-4" v-if="this.active == 20">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Request Yang Sudah Dikerjakan)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>   
+        <DataTable
+          v-if="this.active == 20"
+          :value="sdHDikerjakan4"
+          :paginator="true"
+          :rows="25"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:8rem"/>
+          <Column field="ireqd_id" header="No. Detail" :sortable="true" style="min-width:8rem"/>
+          <Column field="invent_code" header="Nama Peripheral" :sortable="true" style="min-width:8rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:8rem">
+            <template #body="slotProps">
+              {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:8rem"/>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:8rem"/>
+          <Column field="ireq_assigned_to" header="Petugas(ICT)" :sortable="true" style="min-width:8rem"/>
+          <Column>
+            <template #body="slotProps">
+              <Button
+                v-if="slotProps.data.ireq_status != 'Close'"
+                class="p-button-raised p-button-text p-mr-2 p-mb-2"
+                label="Closing"
+                @click="ClosingPerDetail(slotProps.data.ireqd_id, slotProps.data.ireq_no)"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
         <Dialog
           v-model:visible="dialogAssign"
           :style="{ width: '400px' }"
@@ -1515,6 +1591,8 @@ export default {
         sedngDikerjakan:[],
         sudhDikerjakan: [],
         selesaiii: [],
+        sdHDikerjakan4:[],
+        selesai4:[],
         assign:{
           id:null,
           name: null
@@ -1548,6 +1626,9 @@ export default {
           }
           else if (this.active > 16 && this.active <=19){
             this.getUser();
+          }
+          else if (this.active > 19 && this.active <=21){
+            this.getIct5();
           }
         }
       },
@@ -1609,6 +1690,22 @@ export default {
         this.sudhDikerjakan = response.data.ict1;
         this.selesaiii = response.data.ict2;
         this.loading = false;
+        });
+      },
+      getIct5(){
+      this.axios.get('api/get-ictDivisi4',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
+        this.sdHDikerjakan4 = response.data.ict;
+        this.selesai4 = response.data.ict2;
+        this.loading = false;
+      }).catch(error=>{
+        if (error.response.status == 401) {
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+            });
+            localStorage.clear();
+            localStorage.setItem('Expired','true')
+            setTimeout( () => this.$router.push('/login'),2000);
+           }
         });
       },
       AssignPerRequest(ireq_id){

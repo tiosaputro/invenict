@@ -49,9 +49,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.cekUser();
-    this.getSupplier();
-    this.getCodeMoney();
-    this.getMethodePurchase();
   },
   methods: {
     cekUser: function cekUser() {
@@ -70,7 +67,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         if (_this.checkname.includes("Pembelian Peripheral") || _this.checkto.includes("/pembelian-peripheral")) {
-          _this.getPurchase();
+          _this.getSupplier();
+
+          _this.getCodeMoney();
+
+          _this.getMethodePurchase();
         } else {
           _this.$toast.add({
             severity: 'error',
@@ -79,7 +80,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -94,17 +95,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (response) {
         _this2.code_money = response.data;
       })["catch"](function (error) {
-        if (error.response.status == 403) {
-          _this2.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Cannot Access This Page'
-          });
-
-          setTimeout(function () {
-            return _this2.$router.go(-1);
-          }, 2000);
-        } else if (error.response.status == 401) {
+        if (error.response.status == 401) {
           _this2.$toast.add({
             severity: 'error',
             summary: 'Error',

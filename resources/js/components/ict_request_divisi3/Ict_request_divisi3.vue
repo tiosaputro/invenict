@@ -72,9 +72,6 @@
                       <Button
                         class="p-button-raised p-button-text p-mr-2 p-mb-2"
                         label="PR"
-                        @click="$router.push({
-                            name: 'Ict Request Divisi 2 Assign Per-Detail',
-                            params: { code: slotProps.data.ireq_id }, })"
                       />
                     </template>
                   </Column>
@@ -226,7 +223,7 @@ export default {
           this.$toast.add({
             severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
     },
@@ -271,7 +268,16 @@ export default {
         this.sudahDikerjakan = response.data.ict1;
         this.selesai = response.data.ict2;
         this.loading = false;
-      });
+      }).catch(error=>{
+          if (error.response.status == 401){
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+          });
+          localStorage.clear();
+          localStorage.setItem("Expired","true")
+          setTimeout( () => this.$router.push('/login'),2000);
+           }
+        });
     },
     formatDate(date) {
       return moment(date).format("DD MMM YYYY")

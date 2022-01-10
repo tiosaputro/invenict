@@ -237,17 +237,44 @@ export default {
         input: 'DD MMM YYYY'
       },
       token: localStorage.getItem('token'),
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
     };
   },
   created(){
-      this.get();
+      this.cekUser();
   },
   methods: {
+    cekUser(){
+      this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+        this.checkto = response.data.map((x)=> x.to)
+        this.checkname = response.data.map((x)=> x.name)
+        if(this.checkname.includes("Status Change Request") || this.checkto.includes("/ict-request-divisi3")){ 
+          this.get();
+        }
+        else {
+          this.$toast.add({
+            severity:'error', summary: '403', detail:'Cannot Access This Page'
+          });
+          setTimeout( () => this.$router.push('/Dashboard'),2000);
+        }
+      });
+    },
     get(){
       this.noreq = this.$route.params.code
       this.axios.get('/api/getNameBu/'+this.noreq,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.ca = response.data;
-      });
+      }).catch(error=>{
+          if (error.response.status == 401){
+            this.$toast.add({
+            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
+            });
+            localStorage.clear();
+            localStorage.setItem('Expired','true')
+            setTimeout( () => this.$router.push('/login'),2000);
+          }
+        });
     }, 
     getNoreq(){
       this.axios.get('/api/getNoreq',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

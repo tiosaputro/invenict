@@ -71,7 +71,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });

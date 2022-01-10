@@ -1,6 +1,6 @@
 <template>
 <!-- //Dashboard user for request -->
-<div class="container-fluid" v-if="this.test==0">
+<div class="container-fluid" v-if="this.role_name.includes('Requestor Divisi') || this.role_name.includes('Admin')"> -->
   <section>
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
@@ -111,8 +111,8 @@
     </div>
   </section>
 </div>
-<!-- //dashboard approver atasan user -->
-<div class="container-fluid" v-if="this.test==1">
+ <!-- //dashboard approver atasan user -->
+<div class="container-fluid" v-if="this.role_name.includes('Atasan Requestor Divisi') || this.role_name.includes('Admin')">
   <section>
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
@@ -153,7 +153,7 @@
                 <i class="pi pi-times" style="fontSize: 4rem; color: red;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="diReject1()" style="cursor:pointer;">{{count1.diReject1}}</h3>
+                <h3 @click="diReject1()" style="cursor:pointer;">{{count1.direject}}</h3>
                 <p class="mb-0">Request Yang Di Reject</p>
               </div>
             </div>
@@ -209,7 +209,7 @@
   </section>
 </div>
 <!-- // dashboard verifikasi ict -->
-<div class="container-fluid" v-if="this.test==2">
+<div class="container-fluid" v-if="this.role_name.includes('Supervisor') || this.role_name.includes('Admin')">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count2">
@@ -272,9 +272,9 @@
         </div>
       </div>
     </div>
-</div>
-<!-- //Dashboard for personnel ict -->
-<div class="container-fluid" v-if="this.test==3">
+    </div>
+<!-- //Dashboard for personnel ict (status change request) -->
+<div class="container-fluid" v-if="this.role_name.includes('Personel ICT')|| this.role_name.includes('Admin')">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count3">
@@ -320,29 +320,85 @@
           </div>
         </div>
       </div>
+      </div>
+      </div>
+      <!-- // closing request -->
+      <div class="container-fluid" v-if="this.role_name.includes('Manager')|| this.role_name.includes('Admin')">
+       <section>
+       <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12 mb-4">
+         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count4">
+           <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="bi bi-check2-all" style="fontSize: 4rem; color: gray;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="this.$router.push('/ict-request-divisi3')" style="cursor:pointer;">{{count4.sudahdikerjakan}}</h3>
+                <p class="mb-0">Request Yang Sudah Dikerjakan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count4">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="bi bi-check2-all" style="fontSize: 4rem; color: green;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="this.$router.push('/ict-request-divisi3')" style="cursor:pointer;">{{count4.sudahselesai}}</h3>
+                <p class="mb-0">Request Yang Sudah Selesai</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+    </section>
+    </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            test: 0,
+            user:[],
+            role_name:[],
             count:[],
             count1:[],
             count2:[],
             count3:[],
+            count4:[],
             usr_name: localStorage.getItem('usr_name'),
             token: localStorage.getItem('token'),
-            usr_id : localStorage.getItem('id')
+            id : localStorage.getItem('id'),
         }
     },
-    mounted(){
+    created(){
         this.CekUser();
     },
     methods:{
       CekUser(){
-        this.getData();
+        this.axios.get('api/cek-role/'+this.id,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+          this.role_name = response.data.map((x)=>x.rol_name)
+          if(this.role_name.includes('Requestor Divisi') || this.role_name.includes('Admin')){
+            this.getData();
+          }
+          if(this.role_name.includes('Atasan Requestor Divisi')|| this.role_name.includes('Admin')){
+            this.getData1();
+          }
+          if(this.role_name.includes('Supervisor')|| this.role_name.includes('Admin')){
+            this.getData2();
+          }
+          if(this.role_name.includes('Personel ICT')|| this.role_name.includes('Admin')){
+            this.getUser();
+          }
+          if(this.role_name.includes('Manager') || this.role_name.includes('Admin')){
+            this.getData4();
+          }
+        });
       },
         getData(){
             this.axios.get('api/getCountUser/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
@@ -375,7 +431,7 @@ export default {
         },
         //dashboard approval user
         getData1(){
-            this.axios.get('api/getcountDivisi1/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.axios.get('api/getCountDivisi1/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.count1 = response.data;
             });
         },
@@ -404,7 +460,7 @@ export default {
           localStorage.setItem('active',12);
         },
         getData2(){
-            this.axios.get('api/getcountDivisi2',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.axios.get('api/getCountDivisi2',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.count2 = response.data;
             });
         },
@@ -423,6 +479,34 @@ export default {
         sdhSelesai2(){
           this.$router.push('/ict-request-desc')
           localStorage.setItem('active',16)
+        },
+        getUser(){
+          this.axios.get('api/user',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.user = response.data;
+            this.getData3();
+          })
+        },
+        getData3(){
+            this.axios.get('api/getCountDivisi3/'+this.user.usr_fullname,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+                this.count3 = response.data;
+            });
+        },
+        blmSelesai3(){
+          this.$router.push('/ict-request-desc');
+          localStorage.setItem('active',17)
+        },
+        sdgDikerjakan3(){
+          this.$router.push('/ict-request-desc');
+          localStorage.setItem('active',18)
+        },
+        sdhSelesai3(){
+          this.$router.push('/ict-request-desc');
+          localStorage.setItem('active',19)
+        },
+        getData4(){
+            this.axios.get('api/getCountDivisi4',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+                this.count4 = response.data;
+            });
         },
     }
 }

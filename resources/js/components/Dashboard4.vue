@@ -11,7 +11,7 @@
               </div>
               <div class="text-end">
                 <h3 @click="this.$router.push('/ict-request-divisi3')" style="cursor:pointer;">{{count4.belumselesai}}</h3>
-                <p class="mb-0">Request Yang Sudah Dikerjakan</p>
+                <p class="mb-0">Request Yang Sedang Dikerjakan</p>
               </div>
             </div>
           </div>

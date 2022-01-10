@@ -62,7 +62,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           setTimeout(function () {
-            return _this.$router.push('/Dashboard');
+            return _this.$router.push('/dashboard');
           }, 2000);
         }
       });
@@ -143,17 +143,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this7.getKondisi();
       })["catch"](function (error) {
-        if (error.response.status == 403) {
-          _this7.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Cannot Access This Page'
-          });
-
-          setTimeout(function () {
-            return _this7.$router.push('/Dashboard');
-          }, 2000);
-        } else if (error.response.status == 401) {
+        if (error.response.status == 401) {
           _this7.$toast.add({
             severity: 'error',
             summary: 'Error',

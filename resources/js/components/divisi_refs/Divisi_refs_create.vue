@@ -137,13 +137,13 @@ export default {
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)
         if(this.checkname.includes("Divisi") || this.checkto.includes("/divisi-refs")){
-          this.getDivisi();
+          this.getMenu();
         }
         else {
           this.$toast.add({
             severity:'error', summary: '403', detail:'Cannot Access This Page'
           });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
+          setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
     },

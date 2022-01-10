@@ -41,6 +41,8 @@ __webpack_require__.r(__webpack_exports__);
       sedngDikerjakan: [],
       sudhDikerjakan: [],
       selesaiii: [],
+      sdHDikerjakan4: [],
+      selesai4: [],
       assign: {
         id: null,
         name: null
@@ -77,6 +79,8 @@ __webpack_require__.r(__webpack_exports__);
           this.getIct3();
         } else if (this.active > 16 && this.active <= 19) {
           this.getUser();
+        } else if (this.active > 19 && this.active <= 21) {
+          this.getIct5();
         }
       }
     },
@@ -180,8 +184,35 @@ __webpack_require__.r(__webpack_exports__);
         _this5.loading = false;
       });
     },
-    AssignPerRequest: function AssignPerRequest(ireq_id) {
+    getIct5: function getIct5() {
       var _this6 = this;
+
+      this.axios.get('api/get-ictDivisi4', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this6.sdHDikerjakan4 = response.data.ict;
+        _this6.selesai4 = response.data.ict2;
+        _this6.loading = false;
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this6.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem('Expired', 'true');
+          setTimeout(function () {
+            return _this6.$router.push('/login');
+          }, 2000);
+        }
+      });
+    },
+    AssignPerRequest: function AssignPerRequest(ireq_id) {
+      var _this7 = this;
 
       this.assign.id = ireq_id;
       this.axios.get('api/get-pekerja', {
@@ -189,12 +220,12 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this6.petugas = response.data;
+        _this7.petugas = response.data;
       });
       this.dialogAssign = true;
     },
     updateAssign: function updateAssign() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.submitted = true;
 
@@ -204,21 +235,21 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this7.assign = {
+          _this8.assign = {
             id: null,
             name: null
           };
-          _this7.submitted = false;
-          _this7.dialogAssign = false;
+          _this8.submitted = false;
+          _this8.dialogAssign = false;
 
-          _this7.$toast.add({
+          _this8.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Assign",
             life: 3000
           });
 
-          _this7.getActive();
+          _this8.getActive();
         });
       }
     },
@@ -232,7 +263,7 @@ __webpack_require__.r(__webpack_exports__);
       this.submitted = false;
     },
     submit: function submit(ireq_id) {
-      var _this8 = this;
+      var _this9 = this;
 
       this.$confirm.require({
         message: "Apakah Anda Yakin Ingin Mensubmit?",
@@ -242,20 +273,20 @@ __webpack_require__.r(__webpack_exports__);
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
         accept: function accept() {
-          _this8.$toast.add({
+          _this9.$toast.add({
             severity: "info",
             summary: "Confirmed",
             detail: "Berhasil Disubmit",
             life: 3000
           });
 
-          _this8.axios.get('api/updateStatusPenugasan/' + ireq_id, {
+          _this9.axios.get('api/updateStatusPenugasan/' + ireq_id, {
             headers: {
-              'Authorization': 'Bearer ' + _this8.token
+              'Authorization': 'Bearer ' + _this9.token
             }
           });
 
-          _this8.getActive();
+          _this9.getActive();
         },
         reject: function reject() {}
       });
@@ -952,14 +983,49 @@ var _hoisted_173 = {
 var _hoisted_174 = {
   "class": "box"
 };
-var _hoisted_175 = {
+
+var _hoisted_175 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "p-grid p-dir-col"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "p-col"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "ICT Request (Request Yang Sudah Dikerjakan)")])], -1
+/* HOISTED */
+);
+
+var _hoisted_176 = {
+  "class": "table-header p-text-right"
+};
+var _hoisted_177 = {
+  "class": "p-input-icon-left"
+};
+
+var _hoisted_178 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  "class": "pi pi-search"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_179 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Not Found ");
+
+var _hoisted_180 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Loading ICT Request data. Please wait. ");
+
+var _hoisted_181 = {
+  "class": "p-grid p-dir-col"
+};
+var _hoisted_182 = {
+  "class": "p-col"
+};
+var _hoisted_183 = {
+  "class": "box"
+};
+var _hoisted_184 = {
   "class": "p-fluid"
 };
-var _hoisted_176 = {
+var _hoisted_185 = {
   "class": "p-field p-grid"
 };
 
-var _hoisted_177 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_186 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "p-col-12 p-mb-2 p-md-2 p-mb-md-0",
   style: {
     "width": "100px"
@@ -968,10 +1034,10 @@ var _hoisted_177 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 /* HOISTED */
 );
 
-var _hoisted_178 = {
+var _hoisted_187 = {
   "class": "p-col-3 p-md-6"
 };
-var _hoisted_179 = {
+var _hoisted_188 = {
   key: 0,
   "class": "p-error"
 };
@@ -1755,7 +1821,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[13] || (_cache[13] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-1'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -1889,7 +1955,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[15] || (_cache[15] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-1'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2010,7 +2076,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[17] || (_cache[17] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-1'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2138,7 +2204,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[19] || (_cache[19] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-1'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2259,7 +2325,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[21] || (_cache[21] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-1'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2380,7 +2446,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[23] || (_cache[23] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-1'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2501,7 +2567,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[25] || (_cache[25] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-2'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2659,7 +2725,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[27] || (_cache[27] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-2'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2780,7 +2846,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[29] || (_cache[29] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-2'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -2901,7 +2967,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[31] || (_cache[31] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-2'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -3022,7 +3088,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[33] || (_cache[33] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-3'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -3150,7 +3216,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[35] || (_cache[35] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-3'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -3285,7 +3351,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         icon: "bi bi-skip-backward-fill",
         onClick: _cache[37] || (_cache[37] = function ($event) {
           return _ctx.$router.push({
-            name: 'Dashboard-3'
+            name: 'Dashboard'
           });
         })
       })])])])];
@@ -3360,9 +3426,143 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
+  , ["value", "loading", "filters"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.active == 20 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Toolbar, {
+    key: 38,
+    "class": "p-mb-4"
+  }, {
+    left: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_175];
+    }),
+    _: 1
+    /* STABLE */
+
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.active == 20 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_DataTable, {
+    key: 39,
+    value: $data.sdHDikerjakan4,
+    paginator: true,
+    rows: 25,
+    loading: $data.loading,
+    filters: $data.filters,
+    rowHover: true,
+    paginatorTemplate: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown",
+    rowsPerPageOptions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
+    currentPageReportTemplate: "Showing {first} to {last} of {totalRecords} ICT Request",
+    responsiveLayout: "scroll"
+  }, {
+    header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_176, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_177, [_hoisted_178, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputText, {
+        modelValue: $data.filters['global'].value,
+        "onUpdate:modelValue": _cache[38] || (_cache[38] = function ($event) {
+          return $data.filters['global'].value = $event;
+        }),
+        placeholder: "Search. . ."
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])])])];
+    }),
+    empty: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_179];
+    }),
+    loading: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_180];
+    }),
+    footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_181, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_182, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_183, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+        label: "Kembali",
+        "class": "p-button-raised p-button p-mr-2 p-mb-2",
+        icon: "bi bi-skip-backward-fill",
+        onClick: _cache[39] || (_cache[39] = function ($event) {
+          return _ctx.$router.push({
+            name: 'Dashboard'
+          });
+        })
+      })])])])];
+    }),
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "ireq_no",
+        header: "No. Request",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "ireqd_id",
+        header: "No. Detail",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "invent_code",
+        header: "Nama Peripheral",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "ireq_date",
+        header: "Tgl.Request",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }, {
+        body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatDate(slotProps.data.ireq_date)), 1
+          /* TEXT */
+          )];
+        }),
+        _: 1
+        /* STABLE */
+
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "ireq_requestor",
+        header: "Pemohon",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "ireq_user",
+        header: "Pengguna",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
+        field: "ireq_assigned_to",
+        header: "Petugas(ICT)",
+        sortable: true,
+        style: {
+          "min-width": "8rem"
+        }
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, null, {
+        body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
+          return [slotProps.data.ireq_status != 'Close' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+            key: 0,
+            "class": "p-button-raised p-button-text p-mr-2 p-mb-2",
+            label: "Closing",
+            onClick: function onClick($event) {
+              return _ctx.ClosingPerDetail(slotProps.data.ireqd_id, slotProps.data.ireq_no);
+            }
+          }, null, 8
+          /* PROPS */
+          , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+        }),
+        _: 1
+        /* STABLE */
+
+      })];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
   , ["value", "loading", "filters"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dialog, {
     visible: $data.dialogAssign,
-    "onUpdate:visible": _cache[41] || (_cache[41] = function ($event) {
+    "onUpdate:visible": _cache[43] || (_cache[43] = function ($event) {
       return $data.dialogAssign = $event;
     }),
     style: {
@@ -3376,23 +3576,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
         label: "Simpan",
-        onClick: _cache[39] || (_cache[39] = function ($event) {
+        onClick: _cache[41] || (_cache[41] = function ($event) {
           return $options.updateAssign();
         }),
         "class": "p-button",
         autofocus: ""
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
         label: "Cancel",
-        onClick: _cache[40] || (_cache[40] = function ($event) {
+        onClick: _cache[42] || (_cache[42] = function ($event) {
           return $options.cancelAssign();
         }),
         "class": "p-button-text"
       })];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_175, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_176, [_hoisted_177, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_178, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_184, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_185, [_hoisted_186, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_187, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Dropdown, {
         modelValue: $data.assign.name,
-        "onUpdate:modelValue": _cache[38] || (_cache[38] = function ($event) {
+        "onUpdate:modelValue": _cache[40] || (_cache[40] = function ($event) {
           return $data.assign.name = $event;
         }),
         options: $data.petugas,
@@ -3404,7 +3604,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, null, 8
       /* PROPS */
-      , ["modelValue", "options", "class"]), $data.submitted && !$data.assign.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_179, " Petugas(ICT) Harus Diisi ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])];
+      , ["modelValue", "options", "class"]), $data.submitted && !$data.assign.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_188, " Petugas(ICT) Harus Diisi ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])];
     }),
     _: 1
     /* STABLE */
