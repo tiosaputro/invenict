@@ -342,7 +342,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     options: $data.menus,
     optionValue: "code",
     optionLabel: "name",
-    placeholder: "Select Cities",
+    placeholder: "Select Menu",
     display: "chip"
   }, null, 8
   /* PROPS */

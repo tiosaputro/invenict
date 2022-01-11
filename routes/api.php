@@ -191,8 +191,8 @@ Route::middleware('auth:sanctum')->group(function(){
     //divisi 3
     Route::get('/get-sedang-dikerjakan/{usr_fullname}','IctController@getSedangDikerjakan');
     //end divisi 3
-
     //divisi 4
+    Route::get('/get-divisi-4','IctController@ictDivisi4');
     //end
 
     Route::post('/updateAssign','IctController@updateAssign');

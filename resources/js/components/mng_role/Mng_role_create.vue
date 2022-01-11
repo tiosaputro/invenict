@@ -75,7 +75,7 @@
                         :options="menus" 
                         optionValue="code"
                         optionLabel="name" 
-                        placeholder="Select Cities" 
+                        placeholder="Select Menu" 
                         display="chip" 
                     />
                    <!-- <TreeSelect 

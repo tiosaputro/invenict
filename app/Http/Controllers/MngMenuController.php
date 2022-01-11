@@ -28,8 +28,12 @@ class MngMenuController extends Controller
     }
     Public function getMenu()
     {
-        $module = DB::table('V_MENU')->get();
-        return response()->json($module);
+        $menu = DB::table('mng_menus as mm')
+        ->rightjoin('mng_menus as m','mm.menu_id','m.parent_id')
+        ->Select('mm.menu_id as code', DB::raw("(mm.menu_name ||'-'|| m.menu_name) as name"))
+        ->orderBy('mm.menu_name')
+        ->get();
+        return response()->json($menu);
     }
     Public function save(Request $request)
     {

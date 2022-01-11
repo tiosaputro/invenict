@@ -1,7 +1,8 @@
 <template>
 <!-- //Dashboard user for request -->
-<div class="container-fluid" v-if="this.role_name.includes('Requestor Divisi') || this.role_name.includes('Admin')"> -->
+<div class="container-fluid" v-if="this.role_name.includes('Requestor Divisi') || this.role_name.includes('Admin')">
   <section>
+    <div class="card">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 1px solid black;" v-if="this.count">
@@ -109,11 +110,13 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 </div>
  <!-- //dashboard approver atasan user -->
 <div class="container-fluid" v-if="this.role_name.includes('Atasan Requestor Divisi') || this.role_name.includes('Admin')">
   <section>
+   <div class="card">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-2 mb-5 bg-body rounded" style="border: 1px solid black;" v-if="this.count1">
@@ -205,11 +208,13 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
   </section>
 </div>
 <!-- // dashboard verifikasi ict -->
 <div class="container-fluid" v-if="this.role_name.includes('Supervisor') || this.role_name.includes('Admin')">
+    <div class="card">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count2">
@@ -273,8 +278,10 @@
       </div>
     </div>
     </div>
+    </div>
 <!-- //Dashboard for personnel ict (status change request) -->
 <div class="container-fluid" v-if="this.role_name.includes('Personel ICT')|| this.role_name.includes('Admin')">
+    <div class="card">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count3">
@@ -298,7 +305,7 @@
                 <i class="bi bi-check2-all" style="fontSize: 4rem; color: red;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="sdgDikerjakan3()" style="cursor:pointer;">{{count3.sudahdikerjakan}}</h3>
+                <h3 @click="sdHDikerjakan3()" style="cursor:pointer;">{{count3.sudahdikerjakan}}</h3>
                 <p class="mb-0">Request Yang Sudah Dikerjakan</p>
               </div>
             </div>
@@ -322,10 +329,12 @@
       </div>
       </div>
       </div>
+    </div>
       <!-- // closing request -->
       <div class="container-fluid" v-if="this.role_name.includes('Manager')|| this.role_name.includes('Admin')">
        <section>
-       <div class="row">
+        <div class="card">
+        <div class="row">
         <div class="col-xl-3 col-sm-6 col-12 mb-4">
          <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count4">
            <div class="card-body">
@@ -334,7 +343,7 @@
                 <i class="bi bi-check2-all" style="fontSize: 4rem; color: gray;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request-divisi3')" style="cursor:pointer;">{{count4.sudahdikerjakan}}</h3>
+                <h3 @click="sdHDikerjakan4()" style="cursor:pointer;">{{count4.sudahdikerjakan}}</h3>
                 <p class="mb-0">Request Yang Sudah Dikerjakan</p>
               </div>
             </div>
@@ -349,13 +358,14 @@
                 <i class="bi bi-check2-all" style="fontSize: 4rem; color: green;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request-divisi3')" style="cursor:pointer;">{{count4.sudahselesai}}</h3>
+                <h3 @click="sdhSelesai4()" style="cursor:pointer;">{{count4.sudahselesai}}</h3>
                 <p class="mb-0">Request Yang Sudah Selesai</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
     </section>
     </div>
@@ -495,7 +505,7 @@ export default {
           this.$router.push('/ict-request-desc');
           localStorage.setItem('active',17)
         },
-        sdgDikerjakan3(){
+        sdHDikerjakan3(){
           this.$router.push('/ict-request-desc');
           localStorage.setItem('active',18)
         },
@@ -507,6 +517,14 @@ export default {
             this.axios.get('api/getCountDivisi4',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.count4 = response.data;
             });
+        },
+        sdHDikerjakan4(){
+          this.$router.push('/ict-request-desc');
+          localStorage.setItem('active',20)
+        },
+        sdhSelesai4(){
+          this.$router.push('/ict-request-desc');
+          localStorage.setItem('active',21)
         },
     }
 }
