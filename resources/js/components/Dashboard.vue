@@ -102,7 +102,7 @@
                 <i class="bi bi-journal-bookmark-fill" style="fontSize: 4rem;"></i>
               </div>
               <div class="text-end">
-                <h3 @click="this.$router.push('/ict-request-desc')" style="cursor:pointer;">{{count.countrequest}}</h3>
+                <h3 @click="totalKeseluruhan()" style="cursor:pointer;">{{count.countrequest}}</h3>
                 <p class="mb-0">Total Keseluruhan Request</p>
               </div>
             </div>
@@ -438,6 +438,10 @@ export default {
         sdhSelesai(){
           this.$router.push('/ict-request-desc')
           localStorage.setItem('active',6);
+        },
+        totalKeseluruhan(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',22);
         },
         //dashboard approval user
         getData1(){

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Mng_menu;
+use App\Mng_usr_roles;
+use App\Mng_role_menu;
 use Auth;
 use carbon\Carbon;
 use DB;
@@ -12,12 +14,12 @@ class MngMenuController extends Controller
     Public function index()
     {
         $menu = DB::table('mng_menus as mm')
-        ->select('mm.menu_id','mmm.mod_name','mm.menu_name','mm.menu_desc','mm.menu_desc','mm.menu_display')
-        ->join('mng_modules as mmm','mm.mod_id','mmm.mod_id')
-        ->where('mm.menu_stat','T')
-        ->orderBy('mm.menu_id','ASC')
-        ->get();
-        return $menu->toJson();
+            ->select('mm.menu_id','mmm.mod_name','mm.menu_name','mm.menu_desc','mm.menu_desc','mm.menu_display')
+            ->join('mng_modules as mmm','mm.mod_id','mmm.mod_id')
+            ->where('mm.menu_stat','T')
+            ->orderBy('mm.menu_id','ASC')
+            ->get();
+        return response()->json($menu,200);
     }
     Public function getParent()
     {

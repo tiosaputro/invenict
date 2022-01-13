@@ -51,7 +51,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.checkto = response.data.map(function (x) {
           return x.to;
         });
-        console.log(_this.check);
 
         if (_this.checkname.includes("Cash Advance") || _this.checkto.includes("/cash-advance")) {
           _this.getCash();

@@ -185,6 +185,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/getNameBu/{noreq}','IctController@getNameBu');
     //divisi 1
     Route::get('/get-permohonan/{usr_name}','IctController@getPermohonan');
+    Route::get('total-request/{usr_name}','IctController@totalRequest');
     
     //divisi 2
     Route::get('/get-permohonan-divisi','IctController@getPermohonanDivisi');

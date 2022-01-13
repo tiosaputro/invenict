@@ -158,6 +158,16 @@ class IctController extends Controller
         $ict2 = DB::Table('v_ireq_mst_selesai')->get();
         return response()->json(['ict'=>$ict,'ict2'=>$ict2]);
     }
+    function totalRequest($usr_name)
+    {
+        $ict = DB::table('ireq_mst')
+            ->select('ireq_id','ireq_no','ireq_user','ireq_date',
+                DB::raw("CASE WHEN ireq_status = 'P' Then 'Permohonan' WHEN ireq_status = 'R' Then 'Reject' WHEN ireq_status = 'A' Then 'Approve' WHEN ireq_status = 'T' Then 'Penugasan' WHEN ireq_status = 'D' Then 'Done' WHEN ireq_status = 'C' Then 'Close' end as ireq_status "))
+            ->where('created_by',$usr_name)
+            ->whereNotNull('ireq_status')
+            ->get();
+        return response()->json($ict);
+    }
     Public function save(Request $request)
     {
         $message = [

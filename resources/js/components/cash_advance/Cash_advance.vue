@@ -135,7 +135,6 @@ export default {
       this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkname = response.data.map((x)=> x.name)
         this.checkto = response.data.map((x)=> x.to)
-        console.log(this.check)
         if(this.checkname.includes("Cash Advance") || this.checkto.includes("/cash-advance")){
           this.getCash();
         }

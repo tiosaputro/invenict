@@ -458,6 +458,80 @@
           </div>
         </template>
         </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 22">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Total Keseluruhan Request)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 22"
+          :value="total"
+          :paginator="true"
+          :rows="25"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_status" header="Status" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
         <Toolbar class="p-mb-4" v-if="this.active == 7">
           <template v-slot:left>
             <div class="p-grid p-dir-col">
@@ -1674,6 +1748,7 @@ export default {
           id:null,
           name: null
           },
+        total:[],
         petugas:[],
         submitted: false,
         dialogAssign: false,
@@ -1706,6 +1781,9 @@ export default {
           }
           else if (this.active > 19 && this.active <=21){
             this.getIct5();
+          }
+          else if (this.active == 22){
+            this.getIct6();
           }
         }
       },
@@ -1783,6 +1861,12 @@ export default {
             localStorage.setItem('Expired','true')
             setTimeout( () => this.$router.push('/login'),2000);
            }
+        });
+      },
+      getIct6(){
+        this.axios.get('api/total-request/'+this.usr_name, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+          this.total = response.data;
+          this.loading = false;
         });
       },
       AssignPerRequest(ireq_id){
