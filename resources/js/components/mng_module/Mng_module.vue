@@ -16,7 +16,7 @@
         <DataTable
           :value="modul"
           :paginator="true"
-          :rows="25"
+          :rows="10"
           v-model:filters="filters"
           :loading="loading"
           :rowHover="true"

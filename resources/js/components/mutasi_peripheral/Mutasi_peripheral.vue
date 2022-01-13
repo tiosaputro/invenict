@@ -16,7 +16,7 @@
         <DataTable
           :value="mutasi"
           :paginator="true"
-          :rows="25"
+          :rows="10"
           :loading="loading"
           :filters="filters"
           :rowHover="true"

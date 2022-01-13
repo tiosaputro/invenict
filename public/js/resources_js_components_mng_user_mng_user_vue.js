@@ -211,7 +211,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
     value: $data.user,
     paginator: true,
-    rows: 25,
+    rows: 10,
     filters: $data.filters,
     "onUpdate:filters": _cache[2] || (_cache[2] = function ($event) {
       return $data.filters = $event;

@@ -217,7 +217,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
     value: $data.mutasi,
     paginator: true,
-    rows: 25,
+    rows: 10,
     loading: $data.loading,
     filters: $data.filters,
     rowHover: true,

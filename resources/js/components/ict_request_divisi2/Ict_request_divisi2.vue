@@ -18,7 +18,7 @@
                 <DataTable
                   :value="permohonan"
                   :paginator="true"
-                  :rows="25"
+                  :rows="10"
                   :loading="loading"
                   :filters="filters"
                   :rowHover="true"
@@ -88,7 +88,7 @@
                   <DataTable
                     :value="sedangDikerjakan"
                     :paginator="true"
-                    :rows="25"
+                    :rows="10"
                     :loading="loading"
                     :filters="filters"
                     :rowHover="true"
@@ -139,7 +139,7 @@
                    <DataTable
                     :value="sudahDikerjakan"
                     :paginator="true"
-                    :rows="25"
+                    :rows="10"
                     :loading="loading"
                     :filters="filters"
                     :rowHover="true"
@@ -182,7 +182,7 @@
                    <DataTable
                     :value="selesai"
                     :paginator="true"
-                    :rows="25"
+                    :rows="10"
                     :loading="loading"
                     :filters="filters"
                     :rowHover="true"

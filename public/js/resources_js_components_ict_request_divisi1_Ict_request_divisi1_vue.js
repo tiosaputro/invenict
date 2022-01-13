@@ -289,7 +289,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
             value: $data.permohonan,
             paginator: true,
-            rows: 25,
+            rows: 10,
             loading: $data.loading,
             filters: $data.filters,
             rowHover: true,
@@ -409,7 +409,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
             value: $data.verif,
             paginator: true,
-            rows: 25,
+            rows: 10,
             loading: $data.loading,
             filters: $data.filters,
             rowHover: true,
@@ -516,7 +516,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
             value: $data.reject,
             paginator: true,
-            rows: 25,
+            rows: 10,
             loading: $data.loading,
             filters: $data.filters,
             rowHover: true,
@@ -630,7 +630,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
             value: $data.sedangDikerjakan,
             paginator: true,
-            rows: 25,
+            rows: 10,
             loading: $data.loading,
             filters: $data.filters,
             rowHover: true,
@@ -737,7 +737,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
             value: $data.sudahDikerjakan,
             paginator: true,
-            rows: 25,
+            rows: 10,
             loading: $data.loading,
             filters: $data.filters,
             rowHover: true,
@@ -844,7 +844,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
             value: $data.selesai,
             paginator: true,
-            rows: 25,
+            rows: 10,
             loading: $data.loading,
             filters: $data.filters,
             rowHover: true,
