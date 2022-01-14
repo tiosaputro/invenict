@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use DB;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,7 @@ class DashboardController extends Controller
                  DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'C' AND ireq_mst.created_by = '$usr_name') as sudahselesai"),
                  DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status IS NOT NULL AND ireq_mst.created_by = '$usr_name') as countrequest"))
         ->first();
-        return response()->json($grafik);
+        return json_encode($grafik);
     }
     public function countDivisi1($usr_name)
     {
@@ -30,7 +29,7 @@ class DashboardController extends Controller
                  DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'D' AND divisi_refs.div_verificator = '$usr_name') as sudahdikerjakan"),
                  DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst LEFT JOIN divisi_refs ON ireq_mst.ireq_divisi_user = divisi_refs.div_id WHERE ireq_mst.ireq_status = 'C' AND divisi_refs.div_verificator = '$usr_name') as sudahselesai"))
         ->first();
-        return response()->json($grafik);
+        return json_encode($grafik);
     }
     public function countDivisi2()
     {
@@ -54,7 +53,7 @@ class DashboardController extends Controller
             ->where('ireq_status','C')
             ->pluck('sdhselesai')
             ->first();
-        return response()->json(['blmdiassign'=>$blmdiassign,'sdgdikerjakan'=>$sdgdikerjakan,'sdhdikerjakan'=>$sdhdikerjakan,'sdhselesai'=>$sdhselesai]);
+        return json_encode(['blmdiassign'=>$blmdiassign,'sdgdikerjakan'=>$sdgdikerjakan,'sdhdikerjakan'=>$sdhdikerjakan,'sdhselesai'=>$sdhselesai]);
     }
     public function countDivisi3($fullname)
     {
@@ -63,7 +62,7 @@ class DashboardController extends Controller
                  DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'D' AND ireq_dtl.ireq_assigned_to = '$fullname') as sudahdikerjakan"),
                  DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'C' AND ireq_dtl.ireq_assigned_to = '$fullname') as sudahselesai"))
         ->first();
-        return response()->json($grafik);
+        return json_encode($grafik);
     }
     function countDivisi4()
     {  
@@ -71,7 +70,7 @@ class DashboardController extends Controller
         ->select(DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'D') as sudahdikerjakan"),
                  DB::raw("(SELECT COUNT(ireqd_id) FROM ireq_dtl WHERE ireq_dtl.ireq_status = 'C') as sudahselesai"))
         ->first();
-        return response()->json($grafik);
+        return json_encode($grafik);
     }
     public function getTahun()
     {
@@ -90,7 +89,7 @@ class DashboardController extends Controller
         ->groupBy('ireq_assigned_to')
         ->get();
 
-        return response()->Json(['grafik'=>$grafik,'grafik1'=>$grafik1,'grafik2'=>$grafik2,'grafik3'=>$grafik3,'personnel'=>$personnel,'personnell'=>$personnell],200);
+        return json_encode(['grafik'=>$grafik,'grafik1'=>$grafik1,'grafik2'=>$grafik2,'grafik3'=>$grafik3,'personnel'=>$personnel,'personnell'=>$personnell],200);
     }
     public function getTahunUser($bulanUser)
     {
@@ -100,7 +99,7 @@ class DashboardController extends Controller
         ->groupBy(DB::raw("TO_CHAR(im.ireq_date,'yyyy')"))
         ->orderBy(DB::raw("TO_CHAR(im.ireq_date,'yyyy')"),'DESC')
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function getTahunRequestor($bulanUser)
     {
@@ -110,12 +109,12 @@ class DashboardController extends Controller
         ->groupBy(DB::raw("TO_CHAR(im.ireq_date,'yyyy')"))
         ->orderBy(DB::raw("TO_CHAR(im.ireq_date,'yyyy')"),'DESC')
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function countStatusPerDivisi()
     {
         $grafik = DB::table('vreg_per_divuser_status')->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function countPerDivUserTahun($tahunUser)
     {
@@ -126,7 +125,7 @@ class DashboardController extends Controller
         ->orderBy('dr.div_name','ASC') 
         ->groupBy('dr.div_name')
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     
     public function countPerDivRequestorTahun($tahunRequestor)
@@ -138,7 +137,7 @@ class DashboardController extends Controller
         ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name')
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function countPerDivUserBulan($tahunnUser,$bulanUser)
     {
@@ -150,7 +149,7 @@ class DashboardController extends Controller
         ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name', DB::raw("TO_CHAR(im.ireq_date,'Month')"))
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     
     public function countPerDivRequestorBulan($tahunRequestor,$bulanRequestor)
@@ -163,7 +162,7 @@ class DashboardController extends Controller
         ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name', DB::raw("TO_CHAR(im.ireq_date,'Month')"))
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function countPerDivUserStatus($statusUser)
     {
@@ -175,7 +174,7 @@ class DashboardController extends Controller
         ->orderBy('dr.div_name','ASC')
         ->groupBy('dr.div_name',DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end"))
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function countPerDivRequestorStatus($statusRequestor)
     {
@@ -187,12 +186,12 @@ class DashboardController extends Controller
         ->where('imm.ireq_status',$statusRequestor)
         ->groupBy('dr.div_name',DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end"))
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
     public function countPerPersonnel()
     {
         $grafik= DB::table('VREQ_PER_ICTPERSON')->get();
-        return response()->Json($grafik); 
+        return json_encode($grafik); 
     }
     public function countPerStatusIct($ictPersonnel)
     {
@@ -201,6 +200,6 @@ class DashboardController extends Controller
         ->where('imm.ireq_assigned_to',$ictPersonnel)
         ->groupBy(DB::raw("CASE WHEN imm.ireq_status = 'A' Then 'Approved' WHEN imm.ireq_status = 'T' Then 'Penugasan' WHEN imm.ireq_status = 'R' Then 'Reject' WHEN imm.ireq_status = 'D' Then 'Done' WHEN imm.ireq_status = 'C' Then 'Close' WHEN imm.ireq_status = 'P' Then 'Permohonan' end "))
         ->get();
-        return response()->Json($grafik);
+        return json_encode($grafik);
     }
 }

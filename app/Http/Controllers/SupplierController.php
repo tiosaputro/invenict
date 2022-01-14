@@ -79,7 +79,7 @@ class SupplierController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name' => "Supplier_Save",
         ]);
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => $supp
         ]);
@@ -98,7 +98,7 @@ class SupplierController extends Controller
             }
             return $data;
         })->first();
-        return response()->Json($supp);
+        return json_encode($supp);
     }
     public function show($suplier_code)
     {
@@ -114,7 +114,7 @@ class SupplierController extends Controller
             }
             return $data;
         })->first();
-        return response()->Json($supp);
+        return json_encode($supp);
     }
 
     public function update(Request $request, $code)
@@ -178,13 +178,13 @@ class SupplierController extends Controller
             'success' => true,
             'message' => 'Updated Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     public function delete($suplier_code)
     {
         $supp = Supplier::find($suplier_code);
         $supp->delete();
-        return response()->json('Successfully deleted');
+        return json_encode('Successfully deleted');
     }
     public function cetak_pdf()
     {
@@ -210,6 +210,6 @@ class SupplierController extends Controller
         $supp = Supplier::Select('suplier_code as code',DB::raw("(suplier_code ||'-'|| suplier_name) as name"))
                 ->orderBy('suplier_code','ASC')
                 ->get();    
-        return response()->Json($supp);
+        return json_encode($supp);
     }
 }

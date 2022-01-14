@@ -61,7 +61,7 @@ class LookupsController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name' => "Lookups_Save",
         ]);
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => $lookup
         ]);
@@ -69,7 +69,7 @@ class LookupsController extends Controller
     public function edit($code,$type)
     {
         $ref = Lookup_Refs::Where('lookup_code', $code)->where('lookup_type',$type)->first();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     public function update(Request $request,$code,$type)
     {
@@ -91,7 +91,7 @@ class LookupsController extends Controller
         $ref->last_updated_by = Auth::user()->usr_name;
         $ref->program_name = "Lookups_Update";
         $ref->save();
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => 'Updated Successfully',
         ]);
@@ -99,7 +99,7 @@ class LookupsController extends Controller
     public function delete($lookup_code,$lookup_type)
     {
         $ref = Lookup_Refs::where('lookup_code',$lookup_code)->where('lookup_type',$lookup_type)->delete();
-        return response()->json('Successfully deleted');
+        return json_encode('Successfully deleted');
     }
     public function cetak_pdf()
     {
@@ -120,7 +120,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('merk')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref,200);
+        return json_encode($ref,200);
     }
     public function getKondisi()
     {
@@ -129,7 +129,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('kondisi')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     public function getStatus()
     {
@@ -138,7 +138,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('req_status')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     public function getStatusIct()
     {
@@ -147,7 +147,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('ict_status')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     Public function getType()
     {
@@ -156,7 +156,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('req_type')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     Public function getMataUang()
     {
@@ -165,7 +165,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('mata uang')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     Public function getMethodePurch()
     {
@@ -174,7 +174,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('pay methode')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
     Public function getSatuan()
     {
@@ -183,7 +183,7 @@ class LookupsController extends Controller
         ->whereRaw('LOWER(lookup_type) LIKE ? ',[trim(strtolower('satuan')).'%'])
         ->orderBy('lookup_desc','ASC')
         ->get();
-        return response()->Json($ref);
+        return json_encode($ref);
     }
 
 }

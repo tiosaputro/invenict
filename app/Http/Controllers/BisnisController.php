@@ -10,6 +10,6 @@ class BisnisController extends Controller
     public function getBisnis()
     {
         $bisnis = DB::table('v_company_refs')->get();
-        return $bisnis->toJson();
+        return json_encode($bisnis);
     }
 }

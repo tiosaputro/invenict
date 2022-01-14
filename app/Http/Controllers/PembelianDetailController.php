@@ -26,7 +26,7 @@ class PembelianDetailController extends Controller
         ->where('pd.purchase_id',$code)
         ->orderBy('pd.creation_date','ASC')
         ->get();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     Public function getSuppDate($code)
     {
@@ -35,7 +35,7 @@ class PembelianDetailController extends Controller
             ->leftjoin('suplier_mst as sm','pm.suplier_code','sm.suplier_code')
             ->where('pm.purchase_id',$code)
             ->first();
-        return response()->Json($dtl);
+        return json_encode($dtl);
     }
     Public function save(Request $request,$code)
     {
@@ -67,7 +67,7 @@ class PembelianDetailController extends Controller
             'program_name'=> "PembelianDetail_Save"
         ]);
 
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => 'Created Successfully'
         ]);
@@ -80,7 +80,7 @@ class PembelianDetailController extends Controller
         ->join('invent_mst as im','pd.invent_code','im.invent_code')
         ->where('pd.dpurchase_id',$purchase)
         ->first();
-        return response()->json($dtl);
+        return json_encode($dtl);
     }
     Public function update(Request $request,$code,$purchase)
     {
@@ -103,18 +103,18 @@ class PembelianDetailController extends Controller
             'success' => true,
             'message' => 'Updated Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     Public function delete($code,$dpurchase_id)
     {
         $dtl = PembelianDetail::Where('dpurchase_id',$dpurchase_id)->first();
           $dtl->delete();
-           return response()->json('Deleted Successfully');
+           return json_encode('Deleted Successfully');
     }
     public function getValuta($code)
     {
         $dtl = Pembelian::Select('valuta_code')->where('purchase_id',$code)->first();
-        return response()->json($dtl);
+        return json_encode($dtl);
     }
     public function cetak_pdf($purchase_id)
     {

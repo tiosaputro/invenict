@@ -28,10 +28,10 @@ class LoginController extends Controller
                     ];
                     return response($response, 201);
                 }else{
-                    return response()->json(["success" => false, "password" => "Unable to login. Incorrect password."],422);
+                    return json_encode(["success" => false, "password" => "Unable to login. Incorrect password."],422);
                     }
                  }else{
-                    return response()->json(["success" => false, "email" => "Email doesnt exist."],422);
+                    return json_encode(["success" => false, "email" => "Email doesnt exist."],422);
                 }
     } 
 
@@ -39,7 +39,7 @@ class LoginController extends Controller
     {
         $user = Auth::user();
         $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
-        return response()->json([
+        return json_encode([
             'success'    => true,
             'message'    => $user,
         ], 200);

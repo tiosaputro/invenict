@@ -13,12 +13,12 @@ use Illuminate\Http\Request;
 
 class CashController extends Controller
 {
-    Public function index()
+    function index()
     {
         $cash = DB::table('v_cash_advance')->get();
-        return $cash->toJson();
+        return json_encode($cash);
     }
-    Public function save(Request $request)
+    function save(Request $request)
     {
         $message = [
             'noreq.required'=>'No Request Wajib Diisi',
@@ -60,13 +60,13 @@ class CashController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name'=>"Cash_Save",
         ]);
-        
-        return response()->json([
+        $msg = [
             'success' => true,
-            'message' => 'Created Successfully '
-        ]);
+            'message' => 'Created Successfully'
+        ];
+        return json_encode($msg);
     }
-    Public function edit($code)
+    function edit($code)
     {
         $cash = DB::table('ca_mst as cm')
         ->select('im.ireq_no as ca_idd','im.ireq_requestor as req', 'vr.name as bu','cm.ca_pic_name',
@@ -80,9 +80,9 @@ class CashController extends Controller
         ->join('vcompany_refs as vr','im.ireq_bu','vr.company_code')
         ->where('cm.ca_id',$code)
         ->first();
-            return response()->Json($cash);
+            return json_encode($cash);
     }
-    Public function update(Request $request,$code)
+    function update(Request $request,$code)
     {
         $message = [
             'ca_submit_date.required'=>'Tgl Submit Wajib diisi',
@@ -123,15 +123,15 @@ class CashController extends Controller
             'success' => true,
             'message' => 'Updated Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
-    Public function delete($ca_id)
+    function delete($ca_id)
     {
         $cash = Cash::find($ca_id);
         $cash->delete();
-            return response()->json('Successfully deleted');
+            return json_encode('Successfully deleted');
     }
-    public function cetak_pdf()
+    function cetak_pdf()
     {
         $cash = DB::table('ca_mst as cm')
         ->select('im.ireq_no as ca_idd','im.ireq_requestor as req', 'vr.name as bu','cm.ca_pic_name','im.ireq_requestor as ireq_id',
@@ -146,7 +146,7 @@ class CashController extends Controller
         ->get();
         return view('pdf/Laporan_Cash',compact('cash'));
     }
-    public function cetak_excel()
+    function cetak_excel()
     {
         return Excel::download(new CashExport,'Laporan_cash_advance.xlsx');
     }

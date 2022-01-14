@@ -70,7 +70,7 @@ class IctController extends Controller
         ->orderBy('creation_date','ASC')
         ->get();
 
-        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5],200);
+        return json_encode(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5],200);
     }
     Public function getPermohonan($usr_name)
     {
@@ -128,7 +128,7 @@ class IctController extends Controller
         ->orderBy('im.creation_date','ASC')
         ->get();
 
-        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5]);
+        return json_encode(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5]);
     }
     Public function getPermohonanDivisi()
     {
@@ -136,7 +136,7 @@ class IctController extends Controller
         $ict1 = DB::Table('v_ireq_mst_sedang_dikerjakan')->get();
         $ict2 = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
         $ict3 = DB::Table('v_ireq_mst_selesai')->get();
-        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3]);
+        return json_encode(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3]);
     }
     Public function getSedangDikerjakan($usr_fullname)
     {
@@ -150,13 +150,13 @@ class IctController extends Controller
 
         $ict1 = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
         $ict2 = DB::Table('v_ireq_mst_selesai')->get();
-        return response()->json(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2]);
+        return json_encode(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2]);
     }
     public function ictDivisi4()
     {
         $ict = DB::Table('v_ireq_mst_sudah_dikerjakan')->get();
         $ict2 = DB::Table('v_ireq_mst_selesai')->get();
-        return response()->json(['ict'=>$ict,'ict2'=>$ict2]);
+        return json_encode(['ict'=>$ict,'ict2'=>$ict2]);
     }
     function totalRequest($usr_name)
     {
@@ -166,7 +166,7 @@ class IctController extends Controller
             ->where('created_by',$usr_name)
             ->whereNotNull('ireq_status')
             ->get();
-        return response()->json($ict);
+        return json_encode($ict);
     }
     Public function save(Request $request)
     {
@@ -191,7 +191,7 @@ class IctController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name'=>"Ict_Save",
         ]);
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => 'Successfully Created'
         ],200);
@@ -199,7 +199,7 @@ class IctController extends Controller
     Public function edit($code)
     {
         $ict = Ict::find($code);
-            return response()->json($ict);
+            return json_encode($ict);
     }
     Public function update(Request $request, $code)
     {
@@ -235,21 +235,21 @@ class IctController extends Controller
             'success' => true,
             'message' => 'Updated Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     Public function delete($ireq_id)
     {
         $ict = Ict::find($ireq_id);
         $dtl= DB::table('ireq_dtl')->where('ireq_id',$ireq_id)->delete();
           $ict->delete();
-          return response()->json('Successfully deleted');
+          return json_encode('Successfully deleted');
     }
     Public function getNoreq()
     {
         $ict = Ict::select('ireq_no as name','ireq_id as code')
                 ->orderBy('ireq_no','ASC')
                 ->get();
-                return response()->json($ict);
+                return json_encode($ict);
     }
     Public function getNameBu($noreq)
     {
@@ -259,7 +259,7 @@ class IctController extends Controller
         ->join('vcompany_refs as vr','im.ireq_bu','vr.company_code')
         ->where('im.ireq_id',$noreq)
         ->first();
-            return response()->json($ict);
+            return json_encode($ict);
     }
     Public function cetak_pdf_permohonan()
     {
@@ -382,7 +382,7 @@ class IctController extends Controller
             $d->program_name = "IctController_updateAssign";
             $d->save();
         }
-        return response()->json('Success Update');
+        return json_encode('Success Update');
     }
     public function updateStatusPermohonan($code)
     {
@@ -404,7 +404,7 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusPermohonan";
             $d->save();
         }
-        return response()->json('Success Update');
+        return json_encode('Success Update');
     }
     public function updateStatusReject(Request $request, $code)
     {
@@ -427,7 +427,7 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusReject";
             $d->save();
         }
-        return response()->json('Success Update');
+        return json_encode('Success Update');
     }
     public function updateStatusSubmit($ireq_id)
     {
@@ -448,7 +448,7 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusSubmit";
             $d->save();
         }
-        return response()->json('Success Update');
+        return json_encode('Success Update');
     }
     public function updateStatusPenugasan($ireq_id)
     {
@@ -470,7 +470,7 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusPenugasan";
             $d->save();
         }
-        return response()->json('Success Update');
+        return json_encode('Success Update');
     }
     
     public function updateStatusClosing($ireq_id)
@@ -493,6 +493,6 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusClosing";
             $d->save();
         }
-        return response()->json('Success Update');
+        return json_encode('Success Update');
     }
 }

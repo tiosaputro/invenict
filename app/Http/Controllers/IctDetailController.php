@@ -25,7 +25,7 @@ class IctDetailController extends Controller
         ->where('id.ireq_id',$code)
         ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('req_type')).'%'])
         ->get();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     Public function detailPenugasan($code)
     {
@@ -37,7 +37,7 @@ class IctDetailController extends Controller
         ->where('id.ireq_id',$code)
         ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('req_type')).'%'])
         ->get();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     Public function getDetailDone($code,$usr_fullname)
     {
@@ -50,7 +50,7 @@ class IctDetailController extends Controller
         ->where('id.ireq_assigned_to',$usr_fullname)
         ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('req_type')).'%'])
         ->get();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     Public function getNo_req($code)
     {
@@ -59,7 +59,7 @@ class IctDetailController extends Controller
         DB::raw("CASE WHEN im.ireq_status = 'A' Then 'Approved' WHEN im.ireq_status = 'T' Then 'Penugasan' WHEN im.ireq_status = 'R' Then 'Reject' WHEN im.ireq_status = 'D' Then 'Done' WHEN im.ireq_status = 'C' Then 'Close' WHEN im.ireq_status = 'P' Then 'Permohonan' end as ireq_status "))
         ->where('im.ireq_id',$code)
         ->first();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     Public function save(Request $request,$code)
     {
@@ -93,7 +93,7 @@ class IctDetailController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name'=>"IctDetail_Save"
         ]);
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => 'Created Successfully '
         ]);
@@ -106,7 +106,7 @@ class IctDetailController extends Controller
         ->join('ireq_mst as imm','id.ireq_id','imm.ireq_id')
         ->where('id.ireqd_id',$ireq)
         ->first();
-            return response()->json($ict);
+            return json_encode($ict);
     }
     Public function update(Request $request,$code,$ireq)
     {
@@ -143,13 +143,13 @@ class IctDetailController extends Controller
             'success' => true,
             'message' => 'Updated Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     Public function delete($ireq_id)
     {
         $ict = IctDetail::find($ireq_id);
          $ict->delete();
-          return response()->json('Deleted Successfully');
+          return json_encode('Deleted Successfully');
     }
     public function cetak_pdf($code)
     {
@@ -202,7 +202,7 @@ class IctDetailController extends Controller
         ->where('id.ireq_id',$code)
         ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('req_type')).'%'])
         ->get();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     public function getDetail($ireqd_id){
         $dtl = DB::table('ireq_dtl as id')
@@ -211,7 +211,7 @@ class IctDetailController extends Controller
         ->join('invent_mst as iim','id.invent_code','iim.invent_code')
         ->where('id.ireqd_id',$ireqd_id)
         ->first();
-            return response()->Json($dtl);
+            return json_encode($dtl);
     }
     public function updateAssign(Request $request,$code)
     {
@@ -222,7 +222,7 @@ class IctDetailController extends Controller
         $dtl->last_update_date = $newUpdate;
         $dtl->last_updated_by = Auth::user()->usr_name;
         $dtl->save();
-        return response()->json('Updated Successfully');
+        return json_encode('Updated Successfully');
     }
     public function updateStatusDone(Request $request,$code){
         $date = Carbon::now();
@@ -233,7 +233,7 @@ class IctDetailController extends Controller
         $dtl->last_updated_by = Auth::user()->usr_name;
         $dtl->save();
         $result = DB::connection('oracle')->getPdo()->exec("begin SP_DONE_IREQ_MST($code); end;");
-        return response()->json('Updated Successfully');
+        return json_encode('Updated Successfully');
     }
     public function updateStatusClosingDetail($ireqd_id,$ireq_no){
         $date = Carbon::now();
@@ -245,6 +245,6 @@ class IctDetailController extends Controller
         $dtl->program_name = "IctDetail_updateStatusClosingDetail";
         $dtl->save();
         $result = DB::connection('oracle')->getPdo()->exec("begin SP_CLOSING_IREQ_MST($ireq_no); end;");
-        return response()->json('Updated Successfully');
+        return json_encode('Updated Successfully');
     }
 }

@@ -16,7 +16,7 @@ class MngUserController extends Controller
     public function index()
     {
         $user = DB::table('v_mng_users')->get();
-        return response()->Json($user);
+        return json_encode($user);
     }
     public function save(Request $request)
     {
@@ -64,7 +64,7 @@ class MngUserController extends Controller
             'program_name'=>'MngUser_SAVE'
         ]);
        
-        return response()->json([
+        return json_encode([
             'success' => true,
             'message' => 'Created Successfully'
         ]);
@@ -76,7 +76,7 @@ class MngUserController extends Controller
         ->join('mng_usr_roles as mg','mu.usr_id','mg.usr_id')
         ->where('mu.usr_id',$code)
         ->first();
-        return response()->json($user);
+        return json_encode($user);
     }
     public function update(Request $request,$code)
     {
@@ -163,18 +163,18 @@ class MngUserController extends Controller
             'message' => 'Updated Successfully'
         ];
  
-        return response()->json($msg);
+        return json_encode($msg);
     }
     public function delete($usr_id)
     {
         $user = Mng_user::find($usr_id);
         unlink(Storage_path('app/public/profile/'.$user->usr_foto));
         $user->delete();
-            return response()->json('Successfully deleted');
+            return json_encode('Successfully deleted');
     }
     public function getVerif($div_id)
     {
         $user = Mng_user::select('usr_name as name')->where('div_id',$div_id)->get();
-        return response()->json($user);
+        return json_encode($user);
     }
 }

@@ -12,7 +12,7 @@ Use carbon\Carbon;
 use DB;
 class MngRoleMenuController extends Controller
 {
-    public function save(Request $request)
+    function save(Request $request)
     {
         $date = Carbon::now();
         $newCreation = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
@@ -28,14 +28,14 @@ class MngRoleMenuController extends Controller
                 'program_name'=>'MngRoleMenuController_SAVE'
             ]);
       }
-      return response()->json('SUCCESS');
+      return json_encode('SUCCESS');
     }
-    public function edit($code)
+    function edit($code)
     {
         $role = Mng_role_menu::select('menu_id as code')->where('rol_id',$code)->pluck('code');
-        return response()->json($role);
+        return json_encode($role);
     }
-    Public function update(Request $request,$code)
+    function update(Request $request,$code)
     {
         $date = Carbon::now();
         $newUpdate = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
@@ -56,13 +56,13 @@ class MngRoleMenuController extends Controller
                 'program_name'=>'MngRoleMenuController_UPDATE'
             ]);
         }
-        return response()->json($menu);
+        return json_encode($menu);
     }
-    public function cekUser($id)
+    function cekUser($id)
     {
         $role = Mng_usr_roles::select('rol_id')->where('usr_id',$id)->pluck('rol_id');
         $menu = Mng_role_menu::select('menu_id')->whereIn('rol_id',$role)->pluck('menu_id');
         $aksesmenu = DB::table('mng_menus')->select('menu_display as name','controller as to')->whereIn('menu_id',$menu)->get();
-        return response()->json($aksesmenu);
+        return json_encode($aksesmenu);
     }
 }

@@ -21,7 +21,7 @@ class MasterController extends Controller
         ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('merk')).'%'])
         ->orderBy('im.invent_code','ASC')
         ->get();
-        return response()->json($mas);
+        return json_encode($mas);
     }
     public function save(Request $request)
     {
@@ -94,7 +94,7 @@ class MasterController extends Controller
             'success' => true,
             'message' => 'Created Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     public function edit($code)
     {
@@ -105,7 +105,7 @@ class MasterController extends Controller
                 DB::raw("TO_CHAR(im.invent_tgl_perolehan,' dd Mon YYYY') as invent_tgl_perolehan"))
         ->where('im.invent_code',$code)
         ->first();
-        return response()->Json($mas);
+        return json_encode($mas);
     }
     public function update(Request $request, $code)
     {
@@ -168,14 +168,14 @@ class MasterController extends Controller
             'message' => 'Updated Successfully'
         ];
  
-        return response()->json($msg);
+        return json_encode($msg);
     }
     public function delete($invent_code)
     {
         $mas = Master::find($invent_code);
         unlink(Storage_path('app/public/master_peripheral/'.$mas->invent_photo));
         $mas->delete();
-            return response()->json('Successfully deleted');
+            return json_encode('Successfully deleted');
     }
     public function cetak_pdf()
     {
@@ -207,7 +207,7 @@ class MasterController extends Controller
     public function getKode()
     {
         $mas = Master::Select('invent_code as code',DB::raw("(invent_code ||'-'|| invent_desc) as name"))->get();
-        return response()->json($mas);
+        return json_encode($mas);
     }
     public function getKodeIct($code)
     {
@@ -219,16 +219,16 @@ class MasterController extends Controller
             ->join('ireq.dtl.invent_code','=','im.invent_code')
             ->whereRaw('ireq_dtl.ireq_id',$code);
         })->get();
-        return response()->json($mas);
+        return json_encode($mas);
     }
     public function getImage($kode)
     {
         $mas = Master::select('invent_photo as photo')->where('invent_code',$kode)->first();
-        return response()->json($mas);
+        return json_encode($mas);
     }
     public function getBarcode($invent_code)
     {
         $mas = Master::Select('invent_barcode')->where('invent_code',$invent_code)->first();
-            return response()->json($mas);
+            return json_encode($mas);
     }
 }

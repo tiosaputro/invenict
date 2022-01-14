@@ -25,7 +25,7 @@ class MngUsrRoleController extends Controller
                 ->orderBy('menu_display','ASC')
                 ->get();
         $tree = $this->parseTree($query);
-        return response()->json($tree);
+        return json_encode($tree);
     }
      
     public function parseTree($tree, $root = 0) {
@@ -62,7 +62,7 @@ class MngUsrRoleController extends Controller
     public function edit($code)
     {
         $role = Mng_usr_roles::select('rol_id')->where('usr_id',$code)->pluck('rol_id');
-        return response()->json($role);
+        return json_encode($role);
     }
     public function update(Request $request, $code)
     {
@@ -89,6 +89,6 @@ class MngUsrRoleController extends Controller
     {
         $getRole = Mng_usr_roles::select('rol_id')->where('usr_id',$id)->pluck('rol_id');
         $cek = Mng_roles::select('rol_id','rol_name')->whereIn('rol_id',$getRole)->get();
-        return response()->json($cek);
+        return json_encode($cek);
     }
 }

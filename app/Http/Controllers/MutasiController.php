@@ -57,7 +57,7 @@ class MutasiController extends Controller
             'success' => true,
             'message' => 'Created Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     Public function edit($code)
     {
@@ -69,7 +69,7 @@ class MutasiController extends Controller
             ->join('invent_mst as imm','im.invent_code','imm.invent_code')
             ->Where('im.imutasi_id',$code)
             ->first();
-            return response()->json($mut);
+            return json_encode($mut);
     }
     Public function update(Request $request, $code)
     {
@@ -105,13 +105,13 @@ class MutasiController extends Controller
                 'success' => true,
                 'message' => 'Updated Successfully'
             ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     Public function delete($imutasi_id)
     {
         $mut = Mutasi::find($imutasi_id);
         $mut->delete();
-        return response()->json('Successfully deleted');
+        return json_encode('Successfully deleted');
     }
     public function cetak_excel()
     {

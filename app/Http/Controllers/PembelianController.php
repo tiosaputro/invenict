@@ -43,7 +43,7 @@ class PembelianController extends Controller
             'success' => true,
             'message' => 'Created Successfully'
         ];
-        return response()->json($msg);
+        return json_encode($msg);
     }
     Public function edit($code)
     {
@@ -53,7 +53,7 @@ class PembelianController extends Controller
                 DB::raw("TO_CHAR(pm.purchase_date,' dd Mon YYYY') as purchase_date"))
         ->where('pm.purchase_id',$code)
         ->first();
-        return response()->json($pem);
+        return json_encode($pem);
     }
     Public function update(Request $request,$code)
     {
@@ -79,14 +79,14 @@ class PembelianController extends Controller
             'message' => 'Updated Successfully'
         ];
  
-        return response()->json($msg);
+        return json_encode($msg);
     }
 
     Public function delete($purchase_id)
     {
         $pem = Pembelian::find($purchase_id);
         $pem->delete();
-            return response()->json('Successfully deleted');
+            return json_encode('Successfully deleted');
     }
     public function cetak_pdf()
     {
