@@ -7,11 +7,9 @@ use App\Lookup_Refs;
 use DB;
 use Auth;
 use Carbon\Carbon;
-use Session;
 use Excel;
 use App\Exports\LookupExport;
 use Illuminate\Validation\Rule;
-use Validator;
 
 class LookupsController extends Controller
 {

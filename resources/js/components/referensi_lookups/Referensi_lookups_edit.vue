@@ -149,7 +149,6 @@ export default {
             summary: "Success Message",
             detail: "Success Update",
           });
-          console.log(response.data)
          setTimeout( () => this.$router.push('/referensi-lookups'),1000);
         }).catch(error => {
           this.errors = error.response.data.errors;

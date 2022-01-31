@@ -4,6 +4,534 @@
       <div class="card">
         <Toast />
         <ConfirmDialog/> 
+        <Toolbar class="p-mb-4" v-if="this.active == 23">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Request Yang Belum Diverifikasi)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 23"
+          :value="ictAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:10rem">
+            <template #body="slotProps">
+              <Button
+                v-if="slotProps.data.ireq_status == null"
+                class="p-button-rounded p-button-info p-mr-2 p-mb-2"
+                icon="pi pi-pencil"
+                @click="
+                      $router.push({
+                      name: 'Edit Ict Request',
+                      params: { code: slotProps.data.ireq_id },})"
+                />
+              <Button
+                v-if="slotProps.data.ireq_status == null"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
+                @click="DeleteIct(slotProps.data.ireq_id)"
+              />
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+                />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 24">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Request Yang Sudah Diverifikasi)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>   
+        <DataTable
+          v-if="this.active == 24"
+          :value="sdhDiverifikasiAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 25">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Request Yang Direject)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 25"
+          :value="diRejectAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_reason" header="Alasan" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 26">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Request Yang Sedang Dikerjakan)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 26"
+          :value="sdgDikerjakanAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+            </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 27">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Request Yang Sudah Dikerjakan)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 27"
+          :value="sdhDikerjakanAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 28">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+			  <div class="p-col">
+			    <h4>ICT Request (Request Yang Sudah Selesai)</h4>
+			  </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 28"
+          :value="sdhSelesaiAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
+        <Toolbar class="p-mb-4" v-if="this.active == 29">
+          <template v-slot:left>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <h4>ICT Request (Total Keseluruhan Request)</h4>
+              </div>
+            </div>
+          </template>
+        </Toolbar>
+        <DataTable
+          v-if="this.active == 29"
+          :value="totalAdmin"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          :filters="filters"
+          :rowHover="true"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} ICT Request"
+          responsiveLayout="scroll"
+        >
+        <template #header>
+            <div class="table-header p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                        <InputText
+                          v-model="filters['global'].value"
+                          placeholder="Search. . ."
+                        />
+                </span>
+             </div>
+        </template>
+        <template #empty>
+            Not Found
+        </template>
+        <template #loading>
+            Loading ICT Request data. Please wait.
+        </template>
+          <Column field="ireq_no" header="No. Request" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_date" header="Tgl.Request" :sortable="true" style="min-width:12rem">
+            <template #body="slotProps">
+                {{ formatDate(slotProps.data.ireq_date) }}
+            </template>
+          </Column>
+          <Column field="ireq_status" header="Status" :sortable="true" style="min-width:12rem"/>
+          <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:12rem"/>
+          <Column style="min-width:12rem">
+            <template #body="slotProps">
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+              />
+            </template>
+          </Column>
+          <template #footer>
+            <div class="p-grid p-dir-col">
+              <div class="p-col">
+                <div class="box">
+                  <Button
+                    label="Kembali"
+                    class="p-button-raised p-button p-mr-2 p-mb-2"
+                    icon="bi bi-skip-backward-fill"
+                    @click="$router.push({
+                    name: 'Dashboard'})"
+                  />
+                </div>
+			      </div>
+          </div>
+        </template>
+        </DataTable>
         <Toolbar class="p-mb-4" v-if="this.active == 1">
           <template v-slot:left>
             <div class="p-grid p-dir-col">
@@ -53,27 +581,27 @@
           <Column style="min-width:10rem">
             <template #body="slotProps">
               <Button
-                        v-if="slotProps.data.ireq_status == null"
-                        class="p-button-rounded p-button-info p-mr-2 p-mb-2"
-                        icon="pi pi-pencil"
-                        @click="
-                          $router.push({
-                            name: 'Edit Ict Request',
-                            params: { code: slotProps.data.ireq_id },})"
-                      />
-                      <Button
-                        v-if="slotProps.data.ireq_status == null"
-                        icon="pi pi-trash"
-                        class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
-                        @click="DeleteIct(slotProps.data.ireq_id)"
-                      />
-                      <Button
-                        class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
-                        icon="pi pi-info-circle"
-                        @click="$router.push({
-                            name: 'Ict Request Detail Desc',
-                            params: { code: slotProps.data.ireq_id }, })"
-                      />
+                v-if="slotProps.data.ireq_status == null"
+                class="p-button-rounded p-button-info p-mr-2 p-mb-2"
+                icon="pi pi-pencil"
+                @click="
+                      $router.push({
+                      name: 'Edit Ict Request',
+                      params: { code: slotProps.data.ireq_id },})"
+                />
+              <Button
+                v-if="slotProps.data.ireq_status == null"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
+                @click="DeleteIct(slotProps.data.ireq_id)"
+              />
+              <Button
+                class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
+                icon="pi pi-info-circle"
+                @click="$router.push({
+                      name: 'Ict Request Detail Desc',
+                      params: { code: slotProps.data.ireq_id }, })"
+                />
             </template>
           </Column>
           <template #footer>
@@ -1729,6 +2257,13 @@ export default {
         sdgDikerjakan:[],
         sdhDikerjakan:[],
         sdhSelesai:[],
+        ictAdmin: [],
+        sdhDiverifikasiAdmin:[],
+        diRejectAdmin:[],
+        sdgDikerjakanAdmin:[],
+        sdhDikerjakanAdmin:[],
+        sdhSelesaiAdmin:[],
+        totalAdmin:[],
         permohonan:[],
         verif:[],
         reject:[],
@@ -1785,32 +2320,20 @@ export default {
           else if (this.active == 22){
             this.getIct6();
           }
+          else if (this.active > 22 && this.active <= 29){
+            this.getIct7();
+          }
         }
       },
       getIct(){
         this.axios.get('api/get-ict/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
-        this.ict = response.data.ict;
-        this.sdhDiverifikasi = response.data.ict1;
-        this.diReject = response.data.ict2;
-        this.sdgDikerjakan = response.data.ict3;
-        this.sdhDikerjakan = response.data.ict4;
-        this.sdhSelesai = response.data.ict5;
-        this.loading = false;
-      }).catch(error=>{
-          if (error.response.status == 403) {
-           this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Cannot Access This Page'
-          });
-          setTimeout( () => this.$router.push('/Dashboard'),2000);
-          }
-           else if (error.response.status == 401) {
-            this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-            });
-            localStorage.clear();
-            localStorage.setItem('Expired','true')
-            setTimeout( () => this.$router.push('/login'),2000);
-           }
+          this.ict = response.data.ict;
+          this.sdhDiverifikasi = response.data.ict1;
+          this.diReject = response.data.ict2;
+          this.sdgDikerjakan = response.data.ict3;
+          this.sdhDikerjakan = response.data.ict4;
+          this.sdhSelesai = response.data.ict5;
+          this.loading = false;
         });
       },
       getIct2(){
@@ -1852,20 +2375,23 @@ export default {
         this.sdHDikerjakan4 = response.data.ict;
         this.selesai4 = response.data.ict2;
         this.loading = false;
-      }).catch(error=>{
-        if (error.response.status == 401) {
-            this.$toast.add({
-            severity:'error', summary: 'Error', detail:'Sesi Login Expired'
-            });
-            localStorage.clear();
-            localStorage.setItem('Expired','true')
-            setTimeout( () => this.$router.push('/login'),2000);
-           }
         });
       },
       getIct6(){
         this.axios.get('api/total-request/'+this.usr_name, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           this.total = response.data;
+          this.loading = false;
+        });
+      },
+      getIct7(){
+        this.axios.get('api/get-ict-admin',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+          this.ictAdmin = response.data.ict;
+          this.sdhDiverifikasiAdmin = response.data.ict1;
+          this.diRejectAdmin = response.data.ict2;
+          this.sdgDikerjakanAdmin = response.data.ict3;
+          this.sdhDikerjakanAdmin = response.data.ict4;
+          this.sdhSelesaiAdmin = response.data.ict5;
+          this.totalAdmin = response.data.ict6;
           this.loading = false;
         });
       },

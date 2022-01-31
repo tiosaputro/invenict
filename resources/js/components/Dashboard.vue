@@ -1,6 +1,119 @@
-<template>
+<template><!-- //Dashboard admin -->
+<div class="container-fluid" v-if="this.role_name.includes('Admin')">
+  <section>
+    <div class="card">
+    <div class="row">
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 1px solid black;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="pi pi-check" style="fontSize: 4rem; color: red;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="blmDiverifikasiAdmin()" style="cursor:pointer;">{{count5.belumdiverifikasi}}</h3>
+                <p class="mb-0">Request Yang Belum Diverifikasi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 1px solid black;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="pi pi-check" style="fontSize: 3.5rem; color: green;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="sdhDiverifikasiAdmin()" style="cursor:pointer;">{{count5.sudahdiverifikasi}}</h3>
+                <p class="mb-0">Request Yang Sudah Diverifikasi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 1px solid black;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="pi pi-times" style="fontSize: 4rem; color: red;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="diRejectAdmin()" style="cursor:pointer;">{{count5.direject}}</h3>
+                <p class="mb-0">Request Yang Di Reject</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="bi bi-arrow-repeat" style="fontSize: 3.5rem; color: green;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="sdgDikerjakanAdmin()" style="cursor:pointer;">{{count5.sedangdikerjakan}}</h3>
+                <p class="mb-0">Request Yang Sedang Dikerjakan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="bi bi-check2-all" style="fontSize: 4rem; color: red;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="sdhDikerjakanAdmin()" style="cursor:pointer;">{{count5.sudahdikerjakan}}</h3>
+                <p class="mb-0">Request Yang Sudah Dikerjakan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="bi bi-check2-all" style="fontSize: 4rem; color : green;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="sdhSelesaiAdmin()" style="cursor:pointer;">{{count5.sudahselesai}}</h3>
+                <p class="mb-0">Request Yang Sudah Selesai</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid;" v-if="this.count5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div class="align-self-center">
+                <i class="bi bi-journal-bookmark-fill" style="fontSize: 4rem;"></i>
+              </div>
+              <div class="text-end">
+                <h3 @click="totalKeseluruhanAdmin()" style="cursor:pointer;">{{count5.countrequest}}</h3>
+                <p class="mb-0">Total Keseluruhan Request</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+</div>
 <!-- //Dashboard user for request -->
-<div class="container-fluid" v-if="this.role_name.includes('Requestor Divisi') || this.role_name.includes('Admin')">
+<div class="container-fluid" v-if="this.role_name.includes('Requestor Divisi')">
   <section>
     <div class="card">
     <div class="row">
@@ -114,7 +227,7 @@
   </section>
 </div>
  <!-- //dashboard approver atasan user -->
-<div class="container-fluid" v-if="this.role_name.includes('Atasan Requestor Divisi') || this.role_name.includes('Admin')">
+<div class="container-fluid" v-if="this.role_name.includes('Atasan Requestor Divisi')">
   <section>
    <div class="card">
     <div class="row">
@@ -213,7 +326,7 @@
   </section>
 </div>
 <!-- // dashboard verifikasi ict -->
-<div class="container-fluid" v-if="this.role_name.includes('Supervisor') || this.role_name.includes('Admin')">
+<div class="container-fluid" v-if="this.role_name.includes('Supervisor')">
     <div class="card">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
@@ -280,7 +393,7 @@
     </div>
     </div>
 <!-- //Dashboard for personnel ict (status change request) -->
-<div class="container-fluid" v-if="this.role_name.includes('Personel ICT')|| this.role_name.includes('Admin')">
+<div class="container-fluid" v-if="this.role_name.includes('Personel ICT')">
     <div class="card">
     <div class="row">
       <div class="col-xl-3 col-sm-6 col-12 mb-4">
@@ -331,7 +444,7 @@
       </div>
     </div>
       <!-- // closing request -->
-      <div class="container-fluid" v-if="this.role_name.includes('Manager')|| this.role_name.includes('Admin')">
+      <div class="container-fluid" v-if="this.role_name.includes('Manager')">
        <section>
         <div class="card">
         <div class="row">
@@ -381,6 +494,7 @@ export default {
             count2:[],
             count3:[],
             count4:[],
+            count5:[],
             usr_name: localStorage.getItem('usr_name'),
             token: localStorage.getItem('token'),
             id : localStorage.getItem('id'),
@@ -393,20 +507,23 @@ export default {
       CekUser(){
         this.axios.get('api/cek-role/'+this.id,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           this.role_name = response.data.map((x)=>x.rol_name)
-          if(this.role_name.includes('Requestor Divisi') || this.role_name.includes('Admin')){
+          if(this.role_name.includes('Requestor Divisi')){
             this.getData();
           }
-          if(this.role_name.includes('Atasan Requestor Divisi')|| this.role_name.includes('Admin')){
+          if(this.role_name.includes('Atasan Requestor Divisi')){
             this.getData1();
           }
-          if(this.role_name.includes('Supervisor')|| this.role_name.includes('Admin')){
+          if(this.role_name.includes('Supervisor')){
             this.getData2();
           }
-          if(this.role_name.includes('Personel ICT')|| this.role_name.includes('Admin')){
+          if(this.role_name.includes('Personel ICT')){
             this.getUser();
           }
-          if(this.role_name.includes('Manager') || this.role_name.includes('Admin')){
+          if(this.role_name.includes('Manager')){
             this.getData4();
+          }
+          if(this.role_name.includes('Admin')){
+            this.getData5();
           }
         });
       },
@@ -414,6 +531,34 @@ export default {
             this.axios.get('api/getCountUser/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
                 this.count = response.data;
             });
+        },
+        blmDiverifikasiAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',23);
+        },
+        sdhDiverifikasiAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',24);
+        },
+        diRejectAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',25);
+        },
+        sdgDikerjakanAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',26);
+        },
+        sdhDikerjakanAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',27);
+        },
+        sdhSelesaiAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',28);
+        },
+        totalKeseluruhanAdmin(){
+          this.$router.push('/ict-request-desc')
+          localStorage.setItem('active',29);
         },
         blmDiverifikasi(){
           this.$router.push('/ict-request-desc')
@@ -529,6 +674,11 @@ export default {
         sdhSelesai4(){
           this.$router.push('/ict-request-desc');
           localStorage.setItem('active',21)
+        },
+        getData5(){
+          this.axios.get('api/getCountAdmin',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
+            this.count5 = response.data;
+          });
         },
     }
 }

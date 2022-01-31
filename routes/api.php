@@ -156,6 +156,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/getCountDivisi2','DashboardController@countDivisi2');
     Route::get('/getCountDivisi3/{full_name}','DashboardController@countDivisi3');
     Route::get('/getCountDivisi4','DashboardController@countDivisi4');
+    Route::get('/getCountAdmin','DashboardController@countAdmin');
     Route::get('/status-per-divisi','DashboardController@countPerStatusPerDivisi');
     Route::get('/count-per-status','DashboardController@countPerStatus');
     Route::get('/get-tahun','DashboardController@getTahun');
@@ -191,10 +192,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/get-permohonan-divisi','IctController@getPermohonanDivisi');
     //divisi 3
     Route::get('/get-sedang-dikerjakan/{usr_fullname}','IctController@getSedangDikerjakan');
-    //end divisi 3
     //divisi 4
     Route::get('/get-divisi-4','IctController@ictDivisi4');
-    //end
+    //admin
+    Route::get('/get-ict-admin','IctController@getIctAdmin');
 
     Route::post('/updateAssign','IctController@updateAssign');
     Route::get('/updateStatusPermohonan/{code}','IctController@updateStatusPermohonan');

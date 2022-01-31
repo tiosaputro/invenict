@@ -26,12 +26,12 @@ class LoginController extends Controller
                         'id'        => $id,
                         'usr_name'  => $user->usr_name
                     ];
-                    return response($response, 201);
+                    return json_encode($response, 201);
                 }else{
-                    return json_encode(["success" => false, "password" => "Unable to login. Incorrect password."],422);
+                    return response(["password" => "Unable to login. Incorrect password."],422);
                     }
                  }else{
-                    return json_encode(["success" => false, "email" => "Email doesnt exist."],422);
+                    return response(["email" => "Email doesnt exist."],422);
                 }
     } 
 

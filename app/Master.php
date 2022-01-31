@@ -27,7 +27,6 @@ class Master extends Model
         'invent_lokasi_previous',
         'invent_pengguna_previous',
         'invent_bu',
-
     ];
     protected $table = 'invent_mst';
     protected $primaryKey = 'invent_code';

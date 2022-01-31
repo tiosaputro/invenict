@@ -104,7 +104,6 @@ __webpack_require__.r(__webpack_exports__);
           detail: "Success Update"
         });
 
-        console.log(response.data);
         setTimeout(function () {
           return _this3.$router.push('/referensi-lookups');
         }, 1000);

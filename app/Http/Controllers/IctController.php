@@ -18,6 +18,59 @@ use Illuminate\Http\Request;
 
 class IctController extends Controller
 {
+    function getIctAdmin()
+    {
+        $ict = DB::table('ireq_mst as im')
+        ->leftjoin('ireq_dtl as idm','im.ireq_id','idm.ireq_id')
+        ->leftjoin('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
+        ->select('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','dr.div_name')
+        ->where(function($query){
+            return $query
+            ->Where('im.ireq_status','P');
+            })
+        ->groupBy('im.ireq_id','im.ireq_no','im.ireq_date','im.ireq_status','im.ireq_user','im.creation_date','dr.div_name')
+        ->orderBy('im.creation_date','ASC')
+        ->get();
+
+        $ict1 = DB::table('ireq_mst')
+        ->select('ireq_id','ireq_no','ireq_date','ireq_user')
+        ->where('ireq_status','A')
+        ->orderBy('creation_date','ASC')
+        ->get();
+
+        $ict2 = DB::table('ireq_mst')
+        ->select('ireq_id','ireq_no','ireq_date','ireq_user','ireq_reason')
+        ->where('ireq_status','R')
+        ->orderBy('creation_date','ASC')
+        ->get();
+
+        $ict3 = DB::table('ireq_mst')
+        ->select('ireq_id','ireq_no','ireq_date','ireq_user')
+        ->where('ireq_status','T')
+        ->orderBy('creation_date','ASC')
+        ->get();
+
+        $ict4 = DB::table('ireq_mst')
+        ->select('ireq_id','ireq_no','ireq_date','ireq_user')
+        ->where('ireq_status','D')
+        ->orderBy('creation_date','ASC')
+        ->get();
+
+        $ict5 = DB::table('ireq_mst')
+        ->select('ireq_id','ireq_no','ireq_date','ireq_user')
+        ->where('ireq_status','C')
+        ->orderBy('creation_date','ASC')
+        ->get();
+        
+        $ict6 = DB::table('ireq_mst')
+        ->select('ireq_id','ireq_no','ireq_user','ireq_date',
+            DB::raw("CASE WHEN ireq_status = 'P' Then 'Permohonan' WHEN ireq_status = 'R' Then 'Reject' WHEN ireq_status = 'A' Then 'Approve' WHEN ireq_status = 'T' Then 'Penugasan' WHEN ireq_status = 'D' Then 'Done' WHEN ireq_status = 'C' Then 'Close' end as ireq_status "))
+        ->whereNotNull('ireq_status')
+        ->get();
+
+        return json_encode(['ict'=>$ict,'ict1'=>$ict1,'ict2'=>$ict2,'ict3'=>$ict3,'ict4'=>$ict4,'ict5'=>$ict5,'ict6'=>$ict6],200);
+
+    }
     Public function getIct($usr_name)
     {
         $ict = DB::table('ireq_mst as im')

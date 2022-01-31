@@ -72,6 +72,19 @@ class DashboardController extends Controller
         ->first();
         return json_encode($grafik);
     }
+    function countAdmin()
+    {
+        $grafik = DB::table('ireq_mst as im')
+        ->select(DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'P') as belumdiverifikasi"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'A') as sudahdiverifikasi"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'R') as direject"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'T') as sedangdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'D') as sudahdikerjakan"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status = 'C') as sudahselesai"),
+                 DB::raw("(SELECT COUNT(ireq_id) FROM ireq_mst WHERE ireq_mst.ireq_status IS NOT NULL) as countrequest"))
+        ->first();
+        return json_encode($grafik);
+    }
     public function getTahun()
     {
         $grafik = DB::table('VREQ_MST_TAHUN')->get();
