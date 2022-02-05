@@ -30,7 +30,8 @@ __webpack_require__.r(__webpack_exports__);
       token: localStorage.getItem('token'),
       checkname: [],
       checkto: [],
-      id: localStorage.getItem('id')
+      id: localStorage.getItem('id'),
+      code: null
     };
   },
   created: function created() {
@@ -142,8 +143,14 @@ __webpack_require__.r(__webpack_exports__);
             detail: "Success Create"
           });
 
+          _this5.code = response.data.ireq_id;
           setTimeout(function () {
-            return _this5.$router.push('/ict-request');
+            return _this5.$router.push({
+              name: 'Add Ict Request Detail',
+              params: {
+                code: _this5.code
+              }
+            });
           }, 1000);
         })["catch"](function (error) {
           _this5.errors = error.response.data.errors;

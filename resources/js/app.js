@@ -50,6 +50,7 @@ import VueAxios from 'vue-axios';
 import Treeselect from 'vue3-treeselect';
 
 const app = createApp(App);
+app.config.silent = true
 app.config.globalProperties.$appState = reactive({ theme: 'saga-blue'});
 
 app.directive('ripple', Ripple);

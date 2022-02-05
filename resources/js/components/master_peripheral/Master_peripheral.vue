@@ -120,14 +120,14 @@
                 id="qrcode"
                 v-model:visible="displayBarcode"
                 :style="{ width: '400px' }"
-                header="Preview Barcode"
+                header="Preview QR-Code"
                 :modal="true"
                 class="p-fluid"
-              >
-               <qrcode-vue :value="barcode" ref="qr" :size="300" level="H" /> 
-               <template #footer>
+            >
+              <qrcode-vue :value="barcode" ref="qr" :size="300" level="H" /> 
+              <template #footer>
                 <Button label="Pdf" icon="pi pi-download" @click="downloadBarcodePdf()" class="p-button-danger" />
-            </template>
+              </template>
             </Dialog>
             
 </template>
@@ -174,13 +174,15 @@ export default {
       const image = contentHtml.toDataURL('image/jpeg', 0.8);
       doc.addImage(image, 'JPEG', 70, 30);
       doc.save('Barcode.pdf');
+      this.barcode= '';
       this.displayBarcode = false;
     },
     previewBarcode(invent_code){
       this.axios.get('api/getBarcode/'+invent_code,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
-        this.mas = response.data;
-        this.barcode = this.mas.invent_barcode;       
-        this.displayBarcode = true
+        this.barcode = 'Kode Peripheral ' + ': ' + response.data.invent_code +', '+ 'Nama Peripheral ' + ': ' + response.data.invent_desc + ', '+ 'Merk '+': '+ response.data.invent_brand+', '
+        + 'Tipe '+': '+ response.data.invent_type+', '+'S/N '+': '+response.data.invent_sn+', '+ 'Bisnis Unit '+': '+response.data.invent_bu +', '+'Lokasi Terakhir '+': '
+        +response.data.invent_lokasi_previous+', '+'Pengguna Terakhir '+': '+response.data.invent_pengguna_previous+', '+'Lama Garansi '+': '+response.data.invent_lama_garansi+' Tahun'+', '+'Tanggal Perolehan '+': '+response.data.invent_tgl_perolehan; 
+        this.displayBarcode = true;
       });
     },
     getMaster(){

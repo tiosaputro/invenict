@@ -185,14 +185,13 @@ export default {
     },
     UpdateRole() {
         this.errors = [];
-
         this.axios.put('/api/update-role/'+this.$route.params.code, this.role, {headers: {'Authorization': 'Bearer '+this.token}}).then(()=>{
-          this.axios.put('/api/update-role-menu/'+this.$route.params.code, this.menuss, {headers: {'Authorization': 'Bearer '+this.token}});
-        this.$toast.add({
-          severity: "success",
-          summary: "Success Message",
-          detail: "Success Update",
-        });
+        this.axios.put('/api/update-role-menu/'+this.$route.params.code, this.menuss, {headers: {'Authorization': 'Bearer '+this.token}});
+          this.$toast.add({
+            severity: "success",
+            summary: "Success Message",
+            detail: "Success Update",
+          });
         setTimeout( () => this.$router.push('/mng-role'),1000);
         }).catch(error=>{
           this.errors = error.response.data.errors;

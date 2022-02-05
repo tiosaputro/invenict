@@ -75,6 +75,7 @@ __webpack_require__.r(__webpack_exports__);
       var image = contentHtml.toDataURL('image/jpeg', 0.8);
       doc.addImage(image, 'JPEG', 70, 30);
       doc.save('Barcode.pdf');
+      this.barcode = '';
       this.displayBarcode = false;
     },
     previewBarcode: function previewBarcode(invent_code) {
@@ -85,8 +86,7 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + this.token
         }
       }).then(function (response) {
-        _this2.mas = response.data;
-        _this2.barcode = _this2.mas.invent_barcode;
+        _this2.barcode = 'Kode Peripheral ' + ': ' + response.data.invent_code + ', ' + 'Nama Peripheral ' + ': ' + response.data.invent_desc + ', ' + 'Merk ' + ': ' + response.data.invent_brand + ', ' + 'Tipe ' + ': ' + response.data.invent_type + ', ' + 'S/N ' + ': ' + response.data.invent_sn + ', ' + 'Bisnis Unit ' + ': ' + response.data.invent_bu + ', ' + 'Lokasi Terakhir ' + ': ' + response.data.invent_lokasi_previous + ', ' + 'Pengguna Terakhir ' + ': ' + response.data.invent_pengguna_previous + ', ' + 'Lama Garansi ' + ': ' + response.data.invent_lama_garansi + ' Tahun' + ', ' + 'Tanggal Perolehan ' + ': ' + response.data.invent_tgl_perolehan;
         _this2.displayBarcode = true;
       });
     },
@@ -402,7 +402,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: {
       width: '400px'
     },
-    header: "Preview Barcode",
+    header: "Preview QR-Code",
     modal: true,
     "class": "p-fluid"
   }, {

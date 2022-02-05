@@ -108,7 +108,7 @@
                   <Column field="ireq_requestor" header="Pemohon" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_user" header="Pengguna" :sortable="true" style="min-width:8rem"/>
                   <Column field="ireq_assigned_to" header="Petugas(ICT)" :sortable="true" style="min-width:8rem"/>
-                  <Column style="min-width:12rem">
+                  <Column>
                     <template #body="slotProps">
                       <Button
                         class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
@@ -302,7 +302,7 @@ export default {
       });
       },
     getSudahDikerjakan(){
-      this.axios.get('api/get-ictDivisi4',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
+      this.axios.get('api/get-divisi-4',{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.sudahDikerjakan = response.data.ict;
         this.selesai = response.data.ict2;
         this.loading = false;

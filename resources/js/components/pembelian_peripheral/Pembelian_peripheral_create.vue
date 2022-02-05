@@ -227,6 +227,7 @@ export default {
   },
   methods: {
     cekUser(){
+      this.petugas = localStorage.getItem('usr_name');
       this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)

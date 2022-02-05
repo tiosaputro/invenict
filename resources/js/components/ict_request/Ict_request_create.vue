@@ -156,9 +156,10 @@ export default {
         input: 'DD MMM YYYY'
       },
       token: localStorage.getItem('token'),
-        checkname : [],
-        checkto : [],
-        id : localStorage.getItem('id'),
+      checkname : [],
+      checkto : [],
+      id : localStorage.getItem('id'),
+      code: null,
     };
   },
   created(){
@@ -228,7 +229,8 @@ export default {
           summary: "Success Message",
           detail: "Success Create",
         });
-        setTimeout( () => this.$router.push('/ict-request'),1000);
+        this.code = response.data.ireq_id;
+        setTimeout( () => this.$router.push({name: 'Add Ict Request Detail', params: { code: this.code }, }),1000);
         }).catch(error=>{
           this.errors = error.response.data.errors;
          });

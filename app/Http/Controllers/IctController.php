@@ -15,6 +15,8 @@ use Excel;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Http\Request;
+use App\Mail\IctRequestApproval;
+use Illuminate\Support\Facades\Mail;
 
 class IctController extends Controller
 {
@@ -244,10 +246,8 @@ class IctController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name'=>"Ict_Save",
         ]);
-        return json_encode([
-            'success' => true,
-            'message' => 'Successfully Created'
-        ],200);
+        Mail::to("testing@emp.id")->send(new IctRequestMail());
+        return json_encode($ict,200);
     }
     Public function edit($code)
     {
@@ -457,6 +457,7 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusPermohonan";
             $d->save();
         }
+
         return json_encode('Success Update');
     }
     public function updateStatusReject(Request $request, $code)
@@ -501,7 +502,15 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusSubmit";
             $d->save();
         }
-        return json_encode('Success Update');
+        $cekdivisi= Ict::select('ireq_divisi_user')->where('ireq_id',$ireq_id)->first();
+        $divisiPengguna = $cekdivisi->ireq_divisi_user;
+        $emailVerifikator = DB::table('divisi_refs as dr')
+                    ->rightjoin('mng_users as mu','dr.div_verificator','mu.usr_name')
+                    ->select('mu.usr_email')
+                    ->where('dr.div_id',$divisiPengguna)
+                    ->first();
+        Mail::to($emailVerifikator->usr_email)->send(new IctRequestApproval());
+        return json_encode('Success Update Status');
     }
     public function updateStatusPenugasan($ireq_id)
     {

@@ -36,102 +36,8 @@ __webpack_require__.r(__webpack_exports__);
     this.cekUser();
   },
   methods: {
-    cekUser: function cekUser() {
+    saveclick: function saveclick() {
       var _this = this;
-
-      this.axios.get('/api/cek-user/' + this.id, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this.checkto = response.data.map(function (x) {
-          return x.to;
-        });
-        _this.checkname = response.data.map(function (x) {
-          return x.name;
-        });
-
-        if (_this.checkname.includes("Request") || _this.checkto.includes("/ict-request")) {
-          _this.getNoreq();
-        } else {
-          _this.$toast.add({
-            severity: 'error',
-            summary: '403',
-            detail: 'Cannot Access This Page'
-          });
-
-          setTimeout(function () {
-            return _this.$router.push('/dashboard');
-          }, 2000);
-        }
-      });
-    },
-    getImage: function getImage() {
-      var _this2 = this;
-
-      if (this.kode) {
-        this.axios.get('/api/getImage/' + this.kode, {
-          headers: {
-            'Authorization': 'Bearer ' + this.token
-          }
-        }).then(function (response) {
-          _this2.photo = response.data;
-        });
-      }
-    },
-    getNoreq: function getNoreq() {
-      var _this3 = this;
-
-      this.axios.get('/api/get-noreq/' + this.$route.params.code, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this3.detail = response.data;
-
-        _this3.getKode();
-
-        _this3.getType();
-      })["catch"](function (error) {
-        if (error.response.status == 401) {
-          _this3.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Sesi Login Expired'
-          });
-
-          localStorage.clear();
-          localStorage.setItem('Expired', 'true');
-          setTimeout(function () {
-            return _this3.$router.push('/login');
-          }, 2000);
-        }
-      });
-    },
-    getType: function getType() {
-      var _this4 = this;
-
-      this.axios.get('/api/getType', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this4.type = response.data;
-      });
-    },
-    getKode: function getKode() {
-      var _this5 = this;
-
-      this.axios.get('/api/get-kode', {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this5.kodeperi = response.data;
-      });
-    },
-    CreateIctDetail: function CreateIctDetail() {
-      var _this6 = this;
 
       this.errors = [];
       this.error = [];
@@ -148,17 +54,152 @@ __webpack_require__.r(__webpack_exports__);
             'Authorization': 'Bearer ' + this.token
           }
         }).then(function () {
-          _this6.$toast.add({
+          _this.$toast.add({
+            severity: "success",
+            summary: "Success Message",
+            detail: "Success Create",
+            life: 500
+          });
+
+          setTimeout(function () {
+            return _this.kode = null;
+          }, _this.desk = null, _this.qty = null, _this.ket = null, 1000);
+        })["catch"](function (error) {
+          _this.errors = error.response.data.errors;
+        });
+      } else {
+        if (this.kode == null) {
+          this.error.kode = "Nama Peripheral Wajib Diisi";
+        }
+
+        if (this.tipereq == null) {
+          this.error.tipereq = "Tipe Request Wajib Diisi";
+        }
+      }
+    },
+    cekUser: function cekUser() {
+      var _this2 = this;
+
+      this.axios.get('/api/cek-user/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this2.checkto = response.data.map(function (x) {
+          return x.to;
+        });
+        _this2.checkname = response.data.map(function (x) {
+          return x.name;
+        });
+
+        if (_this2.checkname.includes("Request") || _this2.checkto.includes("/ict-request")) {
+          _this2.getNoreq();
+        } else {
+          _this2.$toast.add({
+            severity: 'error',
+            summary: '403',
+            detail: 'Cannot Access This Page'
+          });
+
+          setTimeout(function () {
+            return _this2.$router.push('/dashboard');
+          }, 2000);
+        }
+      });
+    },
+    getImage: function getImage() {
+      var _this3 = this;
+
+      if (this.kode) {
+        this.axios.get('/api/getImage/' + this.kode, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function (response) {
+          _this3.photo = response.data;
+        });
+      }
+    },
+    getNoreq: function getNoreq() {
+      var _this4 = this;
+
+      this.axios.get('/api/get-noreq/' + this.$route.params.code, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this4.detail = response.data;
+
+        _this4.getKode();
+
+        _this4.getType();
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this4.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Sesi Login Expired'
+          });
+
+          localStorage.clear();
+          localStorage.setItem('Expired', 'true');
+          setTimeout(function () {
+            return _this4.$router.push('/login');
+          }, 2000);
+        }
+      });
+    },
+    getType: function getType() {
+      var _this5 = this;
+
+      this.axios.get('/api/getType', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this5.type = response.data;
+      });
+    },
+    getKode: function getKode() {
+      var _this6 = this;
+
+      this.axios.get('/api/get-kode', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }).then(function (response) {
+        _this6.kodeperi = response.data;
+      });
+    },
+    CreateIctDetail: function CreateIctDetail() {
+      var _this7 = this;
+
+      this.errors = [];
+      this.error = [];
+
+      if (this.kode != null && this.tipereq != null) {
+        var data = new FormData();
+        data.append("invent_code", this.kode);
+        data.append("desk", this.desk);
+        data.append("qty", this.qty);
+        data.append("ket", this.ket);
+        data.append("tipereq", this.tipereq);
+        this.axios.post('/api/add-ict-detail/' + this.$route.params.code, data, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function () {
+          _this7.$toast.add({
             severity: "success",
             summary: "Success Message",
             detail: "Success Create"
           });
 
           setTimeout(function () {
-            return _this6.$router.push('/ict-request-detail/' + _this6.$route.params.code);
+            return _this7.$router.push('/ict-request-detail/' + _this7.$route.params.code);
           }, 1000);
         })["catch"](function (error) {
-          _this6.errors = error.response.data.errors;
+          _this7.errors = error.response.data.errors;
         });
       } else {
         if (this.kode == null) {
@@ -362,6 +403,8 @@ var _hoisted_38 = ["src"];
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _this = this;
+
   var _component_Toast = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toast");
 
   var _component_Toolbar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toolbar");
@@ -489,11 +532,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     label: "Simpan",
     type: "submit"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+    "class": "p-button-rounded p-button-success p-mr-2 p-mb-2",
+    icon: "pi pi-check",
+    label: "Simpan & Add",
+    onClick: $options.saveclick
+  }, null, 8
+  /* PROPS */
+  , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     label: "Cancel",
     "class": "p-button-rounded p-button-secondary p-mr-2 p-mb-2",
     icon: "pi pi-times",
     onClick: _cache[7] || (_cache[7] = function ($event) {
-      return _ctx.$router.go(-1);
+      return _ctx.$router.push({
+        name: 'Ict Request Detail',
+        params: {
+          code: _this.$route.params.code
+        }
+      });
     })
   })])], 32
   /* HYDRATE_EVENTS */

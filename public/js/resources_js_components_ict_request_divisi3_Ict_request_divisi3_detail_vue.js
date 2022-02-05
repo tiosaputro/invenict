@@ -149,7 +149,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this6.detail = response.data;
         _this6.loading = false;
-
+      })["catch"](function (error) {
         if (error.response.status == 401) {
           _this6.$toast.add({
             severity: 'error',

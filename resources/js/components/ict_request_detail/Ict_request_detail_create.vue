@@ -133,10 +133,18 @@
                   type="submit"
                 />
                 <Button
+                  class="p-button-rounded p-button-success p-mr-2 p-mb-2"
+                  icon="pi pi-check"
+                  label="Simpan & Add"
+                  @click="saveclick"
+                />
+                <Button
                   label="Cancel"
                   class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
                   icon="pi pi-times"
-                  @click="$router.go(-1)"
+                  @click="$router.push({
+                            name: 'Ict Request Detail',
+                            params: { code: this.$route.params.code }, })"
                 />
               </div>
             </form>
@@ -174,6 +182,40 @@ export default {
       this.cekUser();
   },
   methods: {
+    saveclick(){
+      this.errors = [];
+      this.error = [];
+       if (
+        this.kode != null &&
+        this.tipereq != null
+      ) {
+        const data = new FormData();
+        data.append("invent_code", this.kode);
+        data.append("desk", this.desk);
+        data.append("qty", this.qty);
+        data.append("ket", this.ket);
+        data.append("tipereq", this.tipereq);
+
+        this.axios.post('/api/add-ict-detail/' + this.$route.params.code, data, {headers: {'Authorization': 'Bearer '+this.token}}).then(()=>{
+        this.$toast.add({
+          severity: "success",
+          summary: "Success Message",
+          detail: "Success Create",
+          life: 500
+        });
+        setTimeout( () => this.kode = null,this.desk = null, this.qty = null, this.ket = null,1000);
+        }).catch(error=>{
+          this.errors = error.response.data.errors;
+         });
+      }else{
+        if(this.kode == null){
+          this.error.kode = "Nama Peripheral Wajib Diisi"
+        }
+        if(this.tipereq == null){
+          this.error.tipereq = "Tipe Request Wajib Diisi"
+        }
+      }
+    },
     cekUser(){
       this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)

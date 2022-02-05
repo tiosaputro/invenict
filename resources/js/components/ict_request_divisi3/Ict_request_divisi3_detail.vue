@@ -207,6 +207,7 @@ export default {
       this.axios.get('/api/get-detail-done/' + this.$route.params.code + '/' + this.user.usr_fullname, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.detail = response.data;
         this.loading = false;
+      }).catch((error)=>{
       if (error.response.status == 401) {
             this.$toast.add({
             severity:'error', summary: 'Error', detail:'Sesi Login Expired'

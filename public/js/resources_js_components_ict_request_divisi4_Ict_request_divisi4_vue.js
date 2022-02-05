@@ -217,7 +217,7 @@ __webpack_require__.r(__webpack_exports__);
     getSudahDikerjakan: function getSudahDikerjakan() {
       var _this7 = this;
 
-      this.axios.get('api/get-ictDivisi4', {
+      this.axios.get('api/get-divisi-4', {
         headers: {
           'Authorization': 'Bearer ' + this.token
         }
@@ -589,11 +589,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 style: {
                   "min-width": "8rem"
                 }
-              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, {
-                style: {
-                  "min-width": "12rem"
-                }
-              }, {
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Column, null, {
                 body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
                   return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
                     "class": "p-button-rounded p-button-secondary p-mr-2 p-mb-2",
