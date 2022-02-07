@@ -20,6 +20,7 @@ class CashExport implements FromView
                 DB::raw("TO_CHAR(cm.ca_recv_cash_date, 'dd Mon YYYY') as ca_recv_cash_date"),
                 DB::raw("TO_CHAR(cm.ca_purchase_date, 'dd Mon YYYY') as ca_purchase_date"),
                 DB::raw("TO_CHAR(cm.ca_recv_item_date, 'dd Mon YYYY') as ca_recv_item_date"),
+                DB::raw("TO_CHAR(cm.ca_settlement_date, 'dd Mon YYYY') as ca_settlement_date"),
                 DB::raw("TO_CHAR(cm.ca_hand_over_date, 'dd Mon YYYY') as ca_hand_over_date"))
         ->join('ireq_mst as im','cm.ireq_id','im.ireq_id')
         ->join('vcompany_refs as vr','im.ireq_bu','vr.company_code')

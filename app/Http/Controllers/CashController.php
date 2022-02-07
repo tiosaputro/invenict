@@ -28,7 +28,8 @@ class CashController extends Controller
             'tglrecvunit.required'=>'Tgl Terima Barang Wajib Diisi',
             'tglbuy.required'=>'Tgl Pembelian Wajib Diisi',
             'tglrecvcash.required'=>'Tgl. Terima cash Wajib Diisi',
-            'tgltouser.required'=>'Tgl Penyerahan Ke User Wajib Diisi'
+            'tgltouser.required'=>'Tgl Penyerahan Ke User Wajib Diisi',
+            'tglclosing.required'=>'Tgl Closing Wajib Diisi'
         ];
             $request->validate([
                 'noreq' => 'required|unique:ca_mst,ireq_id',
@@ -37,16 +38,18 @@ class CashController extends Controller
                 'tglrecvunit'=>'required',
                 'tglbuy'=>'required',
                 'tglrecvcash' => 'required',
-                'tgltouser' => 'required'
+                'tgltouser' => 'required',
+                'tglclosing' => 'required'
             ],$message);
 
         $date = Carbon::now();
-        $newCreation =Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
+        $newCreation = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
         $newTglSub = Carbon::createFromFormat('D M d Y H:i:s e+',$request->tglsub)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
         $newTglRecUnit = Carbon::createFromFormat('D M d Y H:i:s e+',$request->tglrecvunit)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
         $newTglbuy = Carbon::createFromFormat('D M d Y H:i:s e+',$request->tglbuy)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
         $newTglRecCash = Carbon::createFromFormat('D M d Y H:i:s e+',$request->tglrecvcash)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
         $newTglToUser = Carbon::createFromFormat('D M d Y H:i:s e+',$request->tgltouser)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
+        $newTglClosing = Carbon::createFromFormat('D M d Y H:i:s e+',$request->tglclosing)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
 
         $cash = Cash::create([
             'ireq_id' =>$request->noreq,
@@ -56,6 +59,7 @@ class CashController extends Controller
             'ca_purchase_date'=>$newTglbuy,
             'ca_recv_item_date' => $newTglRecUnit,
             'ca_hand_over_date'=> $newTglToUser,
+            'ca_settlement_date' => $newTglClosing,
             'creation_date' => $newCreation,
             'created_by' => Auth::user()->usr_name,
             'program_name'=>"Cash_Save",
@@ -75,6 +79,7 @@ class CashController extends Controller
                 DB::raw("TO_CHAR(cm.ca_recv_cash_date, 'dd Mon YYYY') as ca_recv_cash_date"),
                 DB::raw("TO_CHAR(cm.ca_purchase_date, 'dd Mon YYYY') as ca_purchase_date"),
                 DB::raw("TO_CHAR(cm.ca_recv_item_date, 'dd Mon YYYY') as ca_recv_item_date"),
+                DB::raw("TO_CHAR(cm.ca_settlement_date, 'dd Mon YYYY') as ca_settlement_date"),
                 DB::raw("TO_CHAR(cm.ca_hand_over_date, 'dd Mon YYYY') as ca_hand_over_date"))
         ->join('ireq_mst as im','cm.ireq_id','im.ireq_id')
         ->join('vcompany_refs as vr','im.ireq_bu','vr.company_code')
@@ -90,7 +95,8 @@ class CashController extends Controller
             'ca_purchase_date.required'=>'Tgl Pembelian Wajib Diisi',
             'ca_recv_cash_date.required'=>'Tgl. Terima cash Wajib Diisi',
             'ca_hand_over_date.required'=>'Tgl Penyerahan Ke User Wajib Diisi',
-            'ca_pic_name.required'=>'Jumlah Wajib Diisi'
+            'ca_pic_name.required'=>'Jumlah Wajib Diisi',
+            'ca_settlement_date.required'=>'Tgl Closing Wajib Diisi'
         ];
             $request->validate([
                 'ca_submit_date' => 'required',
@@ -98,7 +104,8 @@ class CashController extends Controller
                 'ca_purchase_date'=>'required',
                 'ca_recv_cash_date'=>'required',
                 'ca_hand_over_date'=>'required',
-                'ca_pic_name' => 'required'
+                'ca_pic_name' => 'required',
+                'ca_settlement_date'=>'required'
             ],$message);
         $date = Carbon::now();
         $newUpdate = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
@@ -107,6 +114,7 @@ class CashController extends Controller
         $newTglbuy = Carbon::parse($request->ca_purchase_date)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
         $newTglRecCash = Carbon::parse($request->ca_recv_cash_date)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
         $newTglToUser = Carbon::parse($request->ca_hand_over_date)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
+        $newTglClosing = Carbon::parse($request->ca_settlement_date)->copy()->tz('Asia/Jakarta')->format('Y-m-d');
 
         $cash = Cash::find($code);
         $cash->ca_pic_name = $request->ca_pic_name;
@@ -115,6 +123,7 @@ class CashController extends Controller
         $cash->ca_purchase_date = $newTglbuy;
         $cash->ca_recv_item_date = $newTglRecUnit;
         $cash->ca_hand_over_date = $newTglToUser;
+        $cash->ca_settlement_date = $newTglClosing;
         $cash->last_update_date = $newUpdate;
         $cash->last_updated_by = Auth::user()->usr_name;
         $cash->program_name = "Cash_Update";
@@ -140,6 +149,7 @@ class CashController extends Controller
                 DB::raw("TO_CHAR(cm.ca_recv_cash_date, 'dd Mon YYYY') as ca_recv_cash_date"),
                 DB::raw("TO_CHAR(cm.ca_purchase_date, 'dd Mon YYYY') as ca_purchase_date"),
                 DB::raw("TO_CHAR(cm.ca_recv_item_date, 'dd Mon YYYY') as ca_recv_item_date"),
+                DB::raw("TO_CHAR(cm.ca_settlement_date, 'dd Mon YYYY') as ca_settlement_date"),
                 DB::raw("TO_CHAR(cm.ca_hand_over_date, 'dd Mon YYYY') as ca_hand_over_date"))
         ->join('ireq_mst as im','cm.ireq_id','im.ireq_id')
         ->join('vcompany_refs as vr','im.ireq_bu','vr.company_code')

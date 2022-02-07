@@ -43,7 +43,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.checkname = response.data.map(function (x) {
           return x.name;
         });
-        console.log(_this.check);
 
         if (_this.checkname.includes("Cash Advance") || _this.checkto.includes("/cash-advance")) {
           _this.getCash();
@@ -376,6 +375,34 @@ var _hoisted_59 = {
   "class": "p-error"
 };
 var _hoisted_60 = {
+  "class": "p-fluid"
+};
+var _hoisted_61 = {
+  "class": "p-field p-grid"
+};
+
+var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "fax",
+  "class": "p-col-12 p-mb-2 p-md-2 p-mb-md-0",
+  style: {
+    "width": "160px"
+  }
+}, "Tgl. Closing", -1
+/* HOISTED */
+);
+
+var _hoisted_63 = {
+  "class": "p-col-3"
+};
+var _hoisted_64 = {
+  "class": "p-inputgroup"
+};
+var _hoisted_65 = ["value", "onClick"];
+var _hoisted_66 = {
+  key: 0,
+  "class": "p-error"
+};
+var _hoisted_67 = {
   "class": "form-group"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -402,7 +429,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.ca ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
     key: 0,
-    onSubmit: _cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onSubmit: _cache[18] || (_cache[18] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.UpdateCash && $options.UpdateCash.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputText, {
@@ -676,7 +703,48 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["modelValue", "min-date", "masks"])]), $data.errors.ca_hand_over_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors.ca_hand_over_date[0]), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [_hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DatePicker, {
+    modelValue: $data.ca.ca_settlement_date,
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+      return $data.ca.ca_settlement_date = $event;
+    }),
+    "min-date": this.ca.ca_recv_item_date,
+    masks: $data.mask
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (_ref7) {
+      var inputValue = _ref7.inputValue,
+          togglePopover = _ref7.togglePopover;
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "bg-white text-gray-900 w-full py-2 px-3 appearance-none border rounded-l focus:outline-none",
+        value: inputValue,
+        onClick: togglePopover,
+        readonly: "",
+        placeholder: "Pilih Tgl Terima Barang"
+      }, null, 8
+      /* PROPS */
+      , _hoisted_65), !$data.ca.ca_settlement_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+        key: 0,
+        icon: "pi pi-calendar",
+        onClick: togglePopover
+      }, null, 8
+      /* PROPS */
+      , ["onClick"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+        key: 1,
+        icon: "pi pi-trash",
+        "class": "p-button-danger",
+        onClick: _cache[15] || (_cache[15] = function ($event) {
+          return $data.ca.ca_settlement_date = '';
+        })
+      }))];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["modelValue", "min-date", "masks"])]), $data.errors.ca_settlement_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors.ca_settlement_date[0]), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     "class": "p-button-rounded p-button-primary p-mr-2 p-mb-2",
     icon: "pi pi-check",
     label: "Simpan",
@@ -685,7 +753,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     label: "Cancel",
     "class": "p-button-rounded p-button-secondary p-mr-2 p-mb-2",
     icon: "pi pi-times",
-    onClick: _cache[15] || (_cache[15] = function ($event) {
+    onClick: _cache[17] || (_cache[17] = function ($event) {
       return _ctx.$router.push('/cash-advance');
     })
   })])], 32

@@ -234,7 +234,8 @@ class MasterController extends Controller
             ->select('im.invent_code','lr.lookup_desc as invent_brand','vr.name as invent_bu','im.invent_desc',
                      'im.invent_type','im.invent_sn','im.invent_lama_garansi','im.invent_pengguna_previous',
                      'im.invent_lokasi_previous',DB::raw("TO_CHAR(im.invent_tgl_perolehan,' dd Mon YYYY') as invent_tgl_perolehan"))
-            ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('merk')).'%'])         
+            ->whereRaw('LOWER(lr.lookup_type) LIKE ? ',[trim(strtolower('merk')).'%'])     
+            ->where('im.invent_code',$invent_code)    
             ->first();
             return json_encode($mas);
     }

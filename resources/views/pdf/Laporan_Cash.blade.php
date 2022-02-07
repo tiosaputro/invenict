@@ -52,6 +52,7 @@
 								<th style="font-size:12pt; font-weight: bold; background-color:#807a6b">Tgl. Pembelian</th>
 								<th style="font-size:12pt; font-weight: bold; background-color:#807a6b">Tgl. Terima Barang</th>
 								<th style="font-size:12pt; font-weight: bold; background-color:#807a6b">Tgl. Penyerahan Ke User</th>
+								<th style="font-size:12pt; font-weight: bold; background-color:#807a6b">Tgl. Closing</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -67,6 +68,7 @@
 									<td>{{$c->ca_purchase_date}}</td>
 									<td>{{$c->ca_recv_item_date}}</td>
 									<td>{{$c->ca_hand_over_date}}</td>
+									<td>{{$c->ca_settlement_date}}</td>
 								</tr>	
 							@endforeach							
 						</tbody>

@@ -15,8 +15,7 @@ use Excel;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Http\Request;
-use App\Mail\IctRequestApproval;
-use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendEmailJob;
 
 class IctController extends Controller
 {
@@ -246,7 +245,6 @@ class IctController extends Controller
             'created_by' => Auth::user()->usr_name,
             'program_name'=>"Ict_Save",
         ]);
-        Mail::to("testing@emp.id")->send(new IctRequestMail());
         return json_encode($ict,200);
     }
     Public function edit($code)
@@ -488,6 +486,7 @@ class IctController extends Controller
         $date = Carbon::now();
         $newUpdate = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
         $ict = Ict::where('ireq_id',$ireq_id)->first();
+        $divisiPengguna = $ict->ireq_divisi_user;
         $ict->ireq_status = 'P';
         $ict->last_update_date = $newUpdate;
         $ict->last_updated_by = Auth::user()->usr_name;
@@ -502,14 +501,13 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusSubmit";
             $d->save();
         }
-        $cekdivisi= Ict::select('ireq_divisi_user')->where('ireq_id',$ireq_id)->first();
-        $divisiPengguna = $cekdivisi->ireq_divisi_user;
         $emailVerifikator = DB::table('divisi_refs as dr')
                     ->rightjoin('mng_users as mu','dr.div_verificator','mu.usr_name')
                     ->select('mu.usr_email')
                     ->where('dr.div_id',$divisiPengguna)
                     ->first();
-        Mail::to($emailVerifikator->usr_email)->send(new IctRequestApproval());
+        $send_mail = $emailVerifikator->usr_email;
+        dispatch(new SendEmailJob($send_mail));
         return json_encode('Success Update Status');
     }
     public function updateStatusPenugasan($ireq_id)
@@ -519,7 +517,7 @@ class IctController extends Controller
         $ict = Ict::where('ireq_id',$ireq_id)->first();
         $ict->ireq_status = 'T';
         $ict->ireq_verificator = Auth::user()->usr_name;
-        $ict->last_update_date = $newUpdate;
+        $ict->last_update_date = $newUpdate;    
         $ict->last_updated_by = Auth::user()->usr_name;
         $ict->program_name = "IctController_updateStatusPenugasan";
         $ict->save();

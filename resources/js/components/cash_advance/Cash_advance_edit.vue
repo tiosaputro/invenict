@@ -204,9 +204,34 @@
                        <small v-if="errors.ca_hand_over_date" class="p-error">
                           {{ errors.ca_hand_over_date[0] }}
                         </small>
-                </div>
-                </div>
-              </div> 
+                    </div>
+                  </div>
+              </div>
+              <div class="p-fluid">
+               <div class="p-field p-grid">
+                <label for="fax" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:160px">Tgl. Closing</label>
+                 <div class="p-col-3">
+                     <div class="p-inputgroup">
+                      <DatePicker v-model="ca.ca_settlement_date" :min-date="this.ca.ca_recv_item_date" :masks="mask" >
+                        <template v-slot="{ inputValue, togglePopover }">
+                          <input
+                            class="bg-white text-gray-900 w-full py-2 px-3 appearance-none border rounded-l focus:outline-none"
+                            :value="inputValue"
+                            @click="togglePopover"
+                            readonly
+                            placeholder="Pilih Tgl Terima Barang"
+                          />
+                      <Button icon="pi pi-calendar" v-if="!ca.ca_settlement_date" @click="togglePopover"/>
+                      <Button icon="pi pi-trash" class="p-button-danger" v-else @click="ca.ca_settlement_date = ''" />
+                        </template>
+                      </DatePicker>
+                      </div>
+                       <small v-if="errors.ca_settlement_date" class="p-error">
+                          {{ errors.ca_settlement_date[0] }}
+                        </small>
+                 </div>
+               </div>
+              </div>  
               <div class="form-group">
                  <Button
                   class="p-button-rounded p-button-primary p-mr-2 p-mb-2"
@@ -249,7 +274,6 @@ export default {
       this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)
-        console.log(this.check)
         if(this.checkname.includes("Cash Advance") || this.checkto.includes("/cash-advance")){
             this.getCash();
         }

@@ -21,6 +21,7 @@
         <th style="text-align:left; font-weight: bold;">Tgl. Pembelian</th>
         <th style="text-align:left; font-weight: bold;">Tgl. Terima Barang</th>
         <th style="text-align:left; font-weight: bold;">Tgl. Penyerahan Ke User</th>
+        <th style="text-align:left; font-weight: bold;">Tgl. Closing</th>
     </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@
             <td style="text-align:left" width="20" height="15">{{ $c->ca_purchase_date}}</td>
             <td style="text-align:left" width="20" height="15">{{ $c->ca_recv_item_date}}</td>
             <td style="text-align:left" width="25" height="15">{{ $c->ca_hand_over_date}}</td>
+            <td style="text-align:left" width="25" height="15">{{ $c->ca_settlement_date}}</td>
         </tr>
     @endforeach
     </tbody>

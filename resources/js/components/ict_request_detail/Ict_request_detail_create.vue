@@ -6,7 +6,7 @@
           <template v-slot:left>
             <div class="p-grid p-dir-col">
 			        <div class="p-col">
-				        <h4>ICT Request</h4>
+				        <h4>ICT Request (Detail)</h4>
 			        </div>
             </div>
           </template>

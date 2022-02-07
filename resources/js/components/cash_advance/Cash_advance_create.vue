@@ -214,6 +214,31 @@
                         </small>
                 </div>
                 </div>
+              </div>
+              <div class="p-fluid">
+               <div class="p-field p-grid">
+                <label for="fax" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:160px">Tgl. Closing</label>
+                 <div class="p-col-3">
+                     <div class="p-inputgroup">
+                      <DatePicker v-model="tglclosing" :min-date="this.tgltouser" :masks="mask" >
+                        <template v-slot="{ inputValue, togglePopover }">
+                          <input
+                            class="bg-white text-gray-900 w-full py-2 px-3 appearance-none border rounded-l focus:outline-none"
+                            :value="inputValue"
+                            @click="togglePopover"
+                            readonly
+                            placeholder="Pilih Tgl Terima Barang"
+                          />
+                      <Button icon="pi pi-calendar" v-if="!tglclosing" @click="togglePopover"/>
+                      <Button icon="pi pi-trash" class="p-button-danger" v-else @click="tglclosing = ''" />
+                        </template>
+                      </DatePicker>
+                      </div>
+                       <small v-if="errors.tglclosing" class="p-error">
+                          {{ errors.tglclosing[0] }}
+                        </small>
+                 </div>
+               </div>
               </div> 
               <div class="form-group">
                  <Button
@@ -245,6 +270,7 @@ export default {
       noreq:'',
       jum:null,
       tglsub: new Date(),
+      tglclosing:'',
       tglrecvcash:'',
       tglbuy:'',
       tglrecvunit:'',
@@ -311,6 +337,7 @@ export default {
         data.append("tglrecvcash", this.tglrecvcash);
         data.append("tglsub", this.tglsub);
         data.append("tgltouser", this.tgltouser);
+        data.append("tglclosing", this.tglclosing);
 
         this.axios.post('api/add-cash', data,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           setTimeout( () => this.$router.push('/cash-advance'),1000);

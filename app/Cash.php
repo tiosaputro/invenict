@@ -15,6 +15,7 @@ class Cash extends Model
         'ca_purchase_date',
         'ca_recv_item_date',
         'ca_hand_over_date',
+        'ca_settlement_date',
         'creation_date',
         'created_by',
         'last_update_date',
