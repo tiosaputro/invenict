@@ -16,6 +16,8 @@ use Carbon\Carbon;
 use Auth;
 use Illuminate\Http\Request;
 use App\Jobs\SendEmailJob;
+use Mail;
+use App\Mail\IctRequestApproval;
 
 class IctController extends Controller
 {
@@ -455,7 +457,6 @@ class IctController extends Controller
             $d->program_name = "IctController_updateStatusPermohonan";
             $d->save();
         }
-
         return json_encode('Success Update');
     }
     public function updateStatusReject(Request $request, $code)
@@ -485,13 +486,13 @@ class IctController extends Controller
     {
         $date = Carbon::now();
         $newUpdate = Carbon::parse($date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
-        $ict = Ict::where('ireq_id',$ireq_id)->first();
-        $divisiPengguna = $ict->ireq_divisi_user;
-        $ict->ireq_status = 'P';
-        $ict->last_update_date = $newUpdate;
-        $ict->last_updated_by = Auth::user()->usr_name;
-        $ict->program_name = "IctController_updateStatusSubmit";
-        $ict->save();
+        $ICT = Ict::where('ireq_id',$ireq_id)->first();
+        $divisiPengguna = $ICT->ireq_divisi_user;
+            $ICT->ireq_status = 'P';
+            $ICT->last_update_date = $newUpdate;
+            $ICT->last_updated_by = Auth::user()->usr_name;
+            $ICT->program_name = "IctController_updateStatusSubmit";
+            $ICT->save();
 
         $dtl = IctDetail::where('ireq_id',$ireq_id)->get();
         foreach ($dtl as $d){
@@ -506,9 +507,15 @@ class IctController extends Controller
                     ->select('mu.usr_email')
                     ->where('dr.div_id',$divisiPengguna)
                     ->first();
+        $ict = DB::table('ireq_mst as im')
+        ->join('ireq_dtl as id','im.ireq_id','id.ireq_id')
+        ->select('im.ireq_no',DB::raw("TO_CHAR(im.ireq_date, 'dd Mon YYYY') as ireq_date"),'im.ireq_user','id.invent_code','id.ireq_qty')
+        ->where('im.ireq_id',$ireq_id)
+        ->groupBy('im.ireq_no','im.ireq_user','id.invent_code','id.ireq_qty','im.ireq_date')
+        ->first();
         $send_mail = $emailVerifikator->usr_email;
-        dispatch(new SendEmailJob($send_mail));
-        return json_encode('Success Update Status');
+        Mail::to($send_mail)->send(new IctRequestApproval($ict));
+        return json_encode($ict);
     }
     public function updateStatusPenugasan($ireq_id)
     {

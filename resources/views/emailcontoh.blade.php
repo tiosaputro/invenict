@@ -1,4 +1,8 @@
-<h3>Halo, {{ $nama }} !</h3>
-<p>{{ $website }}</p>
+<p>{{ $date }}</p>
+<p>{{ $ireq_no }}</p>
+<p>{{ $ireq_user }}</p>
+<p>{{ $invent_code }}</p>
+<p>{{ $qty }}</p>
  
-<p>test <a href="https://www.malasngoding.com/kirim-email-dengan-laravel/">coba</a></p>
+<a href="http://localhost:8000">Approve</a>
+<a href="http://localhost:8000">Reject</a>

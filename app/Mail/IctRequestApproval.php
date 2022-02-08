@@ -6,19 +6,18 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-
-class IctRequestApproval extends Mailable
+class IctRequestApproval extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-
+    protected $ict;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($ict)
     {
-        //
+        $this->ict = $ict;
     }
 
     /**
@@ -32,8 +31,11 @@ class IctRequestApproval extends Mailable
                    ->view('emailcontoh')
                    ->with(
                     [
-                        'nama' => 'Tio',
-                        'website' => 'Tes',
+                        'date' => $this->ict->ireq_date,
+                        'ireq_no' => $this->ict->ireq_no,
+                        'ireq_user' => $this->ict->ireq_user,
+                        'invent_code'=> $this->ict->invent_code,
+                        'qty'=> $this->ict->ireq_qty,
                     ]);
                 }
 }
