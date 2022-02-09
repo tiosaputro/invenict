@@ -509,13 +509,25 @@ class IctController extends Controller
                     ->first();
         $ict = DB::table('ireq_mst as im')
         ->join('ireq_dtl as id','im.ireq_id','id.ireq_id')
-        ->select('im.ireq_no',DB::raw("TO_CHAR(im.ireq_date, 'dd Mon YYYY') as ireq_date"),'im.ireq_user','id.invent_code','id.ireq_qty')
+        ->join('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
+        ->rightjoin('mng_users as mu','dr.div_verificator','mu.usr_name')
+        ->join('invent_mst as imm','id.invent_code','imm.invent_code')
+        ->select('im.ireq_no','id.invent_code','mu.usr_name',DB::raw("TO_CHAR(im.ireq_date, 'dd Mon YYYY') as ireq_date"),
+                 'im.ireq_user','imm.invent_desc','id.ireq_qty')
         ->where('im.ireq_id',$ireq_id)
-        ->groupBy('im.ireq_no','im.ireq_user','id.invent_code','id.ireq_qty','im.ireq_date')
-        ->first();
-        $send_mail = $emailVerifikator->usr_email;
-        Mail::to($send_mail)->send(new IctRequestApproval($ict));
-        return json_encode($ict);
+        ->get();
+        // $result=[];
+        // foreach($ict['ireq_no'] as $index=>$ireq_no){
+        //     $result = [
+        //         'ireq_no' => $ireq_no,
+        //         'invent_desc'=> $ict['invent_desc'][$index],
+        //         'ireq_qty' => $ict['ireq_qty'][$index]
+        // ];
+        // } 
+        // return json_encode($result);
+        // $send_mail = $emailVerifikator->usr_email;
+        // Mail::to($send_mail)->send(new IctRequestApproval($ict));
+         return json_decode($ict);
     }
     public function updateStatusPenugasan($ireq_id)
     {

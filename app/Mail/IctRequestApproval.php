@@ -36,6 +36,8 @@ class IctRequestApproval extends Mailable implements ShouldQueue
                         'ireq_user' => $this->ict->ireq_user,
                         'invent_code'=> $this->ict->invent_code,
                         'qty'=> $this->ict->ireq_qty,
+                        'usr_name'=>$this->ict->usr_name,
+                        'invent_desc'=>$this->ict->invent_desc,
                     ]);
                 }
 }
