@@ -505,6 +505,7 @@ export default {
     },
     methods:{
       CekUser(){
+      if(this.id){
         this.axios.get('api/cek-role/'+this.id,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
           this.role_name = response.data.map((x)=>x.rol_name)
           if(this.role_name.includes('Requestor Divisi')){
@@ -526,6 +527,9 @@ export default {
             this.getData5();
           }
         });
+        } else {
+          this.$router.push('/login');
+        }
       },
         getData(){
             this.axios.get('api/getCountUser/'+this.usr_name,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

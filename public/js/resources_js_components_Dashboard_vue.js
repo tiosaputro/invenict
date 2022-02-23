@@ -34,39 +34,43 @@ __webpack_require__.r(__webpack_exports__);
     CekUser: function CekUser() {
       var _this = this;
 
-      this.axios.get('api/cek-role/' + this.id, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this.role_name = response.data.map(function (x) {
-          return x.rol_name;
+      if (this.id) {
+        this.axios.get('api/cek-role/' + this.id, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function (response) {
+          _this.role_name = response.data.map(function (x) {
+            return x.rol_name;
+          });
+
+          if (_this.role_name.includes('Requestor Divisi')) {
+            _this.getData();
+          }
+
+          if (_this.role_name.includes('Atasan Requestor Divisi')) {
+            _this.getData1();
+          }
+
+          if (_this.role_name.includes('Supervisor')) {
+            _this.getData2();
+          }
+
+          if (_this.role_name.includes('Personel ICT')) {
+            _this.getUser();
+          }
+
+          if (_this.role_name.includes('Manager')) {
+            _this.getData4();
+          }
+
+          if (_this.role_name.includes('Admin')) {
+            _this.getData5();
+          }
         });
-
-        if (_this.role_name.includes('Requestor Divisi')) {
-          _this.getData();
-        }
-
-        if (_this.role_name.includes('Atasan Requestor Divisi')) {
-          _this.getData1();
-        }
-
-        if (_this.role_name.includes('Supervisor')) {
-          _this.getData2();
-        }
-
-        if (_this.role_name.includes('Personel ICT')) {
-          _this.getUser();
-        }
-
-        if (_this.role_name.includes('Manager')) {
-          _this.getData4();
-        }
-
-        if (_this.role_name.includes('Admin')) {
-          _this.getData5();
-        }
-      });
+      } else {
+        this.$router.push('/login');
+      }
     },
     getData: function getData() {
       var _this2 = this;

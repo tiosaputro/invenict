@@ -79,10 +79,11 @@ export default {
   },
   methods: {
     cekUser(){
+      if(this.id){
       this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)
-        if(this.checkname.includes("Laporan Request Per ICT-Personnel") || this.checkto.includes("/report-div-req-per-status")){
+        if(this.checkname.includes("Per ICT-Personnel") || this.checkto.includes("/report-div-req-per-status")){
           this.getPersonnel();
         }
         else {
@@ -92,6 +93,9 @@ export default {
           setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
+      } else {
+        this.$router.push('/login');
+      }
     },
     getPersonnel(){
         this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

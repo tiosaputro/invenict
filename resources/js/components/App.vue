@@ -1,5 +1,10 @@
 <template>
-<!-- If loggedin  -->
+  <div :class="containerClass" v-if="loggedIn=='null' || !loggedIn ">
+   <div class="layout-main">
+      <router-view />
+    </div>
+  </div>
+  <!-- If loggedin  -->
   <div :class="containerClass" v-if="loggedIn" @click="onWrapperClick">
     <AppTopBar @menu-toggle="onMenuToggle" />
 
@@ -22,11 +27,6 @@
       <router-view />
     </div>
     <AppFooter />
-  </div>
-  <div :class="containerClass" v-else-if="!loggedIn">
-   <div class="layout-main">
-      <router-view />
-    </div>
   </div>
   
 </template>
@@ -68,13 +68,17 @@ export default {
   methods: {
     cekRole(){
       this.loggedIn = localStorage.getItem("loggedIn");
-      if(!this.loggedIn){
-        this.role = [];
-        this.menuId = [];
-        this.menuUser = [];
-        this.$router.push('/login');
+      if (window.location.pathname == '/'){
+         this.$router.push('/login');
       }
-      else if(this.loggedIn){
+      //   if(!this.loggedIn){
+      //     this.role = [];
+      //     this.menuId = [];
+      //     this.menuUser = [];
+      //     this.$router.push('/login');
+      //   }
+      // }
+      if(this.loggedIn){
         if(!this.menuUser.length){
           this.id = localStorage.getItem("id");
           this.token = localStorage.getItem("token");

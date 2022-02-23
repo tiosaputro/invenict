@@ -53,34 +53,38 @@ __webpack_require__.r(__webpack_exports__);
     cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('api/cek-user/' + this.id, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this.checkto = response.data.map(function (x) {
-          return x.to;
-        });
-        _this.checkname = response.data.map(function (x) {
-          return x.name;
-        });
-
-        if (_this.checkname.includes("Menu") || _this.checkto.includes("/mng-menu")) {
-          _this.getModul();
-
-          _this.getParent();
-        } else {
-          _this.$toast.add({
-            severity: 'error',
-            summary: '403',
-            detail: 'Cannot Access This Page'
+      if (this.id) {
+        this.axios.get('api/cek-user/' + this.id, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function (response) {
+          _this.checkto = response.data.map(function (x) {
+            return x.to;
+          });
+          _this.checkname = response.data.map(function (x) {
+            return x.name;
           });
 
-          setTimeout(function () {
-            return _this.$router.push('/dashboard');
-          }, 2000);
-        }
-      });
+          if (_this.checkname.includes("Menu") || _this.checkto.includes("/mng-menu")) {
+            _this.getModul();
+
+            _this.getParent();
+          } else {
+            _this.$toast.add({
+              severity: 'error',
+              summary: '403',
+              detail: 'Cannot Access This Page'
+            });
+
+            setTimeout(function () {
+              return _this.$router.push('/dashboard');
+            }, 2000);
+          }
+        });
+      } else {
+        this.$router.push('/login');
+      }
     },
     getModul: function getModul() {
       var _this2 = this;

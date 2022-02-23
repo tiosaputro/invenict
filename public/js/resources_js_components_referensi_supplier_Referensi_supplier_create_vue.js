@@ -39,44 +39,34 @@ __webpack_require__.r(__webpack_exports__);
     cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('/api/cek-user/' + this.id, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this.checkto = response.data.map(function (x) {
-          return x.to;
-        });
-        _this.checkname = response.data.map(function (x) {
-          return x.name;
-        });
-
-        if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {} else {
-          _this.$toast.add({
-            severity: 'error',
-            summary: '403',
-            detail: 'Cannot Access This Page'
+      if (this.id) {
+        this.axios.get('/api/cek-user/' + this.id, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function (response) {
+          _this.checkto = response.data.map(function (x) {
+            return x.to;
+          });
+          _this.checkname = response.data.map(function (x) {
+            return x.name;
           });
 
-          setTimeout(function () {
-            return _this.$router.push('/dashboard');
-          }, 2000);
-        }
-      })["catch"](function (error) {
-        if (error.response.status == 401) {
-          _this.$toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Sesi Login Expired'
-          });
+          if (_this.checkname.includes("Suplier") || _this.checkto.includes("/referensi-supplier")) {} else {
+            _this.$toast.add({
+              severity: 'error',
+              summary: '403',
+              detail: 'Cannot Access This Page'
+            });
 
-          localStorage.clear();
-          localStorage.setItem("Expired", "true");
-          setTimeout(function () {
-            return _this.$router.push('/login');
-          }, 2000);
-        }
-      });
+            setTimeout(function () {
+              return _this.$router.push('/dashboard');
+            }, 2000);
+          }
+        });
+      } else {
+        this.$router.push('/login');
+      }
     },
     CreateSupplier: function CreateSupplier() {
       var _this2 = this;

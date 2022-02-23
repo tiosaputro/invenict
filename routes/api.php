@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
  });
+Route::get('/cek-verif-id/{code}','IctController@cekVerif');
 Route::post('/login', 'LoginController@index');
+Route::post('/login-approval', 'LoginController@loginFromEmail');
 Route::get('/logout', 'LoginController@logout')->middleware('auth:sanctum');
 //referensi_lookups
 Route::middleware('auth:sanctum')->group(function(){
@@ -186,7 +188,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/getNameBu/{noreq}','IctController@getNameBu');
     //divisi 1
     Route::get('/get-permohonan/{usr_name}','IctController@getPermohonan');
-    Route::get('total-request/{usr_name}','IctController@totalRequest');
+    Route::get('/total-request/{usr_name}','IctController@totalRequest');
     
     //divisi 2
     Route::get('/get-permohonan-divisi','IctController@getPermohonanDivisi');

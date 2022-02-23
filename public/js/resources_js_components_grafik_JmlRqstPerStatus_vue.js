@@ -36,32 +36,36 @@ __webpack_require__.r(__webpack_exports__);
     cekUser: function cekUser() {
       var _this = this;
 
-      this.axios.get('api/cek-user/' + this.id, {
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        }
-      }).then(function (response) {
-        _this.checkname = response.data.map(function (x) {
-          return x.name;
-        });
-        _this.checkto = response.data.map(function (x) {
-          return x.to;
-        });
-
-        if (_this.checkname.includes("Statistik Permintaan Per Status") || _this.checkto.includes("/req-per-divisi-req-per-status")) {
-          _this.getTahun();
-        } else {
-          _this.$toast.add({
-            severity: 'error',
-            summary: '403',
-            detail: 'Cannot Access This Page'
+      if (this.id) {
+        this.axios.get('api/cek-user/' + this.id, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function (response) {
+          _this.checkname = response.data.map(function (x) {
+            return x.name;
+          });
+          _this.checkto = response.data.map(function (x) {
+            return x.to;
           });
 
-          setTimeout(function () {
-            return _this.$router.push('/dashboard');
-          }, 2000);
-        }
-      });
+          if (_this.checkname.includes("Per Status") || _this.checkto.includes("/req-per-divisi-req-per-status")) {
+            _this.getTahun();
+          } else {
+            _this.$toast.add({
+              severity: 'error',
+              summary: '403',
+              detail: 'Cannot Access This Page'
+            });
+
+            setTimeout(function () {
+              return _this.$router.push('/dashboard');
+            }, 2000);
+          }
+        });
+      } else {
+        this.$router.push('/login');
+      }
     },
     getTahun: function getTahun() {
       var _this2 = this;

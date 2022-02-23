@@ -83,10 +83,11 @@ export default {
   },
   methods: {
     cekUser(){
+      if(this.id){
       this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)
-        if(this.checkname.includes("Laporan Request Divisi Requestor Per Status") || this.checkto.includes("/report-per-status-per-personnel")){
+        if(this.checkname.includes("Per Status Per Pesonnel") || this.checkto.includes("/report-per-status-per-personnel")){
           this.getPersonnel();
         }
         else {
@@ -96,6 +97,9 @@ export default {
           setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
+      } else {
+        this.$router.push('/login');
+      }
     },
         getPerStatusIct(){
             if(this.ictPersonnel !=null){

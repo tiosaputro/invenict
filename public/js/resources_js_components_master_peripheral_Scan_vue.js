@@ -14,10 +14,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      displayDialog: true
+      displayDialog: false,
+      token: localStorage.getItem('token'),
+      checkname: [],
+      checkto: [],
+      id: localStorage.getItem('id')
     };
   },
+  created: function created() {
+    this.cekUser();
+  },
   methods: {
+    cekUser: function cekUser() {
+      var _this = this;
+
+      if (this.id) {
+        this.axios.get('api/cek-user/' + this.id, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        }).then(function (response) {
+          _this.checkto = response.data.map(function (x) {
+            return x.to;
+          });
+          _this.checkname = response.data.map(function (x) {
+            return x.name;
+          });
+
+          if (_this.checkname.includes("Master Peripheral") || _this.checkto.includes("/master-peripheral")) {
+            _this.displayDialog = true;
+          } else {
+            _this.$toast.add({
+              severity: 'error',
+              summary: '403',
+              detail: 'Cannot Access This Page'
+            });
+
+            setTimeout(function () {
+              return _this.$router.push('/dashboard');
+            }, 2000);
+          }
+        });
+      } else {
+        this.$router.push('/login');
+      }
+    },
     onDecode: function onDecode(data) {
       this.displayDialog = false;
       localStorage.setItem('barcode', data);

@@ -53,7 +53,7 @@ __webpack_require__.r(__webpack_exports__);
           return x.name;
         });
 
-        if (_this.checkname.includes("Divisi") || _this.checkto.includes("/divisi-refs")) {
+        if (_this.checkname.includes("Pembelian Peripheral") || _this.checkto.includes("/pembelian-peripheral")) {
           _this.getValutaCode();
 
           _this.getKode();

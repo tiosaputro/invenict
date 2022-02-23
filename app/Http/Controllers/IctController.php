@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ict;
 use App\IctDetail;
+use App\Link;
 use App\Exports\IctExportPermohonan;
 use App\Exports\IctExportVerifikasi;
 use App\Exports\IctExportReject;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use App\Jobs\SendEmailJob;
 use Mail;
 use App\Mail\IctRequestApproval;
+use Illuminate\Support\Facades\Hash;
 
 class IctController extends Controller
 {
@@ -504,7 +506,7 @@ class IctController extends Controller
         }
         $emailVerifikator = DB::table('divisi_refs as dr')
                     ->rightjoin('mng_users as mu','dr.div_verificator','mu.usr_name')
-                    ->select('mu.usr_email')
+                    ->select('mu.usr_email','mu.usr_id')
                     ->where('dr.div_id',$divisiPengguna)
                     ->first();
         $ict = DB::table('ireq_mst as im')
@@ -512,22 +514,31 @@ class IctController extends Controller
         ->join('divisi_refs as dr','im.ireq_divisi_user','dr.div_id')
         ->rightjoin('mng_users as mu','dr.div_verificator','mu.usr_name')
         ->join('invent_mst as imm','id.invent_code','imm.invent_code')
-        ->select('im.ireq_no','id.invent_code','mu.usr_name',DB::raw("TO_CHAR(im.ireq_date, 'dd Mon YYYY') as ireq_date"),
+        ->select('im.ireq_no','im.ireq_id', 'id.invent_code','mu.usr_name',DB::raw("TO_CHAR(im.ireq_date, 'dd Mon YYYY') as ireq_date"),
                  'im.ireq_user','imm.invent_desc','id.ireq_qty')
         ->where('im.ireq_id',$ireq_id)
         ->get();
-        // $result=[];
-        // foreach($ict['ireq_no'] as $index=>$ireq_no){
-        //     $result = [
-        //         'ireq_no' => $ireq_no,
-        //         'invent_desc'=> $ict['invent_desc'][$index],
-        //         'ireq_qty' => $ict['ireq_qty'][$index]
-        // ];
-        // } 
-        // return json_encode($result);
-        // $send_mail = $emailVerifikator->usr_email;
-        // Mail::to($send_mail)->send(new IctRequestApproval($ict));
-         return json_decode($ict);
+        $Date = $date->addDays(1);
+        $expiredDate = Carbon::parse($Date)->copy()->tz('Asia/Jakarta')->format('Y-m-d H:i:s');
+        $usr_id = $emailVerifikator->usr_id;
+        $link_action ='http://localhost:8000/ict-request-verifikasi/'.''.$ireq_id;
+        $link = Link::create([
+            'link_id'=> bcrypt($date),
+            'link_action'=> $link_action,
+            'expired_at'=>$expiredDate,
+            'usr_id'=>$usr_id,
+            'ireq_id'=>$ireq_id
+        ]);
+        $LINK = Link::where('ireq_id',$ireq_id)->first();
+        $send_mail = $emailVerifikator->usr_email;
+        $emailJob = (new SendEmailJob($send_mail,$ict,$LINK))->delay(Carbon::now()->addSeconds(5));
+        dispatch($emailJob);
+        return json_encode('Success Update');
+    }
+    public function cekVerif($code)
+    {
+        $link = Link::find($code);
+        return json_encode($link);
     }
     public function updateStatusPenugasan($ireq_id)
     {

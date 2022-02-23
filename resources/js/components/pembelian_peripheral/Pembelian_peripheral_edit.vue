@@ -213,10 +213,10 @@ export default {
   },
   created(){
     this.cekUser();
-      this.getPurch();
   },
   methods: {
     cekUser(){
+      if(this.id){
       this.axios.get('/api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)
@@ -230,6 +230,9 @@ export default {
           setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
+      } else {
+        this.$router.push('/login');
+      }
     },
       getPurch(){
           this.axios.get('/api/edit-pem/'+this.$route.params.code,{headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

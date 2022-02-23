@@ -42,10 +42,11 @@ export default {
     },
     methods: {
         cekUser(){
+        if(this.id){
         this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
             this.checkname = response.data.map((x)=> x.name)
             this.checkto = response.data.map((x)=> x.to)
-            if(this.checkname.includes("Statistik Permintaan Divisi User Per Bulan") || this.checkto.includes("/req-per-divisi-user-per-bulan")){
+            if(this.checkname.includes("Divisi User Per Bulan") || this.checkto.includes("/req-per-divisi-user-per-bulan")){
             this.getBulan();
             }
             else {
@@ -55,6 +56,9 @@ export default {
             setTimeout( () => this.$router.push('/dashboard'),2000);
             }
         });
+      } else {
+        this.$router.push('/login');
+      }
         },
         getBulan(){
             this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

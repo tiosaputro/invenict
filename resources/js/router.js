@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 const routes = [
     {
+        name: '410 Page Error',
+        path: '/page-error-410',
+        component: () => import('./components/410.vue'),
+    },
+    {
         name: 'Dashboard',
         path: '/dashboard',
         component: () => import('./components/Dashboard.vue'),
@@ -166,6 +171,16 @@ const routes = [
         name: 'Ict Request Verifikasi',
         path: '/ict-request-verifikasi/:code',
         component: ()=> import('./components/ict_request_divisi1/Ict_request_verifikasi.vue'),
+    },
+    {
+        name: 'Verifikasi From Email',
+        path: '/ictinv_resp/:code/:status',
+        component: ()=> import('./components/ict_request_divisi1/Verifikasi_from_email.vue'),
+    },
+    {
+        name: 'Ict Request Verifikasi From Email',
+        path: '/verifikasi-request/:code/:status',
+        component: ()=> import('./components/ict_request_divisi1/Ict_request_verifikasi_from_email.vue'),
     },
      //ict_request_divisi2
      {
@@ -443,7 +458,7 @@ const routes = [
 ];
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: routes,
 });
 
 export default router;

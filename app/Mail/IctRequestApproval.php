@@ -9,15 +9,17 @@ use Illuminate\Queue\SerializesModels;
 class IctRequestApproval extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-    protected $ict;
+    public $ict;
+    public $LINK;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($ict)
+    public function __construct($ict,$LINK)
     {
         $this->ict = $ict;
+        $this->LINK = $LINK;
     }
 
     /**
@@ -28,16 +30,8 @@ class IctRequestApproval extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->from('testIctRequest@emp.id')
-                   ->view('emailcontoh')
-                   ->with(
-                    [
-                        'date' => $this->ict->ireq_date,
-                        'ireq_no' => $this->ict->ireq_no,
-                        'ireq_user' => $this->ict->ireq_user,
-                        'invent_code'=> $this->ict->invent_code,
-                        'qty'=> $this->ict->ireq_qty,
-                        'usr_name'=>$this->ict->usr_name,
-                        'invent_desc'=>$this->ict->invent_desc,
-                    ]);
+                    ->view('emailcontoh')
+                    ->with(['ict' => $this->ict,
+                            'link'=>$this->LINK]);
                 }
 }

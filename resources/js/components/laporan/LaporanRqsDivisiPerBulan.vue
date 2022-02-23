@@ -86,10 +86,11 @@ export default {
   },
   methods: {
     cekUser(){
+      if(this.id){
       this.axios.get('api/cek-user/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
         this.checkto = response.data.map((x)=> x.to)
         this.checkname = response.data.map((x)=> x.name)
-        if(this.checkname.includes("Menu") || this.checkto.includes("/report-div-req-per-bulan")){
+        if(this.checkname.includes("Divis Requestor Per Bulan") || this.checkto.includes("/report-div-req-per-bulan")){
           this.getBulan();
         }
         else {
@@ -99,6 +100,9 @@ export default {
           setTimeout( () => this.$router.push('/dashboard'),2000);
         }
       });
+      } else {
+        this.$router.push('/login');
+      }
     },
     getBulan(){
         this.axios.get('api/get-tahun', {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{

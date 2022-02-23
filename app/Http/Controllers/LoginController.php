@@ -35,6 +35,21 @@ class LoginController extends Controller
                 }
     } 
 
+    public function loginFromEmail(Request $request)
+    {
+        $user= Mng_User::where('usr_id',$request->usr_id)->first();
+        
+        $token = $user->createToken('ApiToken')->plainTextToken;
+        $id = $user->usr_id;
+            $response = [
+                'success'   => true,
+                'user'      => $user,
+                'token'     => $token,
+                'id'        => $id,
+                'usr_name'  => $user->usr_name
+            ];
+        return json_encode($response, 201);
+    }
     public function logout(Request $request)
     {
         $user = Auth::user();
