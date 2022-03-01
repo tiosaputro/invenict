@@ -71,12 +71,12 @@ export default {
       if (window.location.pathname == '/'){
          this.$router.push('/login');
       }
-      //   if(!this.loggedIn){
-      //     this.role = [];
-      //     this.menuId = [];
-      //     this.menuUser = [];
-      //     this.$router.push('/login');
-      //   }
+        if(!this.loggedIn){
+          this.role = [];
+          this.menuId = [];
+          this.menuUser = [];
+          // this.$router.push('/login');
+        }
       // }
       if(this.loggedIn){
         if(!this.menuUser.length){

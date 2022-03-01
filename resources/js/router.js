@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 const routes = [
     {
-        name: '410 Page Error',
-        path: '/page-error-410',
-        component: () => import('./components/410.vue'),
+        name: 'Page Error',
+        path: '/page-error/:stat',
+        component: () => import('./components/Page_error.vue'),
     },
     {
         name: 'Dashboard',

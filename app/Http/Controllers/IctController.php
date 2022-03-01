@@ -523,21 +523,21 @@ class IctController extends Controller
         $usr_id = $emailVerifikator->usr_id;
         $link_action ='http://localhost:8000/ict-request-verifikasi/'.''.$ireq_id;
         $link = Link::create([
-            'link_id'=> bcrypt($date),
-            'link_action'=> $link_action,
+            'link_id'=> md5($date),
+            'link_action'=> 'http://localhost:8000/ict-request-verifikasi/'.''.$ireq_id,
             'expired_at'=>$expiredDate,
-            'usr_id'=>$usr_id,
+            'usr_id'=>$emailVerifikator->usr_id,
             'ireq_id'=>$ireq_id
         ]);
         $LINK = Link::where('ireq_id',$ireq_id)->first();
         $send_mail = $emailVerifikator->usr_email;
         $emailJob = (new SendEmailJob($send_mail,$ict,$LINK))->delay(Carbon::now()->addSeconds(5));
         dispatch($emailJob);
-        return json_encode('Success Update');
+        return json_encode($LINK);
     }
     public function cekVerif($code)
     {
-        $link = Link::find($code);
+        $link = Link::where('link_id',$code)->first();
         return json_encode($link);
     }
     public function updateStatusPenugasan($ireq_id)

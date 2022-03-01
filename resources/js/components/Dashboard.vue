@@ -1,4 +1,5 @@
-<template><!-- //Dashboard admin -->
+<template>
+<!-- //Dashboard admin -->
 <div class="container-fluid" v-if="this.role_name.includes('Admin')">
   <section>
     <div class="card">
@@ -112,7 +113,7 @@
     </div>
   </section>
 </div>
-<!-- //Dashboard user for request -->
+<!-- //Dashboard Requestor -->
 <div class="container-fluid" v-if="this.role_name.includes('Requestor Divisi')">
   <section>
     <div class="card">
@@ -226,7 +227,7 @@
     </div>
   </section>
 </div>
- <!-- //dashboard approver atasan user -->
+ <!-- //dashboard atasan user -->
 <div class="container-fluid" v-if="this.role_name.includes('Atasan Requestor Divisi')">
   <section>
    <div class="card">

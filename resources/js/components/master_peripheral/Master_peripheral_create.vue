@@ -154,12 +154,12 @@
               </div>
               <div class="p-fluid">
                 <div class="p-field p-grid">
-                <label for="notlp1" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:155px">Barcode</label>
+                <label for="notlp1" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:155px">QR-Code</label>
                 <div class="p-col-3 p-md-6">
                 <div class="p-inputgroup">
                   <InputText v-model="barcode" readonly  v-if="barcode"/>
-                  <Button icon="pi pi-trash" class="p-button-danger" v-if="barcode" @click="hapus()"/>
-                  <Button icon="bi bi-qr-code-scan" v-if="aktif" class="p-button p-button-info" @click="Scan()" />
+                  <Button icon="pi pi-trash" class="p-button-danger" v-if="barcode" @click="hapus()" v-tooltip="'Click to delete'"/>
+                  <Button icon="bi bi-qr-code-scan" v-if="aktif" class="p-button p-button-info" @click="Scan()" v-tooltip="'Click to scan'" />
                   </div>
                       <small v-if="errors.barcode" class="p-error">
                           {{ errors.barcode[0] }}

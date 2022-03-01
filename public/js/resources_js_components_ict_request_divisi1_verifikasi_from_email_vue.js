@@ -19,7 +19,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       verif: [],
       ireq_id: null,
-      todayyy: null
+      todayyy: null,
+      loading: true
     };
   },
   mounted: function mounted() {
@@ -32,25 +33,42 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.setItem("loggedIn", "true");
       this.axios.get('/api/cek-verif-id/' + this.$route.params.code).then(function (res) {
         _this.verif = res.data;
-        _this.ireq_id = res.data.ireq_id;
-        _this.todayyy = moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD H:mm:s');
 
-        if (_this.verif.expired_at <= _this.todayyy) {
-          _this.axios.get('/sanctum/csrf-cookie').then(function () {
-            _this.axios.post('/api/login-approval', _this.verif).then(function (res) {
-              localStorage.clear();
-              localStorage.setItem("loggedIn", "true");
-              localStorage.setItem("token", res.data.token);
-              localStorage.setItem("id", res.data.id);
-              localStorage.setItem("usr_name", res.data.usr_name);
-
-              _this.$router.push('/page-error-410');
-            });
+        if (res.data == null) {
+          _this.$router.push({
+            name: 'Page Error',
+            params: {
+              stat: 'notvalid'
+            }
           });
-        }
+        } else {
+          _this.ireq_id = res.data.ireq_id;
+          _this.todayyy = moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD HH:mm:s');
+          console.log('today ', _this.todayyy);
+          console.log('date expired ', _this.verif.expired_at);
 
-        if (_this.verif.expired_at >= _this.todayyy) {
-          _this.loginUser();
+          if (_this.verif.expired_at >= _this.todayyy) {
+            _this.loginUser();
+          } else if (_this.verif.expired_at <= _this.todayyy) {
+            _this.axios.get('/sanctum/csrf-cookie').then(function () {
+              _this.axios.post('/api/login-approval', _this.verif).then(function (res) {
+                localStorage.clear();
+                localStorage.setItem("loggedIn", "true");
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("id", res.data.id);
+                localStorage.setItem("usr_name", res.data.usr_name);
+
+                _this.$router.push({
+                  name: 'Page Error',
+                  params: {
+                    stat: 'expired'
+                  }
+                });
+
+                _this.loading = false;
+              });
+            });
+          }
         }
       });
     },
@@ -72,6 +90,8 @@ __webpack_require__.r(__webpack_exports__);
               status: _this2.$route.params.status
             }
           });
+
+          _this2.loading = false;
         });
       });
     }
@@ -91,8 +111,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "render": () => (/* binding */ render)
 /* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = {
+  "class": "p-grid crud-demo"
+};
+var _hoisted_2 = {
+  "class": "p-col-12"
+};
+var _hoisted_3 = {
+  "class": "card"
+};
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Memverifikasi Link ");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return null;
+  var _component_Toast = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toast");
+
+  var _component_ConfirmDialog = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ConfirmDialog");
+
+  var _component_DataTable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DataTable");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ConfirmDialog), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DataTable, {
+    rows: 25,
+    loading: $data.loading
+  }, {
+    loading: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_4];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["loading"])])])]);
 }
 
 /***/ }),

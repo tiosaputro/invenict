@@ -3,7 +3,7 @@
     <div class="p-col-12">
       <div class="card">
         <Toast/>
-        <ConfirmDialog> </ConfirmDialog>
+        <ConfirmDialog group="positionDialog"></ConfirmDialog>
         <Toolbar class="p-mb-4">
           <template v-slot:left>
 				        <h4>ICT Request (Verifikasi) </h4>
@@ -78,6 +78,7 @@
         :style="{ width: '400px' }"
         header="ICT Request Form Dialog Reject"
         :modal="true"
+        position="top"
         class="p-fluid"
       >
         <div class="p-fluid">
@@ -87,6 +88,8 @@
                 <Textarea
                     :autoResize="true"
                     type="text"
+                    rows="5" 
+                    cols="20"
                     v-model="reason.ket"
                     placeholder="Masukan Alasan"
                     :class="{ 'p-invalid': submitted && !reason.ket }"
@@ -141,12 +144,14 @@ export default {
       },
       Approve(){
       this.$confirm.require({
+        group: 'positionDialog',
         message: "Approval Permohonan Dilanjutkan?",
         header: "ICT Request    ",
         icon: "pi pi-info-circle",
         acceptClass: "p-button",
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
+        position: 'top',
         accept: () => {
           this.$toast.add({
             severity: "info",
@@ -182,6 +187,7 @@ export default {
       this.axios.get('/api/get-verif/' + this.$route.params.code, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=> {
         this.verif = response.data;
         this.loading = false;
+        this.cek();
       }).catch(error=>{
           if (error.response.status == 401) {
             this.$toast.add({
@@ -198,39 +204,11 @@ export default {
         this.kode = response.data;
         if(this.kode.ireq_status == 'Permohonan'){
             this.getIctDetail();
-            this.cek();
           }
         else{
             this.getIctDetail();
         }
       });
-    },
-    DeleteIct(ireqd_id){
-       this.$confirm.require({
-        message: "Data ini benar-benar akan dihapus?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: () => {
-          this.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Record deleted",
-            life: 3000,
-          });
-          this.axios.delete('/api/delete-ict-detail/' +ireqd_id, {headers: {'Authorization': 'Bearer '+this.token}});
-          this.getIctDetail();
-        },
-        reject: () => {},
-      });
-    },
-    CetakPdf(){
-      window.open('/api/report-ict-detail-pdf/' +this.code);
-    },
-    CetakExcel(){
-      window.open('/api/report-ict-detail-excel/' +this.code);
     },
   },
 };

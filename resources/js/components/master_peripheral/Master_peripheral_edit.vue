@@ -144,7 +144,7 @@
               </div>
               <div class="p-fluid">
                 <div class="p-field p-grid">
-                <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:155px">Barcode</label>
+                <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:155px">QR-Code</label>
                  <div class="p-col-3 p-md-6">
                 <div class="p-inputgroup">
                   <InputText v-model="master.invent_barcode" readonly v-if="master.invent_barcode"/>

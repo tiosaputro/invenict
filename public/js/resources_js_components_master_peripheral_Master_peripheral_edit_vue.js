@@ -432,7 +432,7 @@ var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   style: {
     "width": "155px"
   }
-}, "Barcode", -1
+}, "QR-Code", -1
 /* HOISTED */
 );
 

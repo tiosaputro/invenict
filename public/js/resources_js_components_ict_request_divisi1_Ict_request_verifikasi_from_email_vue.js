@@ -55,12 +55,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$confirm.require({
+        group: 'positionDialog',
         message: "Approval Permohonan Dilanjutkan?",
         header: "ICT Request    ",
         icon: "pi pi-info-circle",
         acceptClass: "p-button",
         acceptLabel: "Ya",
         rejectLabel: "Tidak",
+        position: 'top',
         accept: function accept() {
           _this.$toast.add({
             severity: "info",
@@ -121,6 +123,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this3.verif = response.data;
         _this3.loading = false;
+
+        _this3.cek();
       })["catch"](function (error) {
         if (error.response.status == 401) {
           _this3.$toast.add({
@@ -149,47 +153,10 @@ __webpack_require__.r(__webpack_exports__);
 
         if (_this4.kode.ireq_status == 'Permohonan') {
           _this4.getIctDetail();
-
-          _this4.cek();
         } else {
           _this4.getIctDetail();
         }
       });
-    },
-    DeleteIct: function DeleteIct(ireqd_id) {
-      var _this5 = this;
-
-      this.$confirm.require({
-        message: "Data ini benar-benar akan dihapus?",
-        header: "Delete Confirmation",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptLabel: "Ya",
-        rejectLabel: "Tidak",
-        accept: function accept() {
-          _this5.$toast.add({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "Record deleted",
-            life: 3000
-          });
-
-          _this5.axios["delete"]('/api/delete-ict-detail/' + ireqd_id, {
-            headers: {
-              'Authorization': 'Bearer ' + _this5.token
-            }
-          });
-
-          _this5.getIctDetail();
-        },
-        reject: function reject() {}
-      });
-    },
-    CetakPdf: function CetakPdf() {
-      window.open('/api/report-ict-detail-pdf/' + this.code);
-    },
-    CetakExcel: function CetakExcel() {
-      window.open('/api/report-ict-detail-excel/' + this.code);
     }
   }
 });
@@ -297,7 +264,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_Dialog = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Dialog");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ConfirmDialog), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toolbar, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ConfirmDialog, {
+    group: "positionDialog"
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toolbar, {
     "class": "p-mb-4"
   }, {
     left: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -404,6 +373,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     },
     header: "ICT Request Form Dialog Reject",
     modal: true,
+    position: "top",
     "class": "p-fluid"
   }, {
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -426,6 +396,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Textarea, {
         autoResize: true,
         type: "text",
+        rows: "5",
+        cols: "20",
         modelValue: $data.reason.ket,
         "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
           return $data.reason.ket = $event;

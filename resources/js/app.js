@@ -44,6 +44,7 @@ import TabPanel from 'primevue/tabpanel';
 import Textarea from 'primevue/textarea';
 import TreeSelect from 'primevue/treeselect';
 import Toolbar from 'primevue/toolbar';
+import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import VueAxios from 'vue-axios';
@@ -54,6 +55,7 @@ app.config.silent = true
 app.config.globalProperties.$appState = reactive({ theme: 'saga-blue'});
 
 app.directive('ripple', Ripple);
+app.directive('tooltip', Tooltip);
 
 app.use(ConfirmationService);
 app.use(PrimeVue, {ripple: true});

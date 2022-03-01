@@ -73,6 +73,7 @@
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                 icon="bi bi-pencil-square"
+                v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
                     name: 'Edit Master Peripheral',
@@ -84,11 +85,13 @@
                 icon="bi bi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 @click="DeleteMas(slotProps.data.invent_code)"
+                v-tooltip.bottom="'Hapus'"
               />
               <Button
                 icon="bi bi-qr-code"
                 class="p-button-rounded p-button-success p-mr-2 p-mb-2"
                 @click="previewBarcode(slotProps.data.invent_code)"
+                v-tooltip.right="'Print Qr-code'"
               />
             </template>
           </Column>
