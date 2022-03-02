@@ -58,6 +58,7 @@
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                 icon="pi pi-pencil"
+                v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
                     name: 'Edit Referensi Supplier',
@@ -67,11 +68,13 @@
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 @click="DeleteSupp(slotProps.data.suplier_code)"
+                v-tooltip.bottom="'Delete'"
               />
               <Button
                 class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
                 icon="pi pi-info-circle"
                 @click="detailSupp(slotProps.data.suplier_code)"
+                v-tooltip.Right="'Detail'"
               />
             </template>
           </Column>

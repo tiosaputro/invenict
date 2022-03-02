@@ -93,7 +93,7 @@
                             readonly
                           />
                       <Button icon="pi pi-calendar" v-if="!master.invent_tgl_perolehan" @click="togglePopover"/>
-                      <Button icon="pi pi-trash" class="p-button-danger" v-else @click="master.invent_tgl_perolehan = null" />
+                      <Button icon="pi pi-trash" v-tooltip="'Click to delete'" class="p-button-danger" v-else @click="master.invent_tgl_perolehan = null" />
                         </template>
                       </DatePicker>
                       </div>
@@ -148,7 +148,7 @@
                  <div class="p-col-3 p-md-6">
                 <div class="p-inputgroup">
                   <InputText v-model="master.invent_barcode" readonly v-if="master.invent_barcode"/>
-                  <Button icon="pi pi-trash" class="p-button-danger" v-if="master.invent_barcode" @click="hapus()"/>
+                  <Button icon="pi pi-trash" v-tooltip="'Click to delete'" class="p-button-danger" v-if="master.invent_barcode" @click="hapus()"/>
                   <Button label="Scan" v-if="aktif" class="p-button" @click="Scan()" />
                   </div>
                 </div>

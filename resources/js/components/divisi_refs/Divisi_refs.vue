@@ -48,6 +48,7 @@
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                 icon="pi pi-pencil"
+                v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
                     name: 'Edit Divisi Refs',
@@ -56,7 +57,9 @@
               <Button
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
-                @click="DeleteDivisi(slotProps.data.div_id)"/>
+                @click="DeleteDivisi(slotProps.data.div_id)"
+                v-tooltip.right="'Delete'"
+              />
             </template>
           </Column>
         </DataTable>   

@@ -63,6 +63,7 @@
                         v-if="slotProps.data.ireq_status == null"
                         class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                         icon="pi pi-pencil"
+                        v-tooltip.left="'Edit'"
                         @click="
                           $router.push({
                             name: 'Edit Ict Request',
@@ -73,10 +74,12 @@
                         icon="pi pi-trash"
                         class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                         @click="DeleteIct(slotProps.data.ireq_id)"
+                        v-tooltip.top="'Delete'"
                       />
                       <Button
                         class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
                         icon="pi pi-info-circle"
+                        v-tooltip.bottom="'Detail'"
                         @click="$router.push({
                             name: 'Ict Request Detail',
                             params: { code: slotProps.data.ireq_id }, })"
@@ -86,6 +89,7 @@
                         class="p-button-rounded p-button-success p-mr-2 p-mb-2"
                         icon="pi pi-check"
                         @click="SubmitIct(slotProps.data.ireq_id)"
+                        v-tooltip.Right="'Submit'"
                       />
                     </template>
                   </Column>

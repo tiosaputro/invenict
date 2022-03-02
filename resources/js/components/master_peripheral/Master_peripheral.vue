@@ -72,7 +72,7 @@
             <template #body="slotProps">
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
-                icon="bi bi-pencil-square"
+                icon="pi pi-pencil"
                 v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
@@ -82,16 +82,16 @@
                 "
               />
               <Button
-                icon="bi bi-trash"
+                icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 @click="DeleteMas(slotProps.data.invent_code)"
-                v-tooltip.bottom="'Hapus'"
+                v-tooltip.top="'Delete'"
               />
               <Button
-                icon="bi bi-qr-code"
+                icon="pi pi-qrcode"
                 class="p-button-rounded p-button-success p-mr-2 p-mb-2"
                 @click="previewBarcode(slotProps.data.invent_code)"
-                v-tooltip.right="'Print Qr-code'"
+                v-tooltip.right="'Print QR-Code'"
               />
             </template>
           </Column>

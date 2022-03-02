@@ -52,6 +52,7 @@
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                 icon="pi pi-pencil"
+                v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
                     name: 'Edit Referensi Lookups',
@@ -59,6 +60,7 @@
               <Button
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
+                v-tooltip.Right="'Delete'"
                 @click="DeleteRef(slotProps.data.lookup_code, slotProps.data.lookup_type)"/>
             </template>
           </Column>

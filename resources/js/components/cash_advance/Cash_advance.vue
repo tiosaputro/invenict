@@ -73,6 +73,7 @@
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                 icon="pi pi-pencil"
+                v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
                     name: 'Edit Cash Advance',
@@ -84,6 +85,7 @@
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 @click="DeleteCash(slotProps.data.ca_id)"
+                v-tooltip.Right="'Delete'"
               />
             </template>
           </Column>

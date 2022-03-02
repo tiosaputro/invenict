@@ -360,7 +360,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (slotProps) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
             "class": "p-button-rounded p-button-info p-mr-2 p-mb-2",
-            icon: "bi bi-pencil-square",
+            icon: "pi pi-pencil",
             onClick: function onClick($event) {
               return _ctx.$router.push({
                 name: 'Edit Master Peripheral',
@@ -374,24 +374,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           , ["onClick"]), [[_directive_tooltip, 'Edit', void 0, {
             left: true
           }]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-            icon: "bi bi-trash",
+            icon: "pi pi-trash",
             "class": "p-button-rounded p-button-danger p-mr-2 p-mb-2",
             onClick: function onClick($event) {
               return $options.DeleteMas(slotProps.data.invent_code);
             }
           }, null, 8
           /* PROPS */
-          , ["onClick"]), [[_directive_tooltip, 'Hapus', void 0, {
-            bottom: true
+          , ["onClick"]), [[_directive_tooltip, 'Delete', void 0, {
+            top: true
           }]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-            icon: "bi bi-qr-code",
+            icon: "pi pi-qrcode",
             "class": "p-button-rounded p-button-success p-mr-2 p-mb-2",
             onClick: function onClick($event) {
               return $options.previewBarcode(slotProps.data.invent_code);
             }
           }, null, 8
           /* PROPS */
-          , ["onClick"]), [[_directive_tooltip, 'Print Qr-code', void 0, {
+          , ["onClick"]), [[_directive_tooltip, 'Print QR-Code', void 0, {
             right: true
           }]])];
         }),

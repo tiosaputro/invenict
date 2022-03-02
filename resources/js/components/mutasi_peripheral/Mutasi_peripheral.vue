@@ -77,13 +77,14 @@
                   $router.push({
                     name: 'Edit Mutasi Peripheral',
                     params: { code: slotProps.data.imutasi_id },
-                  })
-                "
+                  })"
+                  v-tooltip.left="'Edit'"
               />
               <Button
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 @click="DeleteMut(slotProps.data.imutasi_id)"
+                v-tooltip.Right="'Delete'"
               />
             </template>
           </Column>

@@ -73,6 +73,7 @@
               <Button
                 class="p-button-rounded p-button-info p-mr-2 p-mb-2"
                 icon="pi pi-pencil"
+                v-tooltip.left="'Edit'"
                 @click="
                   $router.push({
                     name: 'Edit Pembelian Peripheral',
@@ -82,10 +83,12 @@
                 class="p-button-rounded p-button-danger p-mr-2 p-mb-2"
                 icon="pi pi-trash"
                 @click="DeleteMut(slotProps.data.purchase_id)"
+                v-tooltip.bottom="'Delete'"
               />
               <Button
                 class="p-button-rounded p-button-secondary p-mr-2 p-mb-2"
                 icon="pi pi-info-circle"
+                v-tooltip.Right="'Detail'"
                 @click="$router.push({
                     name: 'Pembelian Peripheral Detail',
                     params: { code: slotProps.data.purchase_id }, })"
