@@ -1,14 +1,14 @@
 <?php
 
 namespace App;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Adldap\Laravel\Traits\HasLdapUser;
 
 class Mng_User extends Authenticatable
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, HasLdapUser;
 
     protected $fillable = [
         'usr_id',
@@ -34,7 +34,8 @@ class Mng_User extends Authenticatable
         'kddept_unit',
         'waba_id',
         'usr_foto',
-        'div_id'
+        'div_id',
+        'objectguid'
     ];
     protected $hidden = [
         'user_passwd'

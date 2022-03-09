@@ -4718,7 +4718,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template #body=\"slotProps\">\r\n              <Button\r\n                class=\"p-button-rounded p-button-secondary p-mr-2 p-mb-2\"\r\n                icon=\"pi pi-info-circle\"\r\n                @click=\"$router.push({\r\n                  name: 'Ict Request Desc Detail Divisi 3',\r\n                  params: { code: slotProps.data.ireq_id }, })\"\r\n                />\r\n            </template> ")];
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template #body=\"slotProps\">\n              <Button\n                class=\"p-button-rounded p-button-secondary p-mr-2 p-mb-2\"\n                icon=\"pi pi-info-circle\"\n                @click=\"$router.push({\n                  name: 'Ict Request Desc Detail Divisi 3',\n                  params: { code: slotProps.data.ireq_id }, })\"\n                />\n            </template> ")];
         }),
         _: 1
         /* STABLE */

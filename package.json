@@ -8,7 +8,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21.1",
+        "axios": "^0.25.0",
         "cross-env": "^7.0",
         "laravel-mix": "^6.0.31",
         "lodash": "^4.17.19",
@@ -35,8 +35,8 @@
         "qrcode.vue": "^3.3.0",
         "uninstall": "^0.0.0",
         "v-calendar": "^3.0.0-alpha.5",
-        "vue": "^3.2.12",
-        "vue-axios": "^3.3.7",
+        "vue": "^3.2.31",
+        "vue-axios": "^3.4.1",
         "vue-barcode-reader": "git+https://github.com/Zubaj/vue-barcode-reader.git",
         "vue-chartjs-exporter": "^1.0.2",
         "vue-loader": "^16.5.0",

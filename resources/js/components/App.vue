@@ -51,8 +51,6 @@ export default {
       overlayMenuActive: false,
       mobileMenuActive: false,
       menuUser:[],
-      role:[],
-      menuId:[],
     };
   },
   created(){
@@ -72,20 +70,18 @@ export default {
          this.$router.push('/login');
       }
         if(!this.loggedIn){
-          this.role = [];
-          this.menuId = [];
           this.menuUser = [];
           // this.$router.push('/login');
         }
       // }
       if(this.loggedIn){
-        if(!this.menuUser.length){
+        // if(!this.menuUser.length){
           this.id = localStorage.getItem("id");
           this.token = localStorage.getItem("token");
           this.axios.get('/api/get-rolee/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
             this.menuUser = response.data
           });
-        }
+        // }
       }
     },
     onWrapperClick() {

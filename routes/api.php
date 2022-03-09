@@ -20,8 +20,8 @@ Route::get('/cek-verif-id/{code}','IctController@cekVerif');
 Route::post('/login', 'LoginController@index');
 Route::post('/login-approval', 'LoginController@loginFromEmail');
 Route::get('/logout', 'LoginController@logout')->middleware('auth:sanctum');
-//referensi_lookups
 Route::middleware('auth:sanctum')->group(function(){
+    //referensi_lookups
     Route::get('/ref', 'LookupsController@index');
     Route::post('/add-ref','LookupsController@save');
     Route::get('/edit-ref/{code}/{type}','LookupsController@edit');
@@ -175,9 +175,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/count-per-personel','DashboardController@countPerPersonnel');
     Route::get('/get-personnel','DashboardController@getPersonnel');
     Route::get('/count-per-status-ict/{ictPersonnel}','DashboardController@countPerStatusIct');
-
-});
-Route::middleware('auth:sanctum')->group(function(){
     //ict request
     Route::get('/get-ict/{usr_name}','IctController@getIct');
     Route::post('/add-ict','IctController@save');

@@ -4,7 +4,8 @@
         <Toast />
         <img src="/assets/layout/images/logo_emp.png" class="rounded" width="400"/>
         <div class="card">
-          <Message severity="success" v-if="this.logOut" >Berhasil Logout, Silahkan Login Kembali</Message>
+         <Message severity="success" v-if="this.tes" >Tidak terhubung dengan sosphos atau wifi internal</Message>
+          <Message severity="success" v-else-if="this.logOut" >Berhasil Logout, Silahkan Login Kembali</Message>
           <Message severity="warn" v-else-if ="this.Expired">Sesi Login Telah Berakhir, Silahkan Login Kembali</Message> 
            <Message severity="info" v-else >Selamat Datang, Silahkan Login</Message>
             <div class="card-body">
@@ -67,13 +68,14 @@
 export default {
   data() {
     return {
+        tes:null,
         logOut:null,
         Expired:null,
         loggedIn:null,
         email: '',
         password: '',
         errors :[],
-        submitted: false
+        submitted: false,
     };
   },
   mounted(){
@@ -118,6 +120,12 @@ export default {
                if (error.response.status == 422) {
                    this.errors = error.response.data;
                    };
+               if (error.response.status == 500){
+                 this.logOut=null;
+                 this.Expired=null;
+                 this.loggedIn=null;
+                 this.tes = true;
+               }
                   });
                 });
               }

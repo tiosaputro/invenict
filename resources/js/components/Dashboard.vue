@@ -402,7 +402,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
               <div class="align-self-center">
-                <i class="bi bi-hourglass-split" style="fontSize: 4rem; color: red;"></i>
+                <i class="bi bi-hourglass-split" style="color: red;"></i>
               </div>
               <div class="text-end">
                 <h3 @click="blmSelesai3()" style="cursor:pointer;">{{count3.belumselesai}}</h3>

@@ -1291,7 +1291,6 @@ var _hoisted_188 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "bi bi-hourglass-split",
   style: {
-    "fontSize": "4rem",
     "color": "red"
   }
 })], -1
