@@ -248,7 +248,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.Login && $options.Login.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputText, {
-    type: "email",
+    type: "text",
     modelValue: $data.email,
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.email = $event;

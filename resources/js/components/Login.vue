@@ -16,7 +16,7 @@
                 <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0" style="width:100px">Email</label>
                  <div class="p-col-4">
                   <InputText
-                    type="email"
+                    type="text"
                     v-model="email"
                     placeholder="Masukan Email. . ."
                     :class="{ 'p-invalid': submitted && !email }"

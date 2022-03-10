@@ -80,6 +80,7 @@ class MngUsrRoleController extends Controller
                 'urol_stat' => 'T',
                 'creation_date' => $createday,
                 'created_by'=> $created_by,
+                'last_update_date'=>$newUpdate,
                 'last_updated_by'=> Auth::user()->usr_name,
                 'program_name'=>'MngUsrRoleController_UPDATE'
             ]);

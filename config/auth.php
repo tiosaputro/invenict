@@ -69,7 +69,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'ldap', //eloquent
-            'model' => App\Mng_user::class,
+            'model' => App\User::class,
         ],
 
         // 'users' => [
