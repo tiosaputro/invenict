@@ -19,7 +19,7 @@ return [
         ],
         'database' => [
             'guid_column' => 'objectguid',
-            'username_column' => 'name',
+            'username_column' => 'username',
         ],
         'windows' => [
             'locate_users_by' => 'samaccountname',
@@ -37,7 +37,7 @@ return [
     ],
 
     'logging' => [
-        'enabled' => env('LDAP_LOGGING', true),
+        'enabled' => env('LDAP_LOGGING', false),
         'events' => [
             \Adldap\Laravel\Events\Importing::class                 => \Adldap\Laravel\Listeners\LogImport::class,
             \Adldap\Laravel\Events\Synchronized::class              => \Adldap\Laravel\Listeners\LogSynchronized::class,

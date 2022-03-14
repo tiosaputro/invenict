@@ -75,13 +75,13 @@ export default {
         }
       // }
       if(this.loggedIn){
-        // if(!this.menuUser.length){
+        if(!this.menuUser.length){
           this.id = localStorage.getItem("id");
           this.token = localStorage.getItem("token");
           this.axios.get('/api/get-rolee/'+ this.id, {headers: {'Authorization': 'Bearer '+this.token}}).then((response)=>{
             this.menuUser = response.data
           });
-        // }
+        }
       }
     },
     onWrapperClick() {

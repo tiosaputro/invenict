@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'logging' => env('LDAP_LOGGING', true),
+    'logging' => env('LDAP_LOGGING', false),
     'connections' => [
         'default' => [
-            'auto_connect' => env('LDAP_AUTO_CONNECT', true),
+            'auto_connect' => env('LDAP_AUTO_CONNECT', false),
             'connection' => Adldap\Connections\Ldap::class,
             'settings' => [
                 'schema' => Adldap\Schemas\ActiveDirectory::class,
@@ -13,7 +13,7 @@ return [
                 'hosts' => explode(' ', env('LDAP_HOSTS', '172.25.1.38')),
                 'port' => env('LDAP_PORT', 389),
                 'timeout' => env('LDAP_TIMEOUT', 5),
-                'base_dn' => env('LDAP_BASE_DN', 'dc=emp-one,dc=com'),
+                'base_dn' => env('LDAP_BASE_DN', 'EMP-ONE\LDAP_USER'),
                 'username' => env('LDAP_USERNAME', ''), //adhitya.saputro
                 'password' => env('LDAP_PASSWORD', ''), //P@ssw0rd27
                 'follow_referrals' => false,

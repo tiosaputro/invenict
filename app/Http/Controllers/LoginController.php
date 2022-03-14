@@ -12,64 +12,64 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
-{
+{ 
     public function index(Request $request) 
     {   
-        $ldapconn = ldap_connect("172.25.1.38");
-
-        if ($ldapconn) {
-            $ldapbind = ldap_bind($ldapconn, $request->email, $request->password);
-
-            if ($ldapbind) {
-                $user= Mng_User::where('usr_email', $request->email)->first();
-                if (!is_null ($user)) {
-                        $token = $user->createToken('ApiToken')->plainTextToken;
-                        $id = $user->usr_id;
-                            $response = [
-                                'success'   => true,
-                                'user'      => $user,
-                                'token'     => $token,
-                                'id'        => $id,
-                                'usr_name'  => $user->usr_name
-                            ];
-                            return json_encode($response, 201);
-                        }else{
-                            return response(["email" => "Email doesnt exist."],422);
-                        }
-            } else {
-                echo "LDAP bind failed...";
-                return response(['message'=>'LDAP bind failed...','tes'=>$ldapbind],422);
-            }
-        } else {
-            return response(['message'=>'Cannot connect server...'],422);
-        }
-        // $this->assertInstanceOf(User::class, Auth::user());
-        // if (Adldap::auth()->attempt($request->email,$request->password)) {
-        //     $user = Auth::user();
-        //     return response([
-        //          "user"=>$user,"success" => true, "message" => "You have logged in successfully"],200);            
-        // }else{
-        //     return response(["success" => false, "email" => "Email doesnt exist. Check Your Email"],422);
+        // $ldapconn = ldap_connect('172.25.1.38',389);
+        //   if ($ldapconn) {          
+        //    $ldapbind = ldap_bind($ldapconn, $email, $request->password);
+        //     if ($ldapbind) {
+        //         $user= Mng_User::where('usr_email', $request->email)->first();
+        //                 $token = $user->createToken('ApiToken')->plainTextToken;
+        //                 $id = $user->usr_id;
+        //                     $response = [
+        //                         'success'   => true,
+        //                         'user'      => $user,
+        //                         'token'     => $token,
+        //                         'id'        => $id,
+        //                         'usr_name'  => $user->usr_name
+        //                     ];
+        //                     return json_encode($response, 201);
+        //     } else {
+        //         return response(['message'=>'LDAP bind failed...','tes'=>$ldapbind],422);
+        //     }
+        // } else {
+        //     return response(['message'=>'Cannot connect server...'],422);
         // }
-            // $user = Mng_User::where('usr_email', $request->email)->first();
-            //     if (!is_null ($user)) {
-            //         if (Hash::check($request->password, $user->usr_passwd)){
-            //             $password = $request->only('password');
-            //             if (Adldap::auth()->attempt($request->email,$request->password)) {
-            //                 $token = $user->createToken('ApiToken')->plainTextToken;
-            //                 $authuser = Auth::user();
-            //                 $id = $user->usr_id;
-            //                 $usr_name = $user->usr_name;
-            //                 return response([
-            //                     "success" => true, "message" => "You have logged in successfully","token"=>$token,"id"=>$id,"usr_name"=>$usr_name],200);
-            //                 }
-            //             }else{
-            //                     return response(["success" => false, "password" => "Unable to login. Incorrect password."],422);
-            //                 }
-            //             }else{
-            //                     return response(["success" => false, "email" => "Email doesnt exist. Check Your Email"],422);
-            //             }
-            //         }
+            $email = $request->email."@emp.id";
+            if (Adldap::auth()->attempt($email,$request->password)) {
+                $user = Mng_User::where('usr_email', $request->email)->first();
+                  if (!is_null ($user)) {
+                    $token = $user->createToken('ApiToken')->plainTextToken;
+                        $authuser = Auth::user();
+                        $id = $user->usr_id;
+                        $usr_name = $user->usr_name;
+                    return response([
+                            "success" => true, "message" => "You have logged in successfully","token"=>$token,"id"=>$id,"usr_name"=>$usr_name],200);
+                    }
+                      else{
+                            return response(["success" => false, "email" => "Your Email not yet registered"],422);
+                          }
+                        }
+                        else{
+                            $email2 = $request->email."@emp-one.com";
+                            if (Adldap::auth()->attempt($email2,$request->password)) {
+                                $user = Mng_User::where('usr_email', $request->email)->first();
+                                if (!is_null ($user)) {
+                                    $token = $user->createToken('ApiToken')->plainTextToken;
+                                            $authuser = Auth::user();
+                                            $id = $user->usr_id;
+                                            $usr_name = $user->usr_name;
+                                            return response([
+                                                "success" => true, "message" => "You have logged in successfully","token"=>$token,"id"=>$id,"usr_name"=>$usr_name],200);
+                                }else{
+                                    return response(["success" => false, "email" => "Your Email not yet registered"],422);
+                                    }
+                        }
+                        else{
+                                return response(["success" => false, "password" => "Unable to login. Incorrect domain account."],422);
+                            }
+                        }
     }
 
     public function loginFromEmail(Request $request)

@@ -463,8 +463,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 mb-4">
         <div class="shadow-lg p-3 mb-5 bg-body rounded" style="border: 0.5px solid black;" v-if="this.count4">
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
